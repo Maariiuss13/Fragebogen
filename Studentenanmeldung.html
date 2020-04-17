@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmeldung - Studenten</title>
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        form {border: 3px solid #f1f1f1;}
+        
+        input[type=text], input[type=password] {
+          width: 100%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
+        }
+        
+        button {
+          background-color: #4CAF50;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          cursor: pointer;
+          width: 100%;
+        }
+        
+        button:hover {
+          opacity: 0.8;
+        }
+        
+        .container {
+          padding: 16px;
+        }
+        
+        span.registriert {
+          float: left;
+          padding-top: 20px;
+        }
+        </style>
+</head>
+<body bgcolor="e2e2e2">
+
+<h1>Login - Studenten</h1>
+
+    <form action="Befrager.html" method="post">
+        <div class="imgcontainer">
+        </div>
+
+    <div class="container">
+    <label for="mnr"><b>Matrikelnummer</b></label>
+    <input type="text" placeholder="Matrikelnummer" name="mnr" minlength="7" maxlength="7" required>
+    
+    <button type="submit">Jetzt einloggen!</button>
+    </div>
+    </form>
+    <div align="right">
+        <a href=Startseite.html>Zurück zur Startseite</a>
+    </div>
+</body>
+</html>
