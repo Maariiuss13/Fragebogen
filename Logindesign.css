@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+form {
+    border: 5px solid #f1f1f1;
+}
+        
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 7px;
+    margin: 6px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+        
+button {
+    background-color: rgb(255, 175, 2);
+    color: white;
+    padding: 14px 20px;
+    margin: 10px 0;
+    border: 1px solid rgb(0, 0, 0);
+    cursor: pointer;
+    width: 100%;
+}
+        
+.container {
+    padding: 16px;
+}

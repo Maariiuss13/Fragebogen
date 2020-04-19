@@ -8,6 +8,6 @@ var checkPasswordValidity = function() {
 	} else {
 		passwordConfirm.setCustomValidity('');
 	}
-};
+}
 password.addEventListener('change', checkPasswordValidity);
 passwordConfirm.addEventListener('change', checkPasswordValidity);
