@@ -37,10 +37,10 @@
         <table align="right" style="padding-top: 10px">
             <tr>
                 <th align="center">
-                    <form action="Befrageranmeldung.html"><input type="submit" style="padding: 10px" value="Anmeldung als Befrager"></form>
+                    <form action="Befrageranmeldung.php"><input type="submit" style="padding: 10px" value="Anmeldung als Befrager"></form>
                 </th>
                 <th align="center">
-                    <form action="Studentenanmeldung.html"><input type="submit" style="padding: 10px" value="Anmeldung als Student"></form>
+                    <form action="Studentenanmeldung.php"><input type="submit" style="padding: 10px" value="Anmeldung als Student"></form>
                 </th>
             </tr>
         </table>

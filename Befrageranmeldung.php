@@ -36,12 +36,12 @@
         <button type="submit">Jetzt anmelden!</button>
 
       <span style="font-size: small">Haben Sie sich noch nicht <a
-          href=Befragerregistrierung.html>registriert</a>?</span>
+          href=Befragerregistrierung.php>registriert</a>?</span>
     </div>
   </form>
 
   <div align="right" style="padding-top: 10px">
-    <a href=Startseite.html>Zurück zur Startseite</a>
+    <a href=Startseite.php>Zurück zur Startseite</a>
   </div>
 
 </body>

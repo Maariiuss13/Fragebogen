@@ -20,7 +20,7 @@
 
   <h2 align="center">Anmeldung - Studenten</h2>
 
-  <form action="Student.html" method="post">
+  <form action="Student.php" method="post">
 
     <div class="container">
       <label for="mnr"><b>Matrikelnummer</b></label>
@@ -31,7 +31,7 @@
   </form>
 
   <div align="right" style="padding-top: 10px">
-    <a href=Startseite.html>Zurück zur Startseite</a>
+    <a href=Startseite.php>Zurück zur Startseite</a>
   </div>
 
 </body>

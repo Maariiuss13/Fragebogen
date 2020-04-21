@@ -47,7 +47,7 @@
   </form>
 
   <div align="right" style="padding-top: 10px">
-    <a href=Startseite.html>Zurück zur Startseite</a>
+    <a href=Startseite.php>Zurück zur Startseite</a>
   </div>
 
 </body>
