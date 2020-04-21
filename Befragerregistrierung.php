@@ -20,7 +20,7 @@
 
   <h2 align="center">Registrierung - Befrager</h2>
 
-  <form action="Befrager.html" method="post">
+  <form action="Befrager.php" method="post">
 
     <div class="container">
       <label for="befragername"><b>Befragername</b></label>
