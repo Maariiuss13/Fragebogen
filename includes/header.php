@@ -1,3 +1,6 @@
+<?php
+include 'includes/dbHandler.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
