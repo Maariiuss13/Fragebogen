@@ -9,7 +9,7 @@
 </head>
 
 <body bgcolor="e2e2e2">
-   
+
     <div align="center">
         <table>
             <tr>
@@ -17,7 +17,7 @@
             </tr>
         </table>
     </div>
-    
+
     <div class="container">
         <h1 align="center"><b>Herzlich Willkommen bei Questionnaire!</b></h3>
             <p>Auf dieser Seite können Sie Online-Bewertungsumfragen konfigurieren, durchführen und auswerten.</p>
@@ -47,4 +47,5 @@
     </div>
 
 </body>
+
 </html>
