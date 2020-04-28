@@ -7,11 +7,21 @@ include 'includes/header.php';
   <h2 align="center">Befrager Startseite</h2>
 
   <div> 
-      <table> 
+      <table>
           <tr>
               <th> Titel </th>
           </tr>
-          <tr>
+          <?php
+            include 'includes/dbHandler.php'; 
+            $sqlBefrager= "SELECT titel FROM frageboegen WHERE befrager='Daniel';";
+            $resultBefragerFB = mysqli_query($conn, $sqlBefrager);
+
+            while($row = mysqli_fetch_assoc($resultBefragerFB)){
+                echo "<tr><td>".$row['titel']."</td></tr>";
+            }
+            echo "</table>";
+        ?>
+          <!--<tr>
               <td> Daten  SQL </td>
               <td> 
                   <form method="post" action="AuswertungFragebogen.php"> 
@@ -31,10 +41,10 @@ include 'includes/header.php';
               <td> 
                   <form method="post" action="Befrager.php"> 
                       <input type= "submit" name="loeschen" value="Löschen"/>
-                  </form>
+                  </form> 
               </td>
           </tr>
-      </table>
+      </table> -->
   </div>
   <br/><br/><br/>
   <div> 
