@@ -14,8 +14,11 @@ include 'includes/header.php';
             <input type="text" placeholder="Beschreibung" name="beschreibungFB" required>
             <br/>
             <!-- Befrager soll raus und durch Session-Variable ersetzt werden  includes/dbInsertFragebogen.php-->
-            <label for="nameBefrager"><b>Name Befrager</b></label>
-            <input type="text" placeholder="Name" name="nameBefrager" required>
+            <?php
+            $befrager=$_SESSION['session_bname'];
+            echo "<label for='nameBefrager'><b>Name Befrager</b></label>
+                  <p>".$befrager."</p>";
+            ?>
             <br/>
             <label for="anzahlFragen"><b>Anzahl Fragen</b></label>
             <input type="number" value="0" name="anzahlFragen" required>

@@ -1,54 +1,51 @@
-<!DOCTYPE html>
 <?php
 include 'includes/header.php';
 ?>
 
 
-  <h2 align="center">Befrager Startseite</h2>
+<h2 align="center">Befrager Startseite</h2>
 
-  <div> 
-      <table>
-          <tr>
-              <th> Titel </th>
-          </tr>
-          <?php
-            include 'includes/dbHandler.php'; 
-            $sqlBefrager= "SELECT titel FROM frageboegen WHERE befrager='Daniel';";
-            $resultBefragerFB = mysqli_query($conn, $sqlBefrager);
+<div> 
+    <table>
+        <tr>
+            <th> Titel </th>
+            </tr>
+                <!-- Select und echo erstellte Fragebögen vom angemeldeten Befrager -->
+                <?php
+                    include 'includes/dbHandler.php';
+                    //Variable $_SESSION['session_bname'] einfügen
+                    $sqlBefrager= "SELECT titel FROM frageboegen WHERE befrager='Daniel';";
+                    $resultBefragerFB = mysqli_query($conn, $sqlBefrager);
 
-            while($row = mysqli_fetch_assoc($resultBefragerFB)){
-                echo "<tr><td>".$row['titel']."</td></tr>";
-            }
-            echo "</table>";
-        ?>
-          <!--<tr>
-              <td> Daten  SQL </td>
-              <td> 
-                  <form method="post" action="AuswertungFragebogen.php"> 
-                      <input type= "submit" name="auswerten" value="Auswerten"/>
-                  </form>
-              </td>
-              <td> 
-                  <form method="post" action="FragebogenBearbeiten.php"> 
-                      <input type= "submit" name="bearbeiten" value="Bearbeiten"/>
-                  </form>
-              </td>
-              <td> 
-                  <form method="post" action="FragebogenNeuKopie.php"> 
-                      <input type= "submit" name="kopieren" value="Kopieren"/>
-                  </form>
-              </td>
-              <td> 
-                  <form method="post" action="Befrager.php"> 
-                      <input type= "submit" name="loeschen" value="Löschen"/>
-                  </form> 
-              </td>
-          </tr>
-      </table> -->
-  </div>
-  <br/><br/><br/>
-  <div> 
-    <form method="post" action="FragebogenNeuKopie.php"> 
+                    while($row = mysqli_fetch_assoc($resultBefragerFB)){
+                    echo "<tr><td>".$row['titel']."</td><tr>";
+                    }
+
+                    echo "</table>";
+                ?>
+                
+</div>
+<br/><br/><br/>
+
+<div>
+
+    <form method='post' action='AuswertungFragebogen.php'> 
+        <input type= 'submit' name='auswerten' value='Fragebogen auswerten'/>
+    </form> 
+    <br/>
+    <form method='post' action='FragebogenBearbeiten.php'> 
+        <input type= 'submit' name='bearbeiten' value='Fragebogen bearbeiten'/>
+    </form>
+    <br/>
+    <form method='post' action='FragebogenKopieren.php'> 
+        <input type= 'submit' name='kopieren' value='Fragebogen kopieren'/>
+    </form>
+    <br/>
+    <form method='post' action='FragebogenLoeschen.php'> 
+        <input type= 'submit' name='loeschen' value='Fragebogen löschen'/>
+    </form>
+    <br/>
+    <form method="post" action="FragebogenNeu.php"> 
         <input type= "submit" name="neu" value="Neuen Fragebogen anlegen"/>
      </form>
      <br/>
@@ -56,13 +53,13 @@ include 'includes/header.php';
         <input type= "submit" name="kurs" value="Neuen Kurs anlegen"/>
      </form>
      <br/>
-     <form method="post" action="Startseite.html"> 
-        <input type= "submit" name="abmelden" value="Abmelden"/>
+     <form method="post" action="KursFragebogenZuordnen.php"> 
+        <input type= "submit" name="kurs" value="Fragebogen Kursen zuordnen"/>
      </form>
+
 
   </div>
 
-  
 
 </body>
 </html>
