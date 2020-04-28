@@ -12,21 +12,33 @@
 
   <div align="center">
     <table>
-        <tr>
-            <th><img src="Fragen.jpg" width="100%" height="15%"></th>
-        </tr>
+      <tr>
+        <th><img src="Fragen.jpg" width="100%" height="15%"></th>
+      </tr>
     </table>
-</div>
+  </div>
 
   <h2 align="center">Anmeldung - Studenten</h2>
 
-  <form action="Student.php" method="post">
+  <?php
+  // Fehlermeldungen, die bei Unstimmigkeiten bei der Anmeldung geworfen werden
+  if (isset($_GET["error"])) {
+    if ($_GET["error"] == "leeresFeld") {
+      echo '<p align="center" style="color: red;">Tragen Sie bitte Ihre Matrikelnummer ein, um fortfahren zu können!</p>';
+    }
+    if ($_GET["error"] == "matrikelnummernichtvergeben") {
+      echo '<p align="center" style="color: red;">Hierbei handelt es sich um keine gültige Matrikelnummer!</p>';
+    }
+  }
+  ?>
+
+  <form action="includes/Studentenanmeldung.inc.php" method="post">
 
     <div class="container">
       <label for="mnr"><b>Matrikelnummer</b></label>
-      <input type="text" placeholder="Matrikelnummer" name="mnr" minlength="7" maxlength="7" required>
+      <input type="text" placeholder="Geben Sie hier Ihre Matrikelnummer ein." name="mnr" minlength="7" maxlength="7" required>
 
-      <button type="submit">Jetzt anmelden!</button>
+      <button type="submit" name="studentenanmeldung">Jetzt anmelden!</button>
     </div>
   </form>
 
@@ -35,4 +47,5 @@
   </div>
 
 </body>
+
 </html>
