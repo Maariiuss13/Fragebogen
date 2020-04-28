@@ -2,14 +2,20 @@
 <?php
 include 'includes/header.php';
 ?>
-  
 
   <h2 align="center">Neuer Fragebogen</h2>
 
-  <form action="Befrager.php" method="post">
+  <form action="http://vorlesungen.kirchbergnet.de/inhalte/DB-PR/output_posted_vars.php" method="post">
         <div>
             <label for="titelFragebogen"><b>Titel Fragebogen</b></label>
             <input type="text" placeholder="Titel" name="titelFragebogen" required>
+            <br/>
+            <label for="beschreibungFB"><b>Beschreibung Fragebogen</b></label>
+            <input type="text" placeholder="Beschreibung" name="beschreibungFB" required>
+            <br/>
+            <!-- Befrager soll raus und durch Session-Variable ersetzt werden  includes/dbInsertFragebogen.php-->
+            <label for="nameBefrager"><b>Name Befrager</b></label>
+            <input type="text" placeholder="Name" name="nameBefrager" required>
             <br/>
             <label for="anzahlFragen"><b>Anzahl Fragen</b></label>
             <input type="number" value="0" name="anzahlFragen" required>
@@ -36,7 +42,7 @@ include 'includes/header.php';
                 </tr>
             </table>
             <br/>
-            <form method="post"> 
+            <form action="FragebogenNeuKopie.php" method="post"> 
                 <input type="submit" name="addFrage" value="Frage hinzufügen"/>
             </form>
         </div>
@@ -75,6 +81,7 @@ include 'includes/header.php';
             <input type="submit" name="speichernFragebogen" value="Bearbeitung beenden und speichern">
         </div>
     </form>
+
 
 </body>
 </html>
