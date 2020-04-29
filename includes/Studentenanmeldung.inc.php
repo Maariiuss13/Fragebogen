@@ -39,7 +39,7 @@ if (isset($_POST['studentenanmeldung'])) {
                 // Wenn nein, wird Session aktiviert und Weiterleitung auf Seite Studentenanmeldung
                 session_start();
                 $_SESSION['session_mnr'] = $row['MNR'];
-                header("Location: ../Studentenanmeldung.php?anmelden=success");
+                header("Location: ../Studenten.php?anmelden=success");
                 exit();
             } else {
                 // Wenn leer, dann ist Matrikelnummer nicht vorhanden

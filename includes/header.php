@@ -4,13 +4,13 @@ session_start();
 // Prüfung, ob eine Sessionvariable belegt ist
 // Wenn ja, ist man angemeldet  
 if (isset($_SESSION['session_bname']) || isset($_SESSION['session_mnr'])) {
-  echo '<script>alert("Ihre Anmeldung war erfolgreich!");</script>';
+  echo '<p align="center">Sie sind eingeloggt!</p>';
   // Wenn nein, wird der Benutzer auf die Startseite umgeleitet, 
   // da er ansonsten ohne Anmeldung auf diese Seite kommen würde
 } else if (isset($_SESSION['bname']) == false || isset($_SESSION['mnr']) == false) {
   header("Location: Startseite.php");
   exit();
-} 
+}
 ?>
 <?php
 include 'includes/dbHandler.php';
