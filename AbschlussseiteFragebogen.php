@@ -9,22 +9,16 @@
 </head>
 
 <body>
-
-  <div align="center">
+  <div>
     <table>
-        <tr>
-            <th><img src="Fragen.jpg" width="100%" height="15%"></th>
-        </tr>
+      <tr>
+        <th><img src="Fragen.jpg" width="100%" height="15%"></th>
+      </tr>
     </table>
-</div>
-
-<div class="container">
-    <h1 align="center"><b>Willkommen auf der Abschlussseite des Fragebogens!</b></h3>
-        
-       
-</div>
-
-
+  </div>
+  <div class="container">
+    <h1><b>Willkommen auf der Abschlussseite des Fragebogens!</b></h1>
+  </div>
 </body>
 
 </html>
