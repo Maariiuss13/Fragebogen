@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Auswertungsseite</title>
+<?php include 'includes/header.php'
+?>
   <link href="Auswertungsdesign.css" rel="stylesheet">
-</head>
 
-<body>
 
-  <div align="center">
-    <table>
-      <tr>
-        <th><img src="Fragen.jpg" width="100%" height="15%"></th>
-      </tr>
-    </table>
-  </div>
-  <br />
-  <div class="container">
-    <h1 align="center"><b>Willkommen bei der Auswertung!</b></h3>
-      <p align="center">Hier sehen Sie die Auswertungen der Fragen.</p>
 
-  </div>
+
+ 
   <br />
   <div class="main">
     <p>Name Fragenbogen: <input type="number" name="mwst" size="2" value="" readonly></p>
