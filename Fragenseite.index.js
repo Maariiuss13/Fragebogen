@@ -5,13 +5,13 @@ const continueButton = document.getElementById('continue-btn');
 const questionText = document.getElementById('question');
 
 const questions = [
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor',
-  'Lorem ipsum dolor'
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  ''
 ]
 
 var currentIndex = 0;
@@ -54,6 +54,6 @@ continueButton.addEventListener('click', () => {
   setButtonHidden(backButton, false);
 
   if (isLastIndex(currentIndex)) {
-    continueButton.innerHTML = "Fertigstellen"
+    continueButton.innerHTML = "Fragebogen abschließen"
   }
 })
