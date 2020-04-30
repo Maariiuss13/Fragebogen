@@ -19,7 +19,7 @@
     <input class="def" type="text" value="Frage ?!?!?">
     <div class="question-wrapper">
       <p id="question"></p>
-      <input class="rating" type="number" placeholder="Rating (0 - 9)">
+      <input class="rating" type="number" placeholder="Rating (1 - 5)">
     </div>
     <div class="actions">
       <button id="back-btn" class="hidden">Zurück!</button>
