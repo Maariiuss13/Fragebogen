@@ -5,7 +5,7 @@
 
 
 <div class="container">
-    <h1 align="center"><b>Willkommen auf der Abschlussseite des Fragebogens!</b></h3>   
+    <h1 align="center"><b>Willkommen auf der Abschlussseite des Fragebogens!</b></h1>   
 </div>
 <br/>
 <div class="text">
