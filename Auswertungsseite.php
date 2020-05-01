@@ -1,4 +1,11 @@
-<?php include 'includes/header.php'
+<?php include 'includes/header.php';
+include 'includes/dbHandler.php';
+$sql= "SELECT * FROM frageboegen WHERE befrager = 'Marius';";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+          $resultArray = mysqli_fetch_all($result,MYSQLI_ASSOC);
+          print_r($resultArray);
+        } 
 ?>
   <link href="Auswertungsdesign.css" rel="stylesheet">
 
@@ -10,9 +17,11 @@
  
   <br />
   <div class="main">
-    <p>Name Fragenbogen: <input type="number" name="mwst" size="2" value="" readonly></p>
-    <p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>
-    <p>Anzahl Teilnehmer: <input type="number" name="mwst" size="2" value="" readonly></p>
+    <?php 
+    echo '<p>Name Fragenbogen: '.$resultArray[0]["Titel"].'</p>';
+    echo '<p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>';
+    echo '<p>Anzahl Teilnehmer: <input type="number" name="mwst" size="2" value="" readonly></p>';
+    ?>
   </div>
   <br />
   <div class="table">
