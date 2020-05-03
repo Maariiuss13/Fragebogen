@@ -17,6 +17,7 @@ include 'includes/header.php';
             echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";
         ?>
 
+        <!-- Eintrag Fragebogendaten + Speichern beim Drücken Button-->
         <form action="includes/dbInsertFragebogen.php" method="post">
             <fieldset>
             <legend>Neuen Fragebogen erstellen</legend>

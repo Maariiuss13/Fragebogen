@@ -6,7 +6,7 @@ session_start();
 // Deklaration Variablen
 $titel = $_POST["titelFragebogen"];
 $beschreibung = $_POST["beschreibungFB"];
-$befrager = $_SESSION["session_befrager"];
+$befrager = $_SESSION["session_bname"];
 
 
 
@@ -19,11 +19,11 @@ if(isset($_POST["speichernFragebogen"])){
     elseif(($_POST["anzahlFragen"]<=0)){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
     }
-    //Prüfen, ob DS schon vorhandel fehlt noch
+    //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
     else{
         //Insert Fragebogen
-        //Session-Variable einsetzen???????????
-        $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES('$titel', '$beschreibung', 'Dajena');";
+        echo $titel; echo $beschreibung; echo $befrager;
+        $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES('$titel', '$beschreibung', '$befrager');";
         mysqli_query($conn, $sql);
     }
      
