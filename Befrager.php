@@ -6,23 +6,18 @@ include 'includes/header.php';
 <h2 align="center">Befrager Startseite</h2>
 
 <div> 
-    <table>
-        <tr>
-            <th> Titel </th>
-            </tr>
-                <!-- Select und echo erstellte Fragebögen vom angemeldeten Befrager -->
-                <?php
-                    include 'includes/dbHandler.php';
-                    //Variable $_SESSION['session_bname'] einfügen
-                    $sqlBefrager= "SELECT titel FROM frageboegen WHERE befrager='Daniel';";
-                    $resultBefragerFB = mysqli_query($conn, $sqlBefrager);
-
-                    while($row = mysqli_fetch_assoc($resultBefragerFB)){
-                    echo "<tr><td>".$row['titel']."</td><tr>";
-                    }
-
-                    echo "</table>";
-                ?>
+<!-- Select und echo erstellte Fragebögen vom angemeldeten Befrager -->
+    <h3>Erstellte Fragebögen</h3>
+    <?php
+        $befrager=$_SESSION['session_bname'];
+        $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
+        //Speicherung Ergebnis in Variable
+        $result= mysqli_query($conn, $sql);
+        //Ausgabe Ergebnis
+        while($row= mysqli_fetch_assoc($result)){
+            echo $row['titel']."</br>";
+        }
+    ?>
                 
 </div>
 <br/><br/><br/>
