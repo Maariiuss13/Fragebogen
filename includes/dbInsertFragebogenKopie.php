@@ -25,6 +25,7 @@ if(isset($_POST["speichernFragebogenKopie"])){
         exit();
     }
     //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
+    //Prüfen, ob Titel nicht länger als 10 Char lang, fehlt!!!!!!!!!!!!!!
     else{
         //Insert Fragebogen --> Beschreibung Fehler!!!!!!!!!!!!!!
         $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES('$titelNeu', '', '$befrager');";
