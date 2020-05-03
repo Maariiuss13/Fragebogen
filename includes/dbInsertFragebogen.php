@@ -14,10 +14,12 @@ if(isset($_POST["speichernFragebogen"])){
     //Prüfen, ob Felder befüllt 
     if(empty($titel) || empty($beschreibung)){
         header("Location: ../FragebogenNeu.php?error=leerefelder");
+        exit();
     }
     //Prüfen, ob AnzahlFragen > 0
     elseif(($_POST["anzahlFragen"]<=0)){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
+        exit();
     }
     //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
     else{

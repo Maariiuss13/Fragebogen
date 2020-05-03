@@ -17,6 +17,12 @@ if(isset($_POST["speichernFragebogenKopie"])){
     //Prüfen, ob Felder befüllt 
     if(empty($titelNeu)){
         header("Location: ../FragebogenKopieren.php?error=leerefelder");
+        exit();
+    }
+    //Prüfen, ob Titel neu und alt gleich
+    elseif($titelAlt==$titelNeu){
+        header("Location: ../FragebogenKopieren.php?error=TitelGleich");
+        exit();
     }
     //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
     else{

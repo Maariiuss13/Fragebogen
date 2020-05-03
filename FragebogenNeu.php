@@ -24,15 +24,15 @@ include 'includes/header.php';
 
             
                 <label for="titelFragebogen"><b>Titel Fragebogen</b></label>
-                <input type="text" placeholder="Titel" name="titelFragebogen" required>
+                <input type="text" placeholder="Titel" name="titelFragebogen">
                 <br/>
 
                 <label for="beschreibungFB"><b>Beschreibung Fragebogen</b></label>
-                <input type="text" placeholder="Beschreibung" name="beschreibungFB" required>
+                <input type="text" placeholder="Beschreibung" name="beschreibungFB">
                 <br/>
         
                 <label for="anzahlFragen"><b>Anzahl Fragen</b></label>
-                <input type="number" value="0" name="anzahlFragen" required>
+                <input type="number" value="0" name="anzahlFragen">
 
             </fieldset>
             <br/>

@@ -36,7 +36,7 @@ include 'includes/header.php';
             </select>
             </br> </br>
             <label for="fbTitelNeu">Neuer Titel Fragebogen</label>
-            <input type="text" placeholder="Titel" name="fbTitelNeu" required>
+            <input type="text" placeholder="Titel" name="fbTitelNeu">
         </fieldset>
         </br> </br>
         <input type="submit" name="speichernFragebogenKopie" value="Fragebogen kopieren und speichern">
