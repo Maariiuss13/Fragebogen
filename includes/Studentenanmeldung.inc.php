@@ -1,5 +1,5 @@
 <?php
-// Prüfen, ob der Befrager auf den Button klickt
+// Prüfen, ob der Student auf den Button klickt
 if (isset($_POST['studentenanmeldung'])) {
 
     // Datenbankverbindung ausführen

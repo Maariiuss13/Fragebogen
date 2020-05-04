@@ -48,7 +48,7 @@
 
     <div class="container">
       <label for="befragername"><b>Befragername</b></label>
-      <input type="text" placeholder="Befragername" name="befragername">
+      <input type="text" placeholder="Geben Sie hier Ihren Befragername ein." name="befragername">
 
       <label for="password"><b>Passwort</b></label>
       <label style="color: grey; font-size: smaller">(Voraussetzung:

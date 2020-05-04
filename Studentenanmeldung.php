@@ -36,7 +36,7 @@
 
     <div class="container">
       <label for="mnr"><b>Matrikelnummer</b></label>
-      <input type="text" placeholder="Geben Sie hier Ihre Matrikelnummer ein." name="mnr" minlength="7" maxlength="7" required>
+      <input type="text" placeholder="Geben Sie hier Ihre Matrikelnummer ein." name="mnr" minlength="7" maxlength="7">
 
       <button type="submit" name="studentenanmeldung">Jetzt anmelden!</button>
     </div>
