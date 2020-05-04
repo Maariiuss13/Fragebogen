@@ -29,7 +29,7 @@ include 'includes/dbHandler.php';
       </tr>
       <tr>
         <th align="right">
-          <form action="includes/Abmelden.inc.php"><button type="submit" name="abmelden" style="background-color: rgb(255, 175, 2); color: white; width: 100%; padding: 14px 20px; margin: 5px 0; border: 1px solid rgb(0, 0, 0); cursor: pointer;">Abmelden</button></form>
+          <form action="includes/Abmelden.inc.php"><button type="submit" name="abmelden" style="background-color: grey; color: white; width: 100%; padding: 14px 20px; margin: 5px 0; border: 1px solid rgb(0, 0, 0); cursor: pointer;">Abmelden</button></form>
         </th>
       </tr>
     </table>

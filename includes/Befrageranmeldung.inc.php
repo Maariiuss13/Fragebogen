@@ -15,7 +15,7 @@ if (isset($_POST['befrageranmeldung'])) {
     if (empty($BName) || empty($Passwort)) {
         // Anzeige eines Fehlercodes in der URL
         header("Location: ../Befrageranmeldung.php?error=leerefelder");
-        // Stoppt die Ausführung
+        // Stoppt die Ausführung des Skripts
         exit();
     } else {
         // Prüfung, ob Daten in der Tabelle enthalten sind
