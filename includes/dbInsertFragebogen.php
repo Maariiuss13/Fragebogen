@@ -21,17 +21,28 @@ if(isset($_POST["speichernFragebogen"])){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
         exit();
     }
-    //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
-    //Prüfen, ob Titel nicht länger als 10 Char lang, fehlt!!!!!!!!!!!!!!
-    else{
-        
-        //Insert Fragebogen
-        $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES('$titel', '$beschreibung', '$befrager');";
-        mysqli_query($conn, $sql);
+    //Prüfen, ob Titel länger als 10 Char
+    elseif(strlen($titel)>10){
+        header("Location: ../FragebogenNeu.php?error=TitelZuLang");
+        exit();
     }
-     
-
-
+    //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
+    
+    else{
+        //Insert SQL-Befehl Fragebogen
+        $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
+        //prepared statement erstellen
+        $stmt=mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)){
+            header("Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler");
+        }
+        else{
+           //Verknüpfung Parameter mit Placeholdern
+           mysqli_stmt_bind_param($stmt, "sss", $titel, $beschreibung, $befrager);
+           //Run Code in DB
+           mysqli_stmt_execute($stmt);
+        }
+    }
 }
 
 
