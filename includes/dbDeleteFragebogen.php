@@ -17,7 +17,7 @@ if(isset($_POST["FragebogenLöschen"])){
     //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
     //Prüfen, ob DS zu Befrager gehört, fehlt!!!!!!!!!!!!
     else{
-        //Insert Fragebogen
+        //Delete Fragebogen
         $sql= "DELETE FROM frageboegen WHERE titel = '$titel';";
         mysqli_query($conn, $sql);
     }
