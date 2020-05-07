@@ -41,15 +41,6 @@ include 'includes/header.php';
                             echo "<option>".$row['titel']."</option>";
                         }
                     }  
-                    /*//Abfrage SQL
-                    $befrager=$_SESSION['session_bname'];
-                    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
-                    //Speicherung Ergebnis in Variable
-                    $result= mysqli_query($conn, $sql);
-                    //Ausgabe Ergebnis
-                    while($row= mysqli_fetch_assoc($result)){
-                    echo "<option>".$row['titel']."</option>";
-                    }*/
                 ?>
             </select>
         </fieldset>

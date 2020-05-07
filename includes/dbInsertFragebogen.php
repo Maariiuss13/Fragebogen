@@ -24,6 +24,7 @@ if(isset($_POST["speichernFragebogen"])){
     //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
     //Prüfen, ob Titel nicht länger als 10 Char lang, fehlt!!!!!!!!!!!!!!
     else{
+        
         //Insert Fragebogen
         $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES('$titel', '$beschreibung', '$befrager');";
         mysqli_query($conn, $sql);

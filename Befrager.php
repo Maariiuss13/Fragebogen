@@ -9,16 +9,6 @@ include 'includes/header.php';
 <!-- Select und echo erstellte Fragebögen vom angemeldeten Befrager -->
     <h3>Erstellte Fragebögen</h3>
     <?php
-        /*
-        $befrager=$_SESSION['session_bname'];
-        $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
-        //Speicherung Ergebnis in Variable
-        $result= mysqli_query($conn, $sql);
-        //Ausgabe Ergebnis
-        while($row= mysqli_fetch_assoc($result)){
-            echo $row['titel']."</br>";
-        }
-        */
         $befrager=$_SESSION['session_bname'];
         //Template für prepared statement
         $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
@@ -39,9 +29,7 @@ include 'includes/header.php';
             while($row= mysqli_fetch_assoc($result)){
                 echo $row['titel']."</br>";
             }
-        }
-
-        
+        }        
     ?>
                 
 </div>
