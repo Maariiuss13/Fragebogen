@@ -9,6 +9,10 @@ $titel = $_POST["titelFragebogen"];
 $beschreibung = $_POST["beschreibungFB"];
 $befrager = $_SESSION["session_bname"];
 
+//Deklaration Session-Variablen für Fragenseiten
+$_SESSION["anzFragen"] = $_POST["anzahlFragen"];
+$_SESSION["aktFB"] = $_POST["titelFragebogen"];
+$_SESSION["aktSeite"] = 1;
 
 
 if(isset($_POST["speichernFragebogen"])){
