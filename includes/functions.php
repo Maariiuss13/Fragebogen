@@ -1,5 +1,6 @@
 <?php
 
+//Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist
 function checkTitelDB($conn, $sql, $titel){
         // Initialisieren mit der richtigen Verbindung
         $stmt = mysqli_stmt_init($conn);
@@ -24,3 +25,4 @@ function checkTitelDB($conn, $sql, $titel){
             exit();
             }
         }
+    }
