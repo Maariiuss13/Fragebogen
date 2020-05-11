@@ -8,6 +8,9 @@ $titelAlt = $_POST["fbTitelAlt"];
 $titelNeu = $_POST["fbTitelNeu"];
 $befrager = $_SESSION["session_bname"];
 
+//Deklaration Session-Variablen für Fragenseiten
+$_SESSION["alterFB"] = $_POST["fbTitelAlt"];
+
 //Beschreibung kopieren
 $sqlBeschr= "SELECT * FROM frageboegen WHERE Titel='$titelAlt';";
 //Senden Befehl an DB und Ausführen
@@ -55,5 +58,5 @@ if (!$sql) {
     echo mysqli_error($sql);
 }
 else {
-    header("Location: ../Fragenseiten.php?FragebogenSpeichern=erfolgreich");
+    header("Location: ../FragenBearbeiten.php?FragebogenKopieren=erfolgreich");
 }

@@ -20,6 +20,7 @@ include 'includes/header.php';
             <label for="titelFragebogen">Fragebogen</label>
             <select name="titelFragebogen">
                 <?php
+                // Echo Erstellte Fragebögen des angemeldeten Befragers
                     $befrager=$_SESSION['session_bname'];
                     //Template für prepared statement
                     $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";

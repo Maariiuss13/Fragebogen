@@ -81,7 +81,7 @@ if(isset($_POST["speichernFragebogen"])){
 
 //Weiterleitung auf Fragen-Seite
 if (!$sql) {
-    echo mysqli_error();
+    echo mysqli_error($sql);
 }
 else {
     header("Location: ../FragenseitenNeu.php?FragebogenSpeichern=erfolgreich");
