@@ -40,12 +40,6 @@ if (isset($_GET["error"])) {
 <h2 align="center">Neuer Student anlegen</h2>
 
 <?php
-$mysqli = new MySQLi('localhost', 'root', '', 'fragebogen_projekt');
-
-$result = $mysqli->query("SELECT Kuerzel FROM kurse");
-?>
-
-<?php
 // Fehlermeldungen bzw. Erfolgsmeldungen, die bei Unstimmigkeiten 
 // bzw. Erfolg bei der Anmeldung geworfen werden 
 if (isset($_GET["error"])) {
@@ -68,6 +62,9 @@ if (isset($_GET["error"])) {
         <select style="padding: 12px 7px" name="kurs" size="0" readonly>
             <option>-- Kurs des Studenten auswählen --</option>
             <?php
+            $sql = "SELECT Kuerzel FROM kurse";
+            //Speicherung Ergebnis in Variable
+            $result = mysqli_query($conn, $sql);
             while ($rows = $result->fetch_assoc()) {
                 $Kuerzel = $rows['Kuerzel'];
                 echo "<option value='$Kuerzel'>$Kuerzel</option>";

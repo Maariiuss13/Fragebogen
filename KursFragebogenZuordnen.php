@@ -7,14 +7,6 @@ include 'includes/header.php';
 <h2 align="center">Fragebogen einem Kurs zuordnen</h2>
 
 <?php
-$mysqli = new MySQLi('localhost', 'root', '', 'fragebogen_projekt');
-
-$result = $mysqli->query("SELECT Kuerzel FROM kurse");
-
-$result2 = $mysqli->query("SELECT Titel FROM frageboegen");
-?>
-
-<?php
 // Fehlermeldungen bzw. Erfolgsmeldungen, die bei Unstimmigkeiten 
 // bzw. Erfolg bei der Anmeldung geworfen werden 
 if (isset($_GET["fragebogenzuordnen"])) {
@@ -30,6 +22,9 @@ if (isset($_GET["fragebogenzuordnen"])) {
         <label for="kurskuerzel"><b>Kurs</b></label>
         <select style="padding: 12px 7px" name="kurskuerzel" size="0" readonly>
             <?php
+            $sql = "SELECT Kuerzel FROM kurse";
+            //Speicherung Ergebnis in Variable
+            $result = mysqli_query($conn, $sql);
             while ($rows = $result->fetch_assoc()) {
                 $Kuerzel = $rows['Kuerzel'];
                 echo "<option value='$Kuerzel'>$Kuerzel</option>";
@@ -40,6 +35,9 @@ if (isset($_GET["fragebogenzuordnen"])) {
         <label for="fragebogentitel"><b>Fragebogen</b></label>
         <select style="padding: 12px 7px" name="fragebogentitel" size="0" readonly>
             <?php
+            $sql = "SELECT Titel FROM frageboegen";
+            //Speicherung Ergebnis in Variable
+            $result2 = mysqli_query($conn, $sql);
             while ($rows = $result2->fetch_assoc()) {
                 $Titel = $rows['Titel'];
                 echo "<option value='$Titel'>$Titel</option>";
