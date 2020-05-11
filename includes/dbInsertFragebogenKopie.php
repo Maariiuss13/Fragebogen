@@ -9,10 +9,13 @@ $titelNeu = $_POST["fbTitelNeu"];
 $befrager = $_SESSION["session_bname"];
 
 //Beschreibung kopieren
-$sqlBeschr= "SELECT beschreibung FROM frageboegen WHERE Titel='$titelAlt';";
-//$beschreibung= mysqli_query($conn, $sqlBeschr);
-$beschreibung= "BeschreibungTest";
+$sqlBeschr= "SELECT * FROM frageboegen WHERE Titel='$titelAlt';";
+//Senden Befehl an DB und Ausführen
+$beschrErg= mysqli_query($conn, $sqlBeschr);
+//Zuweisung Ergebnis einer Variable
+$beschrRow = mysqli_fetch_assoc($beschrErg);
 
+//neuen Fragebogen speichern
 if(isset($_POST["speichernFragebogenKopie"])){
     //Prüfen, ob Felder befüllt 
     if(empty($titelNeu)){
@@ -40,7 +43,7 @@ if(isset($_POST["speichernFragebogenKopie"])){
         }
         else{
            //Verknüpfung Parameter mit Placeholdern
-           mysqli_stmt_bind_param($stmt, "sss", $titelNeu, $beschreibung, $befrager);
+           mysqli_stmt_bind_param($stmt, "sss", $titelNeu, $beschrRow['Beschreibung'], $befrager);
            //Run Code in DB
            mysqli_stmt_execute($stmt);
         }        
@@ -49,7 +52,7 @@ if(isset($_POST["speichernFragebogenKopie"])){
 
 //Weiterleitung auf Fragen-Seite
 if (!$sql) {
-    echo mysqli_error();
+    echo mysqli_error($sql);
 }
 else {
     header("Location: ../Fragenseiten.php?FragebogenSpeichern=erfolgreich");
