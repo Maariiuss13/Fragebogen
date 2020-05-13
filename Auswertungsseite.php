@@ -19,6 +19,9 @@ if ($result) {
   $resultArray3 = mysqli_fetch_all($result,MYSQLI_ASSOC);
 }
 
+/*$befrager=$_SESSION['session_bname'];
+        echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";*/
+
 ?>
   <link href="Auswertungsdesign.css" rel="stylesheet">
 
@@ -27,14 +30,31 @@ if ($result) {
     <h1 align="center"><b>Willkommen auf der Auswertungsseite des Fragebogens!</b></h1>   
 </div>
 
+            
+            
+        
  
   <br />
   <div class="main">
-    <?php 
-    echo '<p>Name Fragenbogen: '.$resultArray[1]["Titel"].'</p>';
-    echo '<p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>';
-    echo '<p>Anzahl Teilnehmer: <input type="number" name="mwst" size="2" value="" readonly></p>';
-    ?>
+     
+    
+    <label for="fbTitel">Name Fragebogen: </label>
+            <select name="fbTitel">
+                <?php
+                    //Abfrage SQL
+                    $befrager=$_SESSION['session_bname'];
+                    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
+                    //Speicherung Ergebnis in Variable
+                    $result= mysqli_query($conn, $sql);
+                    //Ausgabe Ergebnis
+                    while($row= mysqli_fetch_assoc($result)){
+                    echo "<option>".$row['titel']."</option>";
+                    }
+                ?>
+            </select>
+    <p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>
+    <p>Anzahl Teilnehmer: <input type="number" name="mwst" size="2" value="" readonly></p>
+    
   </div>
   <br />
   <div class="table">

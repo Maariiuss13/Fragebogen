@@ -5,6 +5,9 @@ $result = mysqli_query($conn, $sql);
 if ($result) {
   $resultArray = mysqli_fetch_all($result,MYSQLI_ASSOC);
 }
+
+
+
 ?>
 <link href = "Fragenseitendesign.css" rel = "stylesheet">
 

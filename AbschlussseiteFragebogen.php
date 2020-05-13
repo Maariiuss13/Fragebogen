@@ -81,6 +81,20 @@ function bereinigen($inhalt='') {
 </div>
 <br/>
 <div class="text">
+<label for="fbTitel">Wählen Sie einen Fragebogen aus: </label>
+            <select name="fbTitel">
+                <?php
+                    //Abfrage SQL
+                    $befrager=$_SESSION['session_bname'];
+                    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
+                    //Speicherung Ergebnis in Variable
+                    $result= mysqli_query($conn, $sql);
+                    //Ausgabe Ergebnis
+                    while($row= mysqli_fetch_assoc($result)){
+                    echo "<option>".$row['titel']."</option>";
+                    }
+                ?>
+            </select>
   <p>Wir bedanken uns recht herzlich bei Ihrer aktiven Teilnahme! Bis zum nächsten Mal!</p>
   <p>Falls es noch Anmerkungen geben sollte, können Sie diese gerne hier eintragen:</p>
   <label for="text">Anmerkung</label><br/>
