@@ -21,5 +21,5 @@ if (isset($_POST["löschenFrage"])) {
 if (!$sql) {
     echo mysqli_error($sql);
 } else {
-    header("Location: ../FragenKopieBearbeiten.php?FrageLöschen=erfolgreich");
+    header("Location: ../FragenBearbeiten.php?FrageLöschen=erfolgreich");
 }

@@ -5,7 +5,7 @@ session_start();
 
 // Deklaration Variablen
 $frage = $_POST["neueFrage"];
-$titel = $_SESSION["KopieFB"];
+$titel = $_SESSION['bearbeitenFB'];
 $befrager = $_SESSION["session_bname"];
 
 //FrageNr festlegen
@@ -54,5 +54,5 @@ if (isset($_POST["speichernNeueFrage"])) {
 if (!$sql) {
     echo mysqli_error($sql);
 } else {
-    header("Location: ../FragenKopieBearbeiten.php?FrageEinfügen=erfolgreich");
+    header("Location: ../FragenBearbeiten.php?FrageEinfügen=erfolgreich");
 }

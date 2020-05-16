@@ -14,7 +14,7 @@ include 'includes/header.php';
         echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";
     ?>
 
-    <form action="Fragenseiten.php" method="post">
+    <form action="FragenBearbeiten.php" method="post">
         <fieldset>
             <legend>Fragebogen zur Bearbeitung auswählen</legend>
             <label for="fbTitel">Fragebogen</label>

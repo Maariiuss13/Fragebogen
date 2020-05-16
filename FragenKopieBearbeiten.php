@@ -3,24 +3,20 @@ include 'includes/header.php';
 ?>
 
 
-<h2 align="center">Fragebogen bearbeiten</h2>
+<h2 align="center">Fragebogen Kopieren</h2>
 
 <div>
-    <p>Es stehen Ihnen die Fragen des ausgewählten Fragebogens zur Auswahl. <br/>
-    Sie können für den Fragebogen bestehende Fragen löschen oder neue an das Ende des Fragebogens hinzufügen. <br/>
+    <p>Es stehen Ihnen die Fragen des kopierten Fragebogens zur Auswahl. <br/>
+    Sie können für ihren neuen Fragebogen bestehende Fragen löschen oder neue an das Ende des Fragebogens hinzufügen. <br/>
     </p>
     
     <!-- Echo Befrager-->
     <?php
-        //Deklaration Variablen
-        if (isset($_POST['FragebogenBearbeiten'])){
-            $_SESSION['bearbeitenFB'] = $_POST["fbTitel"];
-        }
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
-        echo "<p> Ersteller Fragebogen: ".$_SESSION['bearbeitenFB']."</p><br/>";
+        echo "<p> Ersteller Fragebogen: ".$_SESSION["KopieFB"]."</p><br/>";
     ?>
 
-    <form action="includes/dbDeleteFragen_SeitBearb.php" method="post">
+    <form action="includes/dbDeleteFragen.php" method="post">
         <fieldset>
             <label for="fbTitelAlt">Fragen</label>
             <select name="fragen">
@@ -35,7 +31,7 @@ include 'includes/header.php';
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
-                        mysqli_stmt_bind_param($stmt, "s", $_SESSION['bearbeitenFB']);
+                        mysqli_stmt_bind_param($stmt, "s", $_SESSION["KopieFB"]);
                         //Parameter in DB verwenden
                         mysqli_stmt_execute($stmt);
                         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
@@ -53,7 +49,7 @@ include 'includes/header.php';
         </br> </br>
     </form>
 
-    <form action="includes/dbInsertFragenBearbeiten.php" method="post">
+    <form action="includes/dbInsertFragenKopie.php" method="post">
         <fieldset>
             <label for="neueFrage">Neue Frage</label>
             <input type="text" placeholder="Titel" name="neueFrage">

@@ -99,5 +99,5 @@ if (isset($_POST["speichernFragebogenKopie"])) {
 if (!$sql) {
     echo mysqli_error($sql);
 } else {
-    header("Location: ../FragenBearbeiten.php?FragebogenKopieren=erfolgreich");
+    header("Location: ../FragenKopieBearbeiten.php?FragebogenKopieren=erfolgreich");
 }
