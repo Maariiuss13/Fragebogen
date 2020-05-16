@@ -13,7 +13,7 @@ include 'includes/header.php';
     <!-- Echo Befrager-->
     <?php
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
-        echo "<p> Ersteller Fragebogen: ".$_SESSION["alterFB"]."</p><br/>";
+        echo "<p> Ersteller Fragebogen: ".$_SESSION["KopieFB"]."</p><br/>";
     ?>
 
     <form action="includes/dbDeleteFragen.php" method="post">
