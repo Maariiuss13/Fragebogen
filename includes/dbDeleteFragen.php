@@ -13,6 +13,7 @@ if (isset($_POST["löschenFrage"])) {
     //Delete Frage
     $sql = "DELETE FROM Fragen WHERE Fragestellung = '$frage';";
     mysqli_query($conn, $sql);
+    //Update Fragennr notwendig? !!!!!!!!!!!!!!!!!!
 }
 
 
