@@ -19,7 +19,7 @@ include 'includes/header.php';
     <form action="includes/dbDeleteFragen.php" method="post">
         <fieldset>
             <label for="fbTitelAlt">Fragen</label>
-            <select name="FragenAlt">
+            <select name="fragen">
                 <?php
                     //Template für prepared statement
                     $sql= "SELECT * FROM fragen WHERE Titel=?;";
@@ -31,7 +31,7 @@ include 'includes/header.php';
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
-                        mysqli_stmt_bind_param($stmt, "s", $_SESSION["alterFB"]);
+                        mysqli_stmt_bind_param($stmt, "s", $_SESSION["KopieFB"]);
                         //Parameter in DB verwenden
                         mysqli_stmt_execute($stmt);
                         //Daten/Ergebnis aus execute-Fkt in Variable verwenden

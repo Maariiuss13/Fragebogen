@@ -26,7 +26,7 @@ if(isset($_POST["FragebogenLöschen"])){
 
 //Weiterleitung auf Befrager-Seite
 if (!$sql) {
-    echo mysqli_error();
+    echo mysqli_error($sql);
 }
 else {
     header("Location: ../Befrager.php?FragebogenLöschen=erfolgreich");
