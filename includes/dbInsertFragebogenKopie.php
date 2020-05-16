@@ -34,8 +34,8 @@ if (isset($_POST["speichernFragebogenKopie"])) {
         exit();
     }
     //Prüfen, ob Titel länger als 10 Char
-    elseif (strlen($titel) > 10) {
-        header("Location: ../FragebogenNeu.php?error=TitelZuLang");
+    elseif (strlen($titelNeu) > 10) {
+        header("Location: ../FragebogenKopieren.php?error=TitelZuLang");
         exit();
     } 
     else {

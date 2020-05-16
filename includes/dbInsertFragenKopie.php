@@ -7,16 +7,15 @@ session_start();
 $frage = $_POST["neueFrage"];
 $titel = $_SESSION["KopieFB"];
 $befrager = $_SESSION["session_bname"];
-//FrageNr noch definieren!!!!!!!!!!
-$FrageNr=10;
 
 //FrageNr festlegen
-$sqlFr = "SELECT MAX(FrageNr) FROM Fragen WHERE Titel='$titel';";
+$sqlFr = "SELECT MAX(FrageNr) AS maxAnz FROM Fragen Where Titel='$titel';";
 //Senden Befehl an DB und Ausführen
 $frErg = mysqli_query($conn, $sqlFr);
 //Zuweisung Ergebnis einer Variable
 $anzFr = mysqli_fetch_assoc($frErg);
-
+//FrageNr definieren
+$frageNr = $anzFr['maxAnz']+1;
 
 //neuen Fragebogen speichern
 if (isset($_POST["speichernNeueFrage"])) {
@@ -40,7 +39,7 @@ if (isset($_POST["speichernNeueFrage"])) {
             exit();
         } else {
             //Verknüpfung Parameter mit Placeholdern
-            mysqli_stmt_bind_param($stmt, "sss", $FrageNr, $titel, $frage);
+            mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
             //Run Code in DB
             mysqli_stmt_execute($stmt);
             //mysqli_stmt_close($stmt);
