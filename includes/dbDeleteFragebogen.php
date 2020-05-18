@@ -14,11 +14,10 @@ if(isset($_POST["FragebogenLöschen"])){
         header("Location: ../FragebogenNeu.php?error=leerefelder");
         exit();
     }
-    //Prüfen, ob DS schon vorhanden ist, fehlt!!!!!!!!!!!!!!!
-    //Prüfen, ob DS zu Befrager gehört, fehlt!!!!!!!!!!!!
     else{
         //Delete Fragebogen
-        $sql= "DELETE FROM frageboegen WHERE titel = '$titel';";
+        $sql= "DELETE FROM frageboegen fb, fragen f WHERE fb.titel = f.titel AND fb.titel = '$titel';";
+        //DELETE fragen, frageboegen from frageboegen inner join fragen on fragen.titel=frageboegen.Titel WHERE frageboegen.titel='AB'; -> Fehlermeldung!!!!!!
         mysqli_query($conn, $sql);
     }
 }
