@@ -56,6 +56,5 @@ include 'includes/header.php';
 
 </section>
 
-<script src = './Fragenseite.index.js'></script>
 </body>
 </html>
