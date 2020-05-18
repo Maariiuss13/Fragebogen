@@ -19,7 +19,7 @@ if ($result) {
 <section class="questions">
     <p class="abc">Anzeige Frage 1 von X</p>
     <?php
-    echo '<input class="def" type="text" value="'.$resultArray[0]["Fragestellung"].'">';
+    echo '<input class="def" type="text" value="'.$resultArray[0]["Fragestellung"].'" readonly>';
     ?>
 <div class = "question-wrapper">
 
