@@ -11,7 +11,6 @@ if ($result) {
 ?>
 <link href = "Fragenseitendesign.css" rel = "stylesheet">
 
-
 <section class = "welcome">
 <h1>Willkommen auf der Fragenseite!</h1>
 <p>Some subtitle message</p>
@@ -42,6 +41,8 @@ if ($result) {
 <button id = "continue-btn">Nächste Frage</button>
 </div>
 </section>
+
+
 <script src ="./FragenseiteIndex.js"></script>
 </body>
 </html>
