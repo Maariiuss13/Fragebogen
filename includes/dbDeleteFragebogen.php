@@ -11,14 +11,25 @@ $befrager = $_SESSION["session_bname"];
 if(isset($_POST["FragebogenLöschen"])){
     //Prüfen, ob Feld befüllt 
     if(empty($titel)){
-        header("Location: ../FragebogenNeu.php?error=leerefelder");
+        header("Location: ../FragebogenLoeschen.php?error=leerefelder");
         exit();
     }
     else{
+        //NOCH ALS PREPARED STATEMENT!!!!!!!
         //Delete Fragebogen
-        $sql= "DELETE FROM frageboegen fb, fragen f WHERE fb.titel = f.titel AND fb.titel = '$titel';";
-        //DELETE fragen, frageboegen from frageboegen inner join fragen on fragen.titel=frageboegen.Titel WHERE frageboegen.titel='AB'; -> Fehlermeldung!!!!!!
-        mysqli_query($conn, $sql);
+        $sql= "DELETE frageboegen, fragen
+        FROM frageboegen
+        LEFT JOIN fragen on fragen.Titel = frageboegen.Titel
+        WHERE frageboegen.Titel='$titel' AND frageboegen.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
+        $result = mysqli_query($conn, $sql);
+        //Speicherung Anzahl Zeilen
+        $resultcheck = mysqli_affected_rows($result);
+        //Wenn keine Zeile gelöscht, Ausgabe Fehlermeldung
+        //Resultcheck funktioniert nicht - immernoch Rückführung auf Befragerseite, auch wenn FB nicht gelöscht!!!!!!!!!!!!!
+        if($resultcheck = 0) {
+            header("Location: ../FragebogenLoeschen.php?error=BereitsinBearbeitung");
+            exit();
+        }        
     }
 }
 
