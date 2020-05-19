@@ -96,22 +96,27 @@ function auswahlFragen($conn, $sql, $titelFB){
 }
 
 
-//Funktion zum Löschen von Fragebogen mit dazugehörigen Fragen, wenn Status Fragebogen noch nicht in Bearbeitung
-function deleteFrageboegen($conn, $sql, $titelFB, $frageNr){
-    mysqli_stmt_init($conn);
-    // prepared statement erstellt
-    $stmt= mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
+//Funktion zum Löschen von Fragebogen mit dazugehörigen Fragen
+function deleteFrageboegen($conn, $sql, $titel){
+    //prepared statement erstellen
+    $stmt=mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehler");
+        header("Location: ../FragebogenLoeschen.php?error=SQLBefehlFehler");
+        exit();
     }
     else{
-        //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $frageNr);
-        //Parameter in DB verwenden
-        mysqli_stmt_execute($stmt);
+    //Verknüpfung Parameter mit Placeholdern
+    mysqli_stmt_bind_param($stmt, "s", $titel);
+    //Run Code in DB
+    mysqli_stmt_execute($stmt);
     }
 
 }
+
+
+
+
+
+
 
 

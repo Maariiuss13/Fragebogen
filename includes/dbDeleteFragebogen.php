@@ -1,5 +1,6 @@
 <?php
 include 'dbHandler.php';
+include 'functions.php';
 session_start();
 
 
@@ -15,13 +16,13 @@ if(isset($_POST["FragebogenLöschen"])){
         exit();
     }
     else{
-        //NOCH ALS PREPARED STATEMENT!!!!!!!
         //Delete Fragebogen
         $sql= "DELETE frageboegen, fragen
         FROM frageboegen
         LEFT JOIN fragen on fragen.Titel = frageboegen.Titel
-        WHERE frageboegen.Titel='$titel' AND frageboegen.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
-        mysqli_query($conn, $sql);        
+        WHERE frageboegen.Titel= ? AND frageboegen.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
+        //Löschen des Fragebogens mit Fragen
+        deleteFrageboegen($conn, $sql, $titel);        
     }
 }
 
