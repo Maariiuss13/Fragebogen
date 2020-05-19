@@ -97,7 +97,7 @@ function auswahlFragen($conn, $sql, $titelFB){
 
 
 //Funktion zum Löschen von Fragebogen mit dazugehörigen Fragen, wenn Status Fragebogen noch nicht in Bearbeitung
-function deleteFrageboegen($conn, $sql, $frage){
+function deleteFrageboegen($conn, $sql, $titelFB, $frageNr){
     mysqli_stmt_init($conn);
     // prepared statement erstellt
     $stmt= mysqli_stmt_init($conn);
@@ -107,10 +107,9 @@ function deleteFrageboegen($conn, $sql, $frage){
     }
     else{
         //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $frage);
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $frageNr);
         //Parameter in DB verwenden
         mysqli_stmt_execute($stmt);
-        mysqli_query($conn, $sql);
     }
 
 }
