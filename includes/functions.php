@@ -5,7 +5,7 @@ function checkTitelDB($conn, $sql, $titel){
         // Initialisieren mit der richtigen Verbindung
         $stmt = mysqli_stmt_init($conn);
         // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-        if (!mysqli_stmt_prepare($stmt, $sqlTitel)) {
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
             // Wenn ja, dann SQL-Fehler
             header("Location: ../FragebogenNeu.php?error=sqlerror");
             exit();

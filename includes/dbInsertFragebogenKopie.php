@@ -1,5 +1,6 @@
 <?php
 include 'dbHandler.php';
+include 'functions.php';
 session_start();
 
 
@@ -42,9 +43,9 @@ if (isset($_POST["speichernFragebogenKopie"])) {
         //Prüfung doppelter Titel
         $sqlTitel = "SELECT titel FROM frageboegen WHERE titel=?;";
         //Funktion zum Prüfen, ob Titel bereits in DB vorhanden
-        //checkTitelDB($conn, $sqlTitel, $titel);
+        checkTitelDB($conn, $sqlTitel, $titel);
         // Initialisieren mit der richtigen Verbindung
-        $stmt = mysqli_stmt_init($conn);
+        /*$stmt = mysqli_stmt_init($conn);
         // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
         if (!mysqli_stmt_prepare($stmt, $sqlTitel)) {
             // Wenn ja, dann SQL-Fehler
@@ -65,8 +66,9 @@ if (isset($_POST["speichernFragebogenKopie"])) {
                 header("Location: ../FragebogenKopieren.php?error=TitelBereitsVergeben");
                 exit();
             }
+            
         }
-
+        */
         //Insert SQL-Befehl Fragebogen
         $sql = "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
         //prepared statement erstellen
