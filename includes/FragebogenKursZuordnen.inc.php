@@ -39,8 +39,8 @@ if (isset($_POST['fragebogenzuordnen'])) {
             exit();
         }
     }
+    // closing of the statements
+    mysqli_stmt_close($statement);
+    // Beendet die Verbindung
+    mysqli_close($conn);
 }
-// closing of the statements
-mysqli_stmt_close($statement);
-// Beendet die Verbindung
-mysqli_close($conn);
