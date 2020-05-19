@@ -21,15 +21,7 @@ if(isset($_POST["FragebogenLöschen"])){
         FROM frageboegen
         LEFT JOIN fragen on fragen.Titel = frageboegen.Titel
         WHERE frageboegen.Titel='$titel' AND frageboegen.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
-        $result = mysqli_query($conn, $sql);
-        //Speicherung Anzahl Zeilen
-        $resultcheck = mysqli_affected_rows($result);
-        //Wenn keine Zeile gelöscht, Ausgabe Fehlermeldung
-        //Resultcheck funktioniert nicht - immernoch Rückführung auf Befragerseite, auch wenn FB nicht gelöscht!!!!!!!!!!!!!
-        if($resultcheck = 0) {
-            header("Location: ../FragebogenLoeschen.php?error=BereitsinBearbeitung");
-            exit();
-        }        
+        mysqli_query($conn, $sql);        
     }
 }
 
@@ -39,5 +31,5 @@ if (!$sql) {
     echo mysqli_error($sql);
 }
 else {
-    header("Location: ../Befrager.php?FragebogenLöschen=erfolgreich");
+    header("Location: ../FragebogenLoeschen.php?FragebogenLöschen=erfolgreich");
 }
