@@ -12,7 +12,7 @@ if (isset($_POST['studentanlegen'])) {
     //Fehlerbehandlungen
 
     // Prüfung, ob etwas in die Felder eingetragen wurde
-    if (empty($MNR) || empty($Kurskuerzel)) {
+    if (empty($MNR)) {
         // Anzeige eines Fehlercodes in der URL
         header("Location: ../Kurs.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts

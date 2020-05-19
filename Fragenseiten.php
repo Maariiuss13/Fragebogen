@@ -1,92 +1,117 @@
-<?php include 'includes/header.php'
+<?php include 'includes/header.php';
+
+//DB-Abfrage Anzahl Fragen
+if (isset($_POST["FragebogenBearbeiten"])) {
+  $titelFB = $_POST["fbTitel"];
+  $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$titelFB';";
+  $resultAnzFr = mysqli_query($conn, $sqlAnzFr);
+  $anzFr = mysqli_fetch_assoc($resultAnzFr);
+  $_SESSION["anzFr"] = $anzFr["anzFr"];
+}
+
+//Deklaration Session-Variablen
+if (isset($_POST["FragebogenBearbeiten"])) {
+  $_SESSION["aktSeite"] = 1;
+  $_SESSION["titelFB"] = $_POST["fbTitel"];
+}
+
+
+
+$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";
+$result = mysqli_query($conn, $sql);
+if ($result) {
+  $resultArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
 ?>
-<link href = 'Fragenseitendesign.css' rel = 'stylesheet'>
 
+<link href="Fragenseitendesign.css" rel="stylesheet">
 
-<section class = 'welcome'>
-<h1>Willkommen auf der Fragenseite!</h1>
-<p>Some subtitle message</p>
+<section class="welcome">
+  <h1>Willkommen auf der Fragenseite!</h1>
+  <p>Some subtitle message</p>
+  <?php
+    echo "<p> Student: ".$_SESSION['session_mnr']."</p><br/>";
+    echo "<p> Fragebogen: ".$_SESSION["titelFB"]."</p><br/>";
+  ?>
 </section>
-<section class = 'questions'>
-<p class = 'abc'>Anzeige Frage 1 von X</p>
-<input class = 'def' type = 'text' value = 'Frage X'>
-<div class = 'question-wrapper'>
 
-<p>
-<span class="sternebewertung">
- <input type="radio" id="stern5" name="bewertung" value="5"><label for="stern5" title="5 Sterne">5 Sterne</label>
- <input type="radio" id="stern4" name="bewertung" value="4"><label for="stern4" title="4 Sterne">4 Sterne</label>
- <input type="radio" id="stern3" name="bewertung" value="3"><label for="stern3" title="3 Sterne">3 Sterne</label>
- <input type="radio" id="stern2" name="bewertung" value="2"><label for="stern2" title="2 Sterne">2 Sterne</label>
- <input type="radio" id="stern1" name="bewertung" value="1"><label for="stern1" title="1 Stern">1 Stern</label>
- <span id="Bewertung"><label>Bewertung:</label></span>
-</span>
-</p>
-</div>
-<div class = 'actions'>
-<button id = 'back-btn' class = 'hidden'>Zurück!</button>
-<button id = 'continue-btn'>Nächste Frage</button>
-</div>
+<section class="questions">
+  <p class="abc">Seite: <?php echo $_SESSION["aktSeite"] ?> von <?php echo $_SESSION["anzFr"] ?></p>
+  
+  <fieldset>
+  <?php
+  //aus DB aktuelle Frage holen
+  //Template für prepared statement
+  $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
+  // prepared statement erstellt
+  $stmt = mysqli_stmt_init($conn);
+  // prepared statement vorbereiten
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
+  } else {
+      //Verknüpfung Parameter zu Placeholder
+      $aktFr= $_SESSION["aktSeite"];
+      mysqli_stmt_bind_param($stmt, "s", $aktFr);
+      //Parameter in DB verwenden
+      mysqli_stmt_execute($stmt);
+      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+      $result = mysqli_stmt_get_result($stmt);
+      //Ergebnis ausgeben
+      while ($row = mysqli_fetch_assoc($result)) {
+          echo $row['Fragestellung'];
+      }
+  }
+  ?>
+  </fieldset>
+
+
+  <form action="includes/dbInsertBewertung.php" method="POST">
+
+    <fieldset>
+      <input type="radio" id="1" name="bewertung" value=1>
+      <label for="1"> 1 Stern</label> 
+      <input type="radio" id="2" name="bewertung" value=2>
+      <label for="2"> 2 Sterne</label>
+      <input type="radio" id="3" name="bewertung" value=3>
+      <label for="3"> 3 Sterne</label>
+      <input type="radio" id="4" name="bewertung" value=4>
+      <label for="4"> 4 Sterne</label>
+      <input type="radio" id="5" name="bewertung" value=5>
+      <label for="5"> 5 Sterne</label>
+    </fieldset>
+    <!-- Select einfügen 
+    <input />-->
+    </br>
+    </br>
+    <input type="submit" value="Zurück" name="Bzurück" 
+      <?php
+        //Deaktivieren Button auf Seite 1 
+        if ($_SESSION["aktSeite"] <= 1) {
+          echo "disabled";
+        }
+        ?> 
+      />
+    <input type="submit" value="Weiter" name="Bweiter" style="float: right;" 
+      <?php
+        //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
+        if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {
+          echo "disabled";
+        }
+        ?> 
+        />
+    </br>
+    </br>
+    <input type="submit" value="Abschließen" name="Babschluss" style="float: right;" 
+      <?php
+        //Button solange aktiviert, wie akt. Seite != Gesamtanzahl Seiten
+        if ($_SESSION["aktSeite"] != $_SESSION["anzFr"]) {
+          echo "disabled";
+        }
+        ?> 
+    />
+  </form>
+
 </section>
-<script src = './Fragenseite.index.js'></script>
+
 </body>
 </html>
-
-
-<!--<style>
-
-/* Sternebewertung */
-
-span#Bewertung {
- line-height: 45px;
-}
-
-span.sternebewertung {
- float: Left;
-}
-
-span.sternebewertung:not(:checked) > input {
- display: None;
-}
-
-span.sternebewertung:not(:checked) > label {
- float: Right;
- width: 1em;
- padding: 0 .1em;
- overflow: Hidden;
- white-space: Nowrap;
- cursor: Pointer;
- font-size: 200%;
- line-height: 1.2;
- color: #D0D0D0;
- text-shadow: 1px 1px #B0B0B0, 2px 2px #606060, .1em .1em .2em rgba(0,0,0,.5);
- transition: all .5s;
-}
-
-span.sternebewertung:not(:checked) > label:before {
- content: '★ ';
-}
-
-span.sternebewertung > input:checked ~ label {
- color: #FFD700;
- text-shadow: 1px 1px #C06000, 2px 2px #904000, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-span.sternebewertung:not(:checked) > label:hover,
-span.sternebewertung:not(:checked) > label:hover ~ label {
- color: #FFD700;
- text-shadow: 1px 1px #F29E02, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-span.sternebewertung > input:checked + label:hover,
-span.sternebewertung > input:checked + label:hover ~ label,
-span.sternebewertung > input:checked ~ label:hover,
-span.sternebewertung > input:checked ~ label:hover ~ label,
-span.sternebewertung > label:hover ~ input:checked ~ label {
- color: #F9B500;
- text-shadow: 1px 1px #F8BA01, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-}
-</style>
-
-
-

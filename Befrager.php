@@ -6,9 +6,10 @@ include 'includes/header.php';
 <h2 align="center">Befrager Startseite</h2>
 
 <div> 
-<!-- Select und echo erstellte Fragebögen vom angemeldeten Befrager -->
+<!-- Select und echo erstellte Fragebogen vom angemeldeten Befrager -->
     <h3>Erstellte Fragebögen</h3>
     <?php
+    //aus DB erstellten Fragebögen des Befragers holen
         $befrager=$_SESSION['session_bname'];
         //Template für prepared statement
         $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
