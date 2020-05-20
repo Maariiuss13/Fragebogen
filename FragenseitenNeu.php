@@ -23,16 +23,6 @@ include 'includes/header.php';
         <input class = 'def' type = 'text' placeholder="Frage eintragen" name="frage">
         </br>
         </br>
-        <!-- Zurück Button hier nicht benötigt
-        <input type="submit" value="Zurück" name="Bzurück"
-            <?php
-                //Deaktivieren Button auf Seite 1 
-                if($_SESSION["aktSeite"]<=1){
-                    echo "disabled";    
-                }
-            ?>
-        />
-         -->
         <input type="submit" value="Weiter" name="Bweiter" style="float: right;"
             <?php
                 //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
