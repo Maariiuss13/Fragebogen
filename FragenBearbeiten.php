@@ -31,7 +31,7 @@ include 'includes/header.php';
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
                     if (!mysqli_stmt_prepare($stmt, $sql)){
-                        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+                        header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehler");
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder

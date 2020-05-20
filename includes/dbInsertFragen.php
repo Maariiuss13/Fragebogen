@@ -1,6 +1,7 @@
 <?php
 
 include 'dbHandler.php';
+include 'functions.php';
 session_start();
 
 
@@ -23,46 +24,14 @@ if(isset($_POST["Bweiter"])){
     }
 
     else{
-        //Prüfung doppelter Titel
+        //Prüfung doppelte Frage (PS FragenNr + Titel)
         $sqlFrage="SELECT fragenr,titel FROM fragen WHERE fragenr=? AND titel=?;";
-        // Initialisieren mit der richtigen Verbindung
-        $stmt = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-        if (!mysqli_stmt_prepare($stmt, $sqlFrage)) {
-            // Wenn ja, dann SQL-Fehler
-            header("Location: ../FragenseitenNeu.php?error=sqlerror");
-            exit();
-        } 
-        else {
-            // Benutzereingaben Frage
-            mysqli_stmt_bind_param($stmt, "ss", $frage, $_SESSION["aktFB"]);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($stmt);
-            // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $stmt
-            mysqli_stmt_store_result($stmt);
-            // Prüft die Anzahl der Ergebnisse der Variable $stmt
-            $resultCheck = mysqli_stmt_num_rows($stmt);
-            // Wenn größer 0 -> Titel schon vergeben
-            if ($resultCheck > 0) {
-                header("Location: ../FragebogenNeu.php?error=FrageBereitsVergeben");
-            exit();
-                }
-            }
+        checkFrage($conn, $sqlFrage, $frage);
 
 
         //Insert SQL-Befehl Fragebogen
         $sql= "INSERT INTO fragen(fragenr, titel, fragestellung) VALUES(?, ?, ?);";
-        //prepared statement erstellen
-        $stmt=mysqli_stmt_init($conn);
-        if (!mysqli_stmt_prepare($stmt, $sql)){
-            header("Location: ../FragebogenNeu.php?error=SQLBefehlFehler");
-        }
-        else{
-            //Verknüpfung Parameter mit Placeholdern
-            mysqli_stmt_bind_param($stmt, "sss", $_SESSION["aktSeite"], $_SESSION["aktFB"], $frage);
-            //Run Code in DB
-            mysqli_stmt_execute($stmt);
-        }
+        insertFrageN($conn, $sql, $frage);
     }        
     
     //Hochzählen aktSeite
@@ -90,44 +59,12 @@ if(isset($_POST["Babschluss"])){
     else{
         //Prüfung doppelter Titel
         $sqlFrage="SELECT fragenr,titel FROM fragen WHERE fragenr=? AND titel=?;";
-        // Initialisieren mit der richtigen Verbindung
-        $stmt = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-        if (!mysqli_stmt_prepare($stmt, $sqlFrage)) {
-            // Wenn ja, dann SQL-Fehler
-            header("Location: ../FragenseitenNeu.php?error=sqlerror");
-            exit();
-        } 
-        else {
-            // Benutzereingaben Frage
-            mysqli_stmt_bind_param($stmt, "ss", $frage, $_SESSION["aktFB"]);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($stmt);
-            // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $stmt
-            mysqli_stmt_store_result($stmt);
-            // Prüft die Anzahl der Ergebnisse der Variable $stmt
-            $resultCheck = mysqli_stmt_num_rows($stmt);
-            // Wenn größer 0 -> Titel schon vergeben
-            if ($resultCheck > 0) {
-                header("Location: ../FragebogenNeu.php?error=FrageBereitsVergeben");
-            exit();
-                }
-            }
+        checkFrage($conn, $sqlFrage, $frage);
 
 
         //Insert SQL-Befehl Fragebogen
         $sql= "INSERT INTO fragen(fragenr, titel, fragestellung) VALUES(?, ?, ?);";
-        //prepared statement erstellen
-        $stmt=mysqli_stmt_init($conn);
-        if (!mysqli_stmt_prepare($stmt, $sql)){
-            header("Location: ../FragebogenNeu.php?error=SQLBefehlFehler");
-        }
-        else{
-            //Verknüpfung Parameter mit Placeholdern
-            mysqli_stmt_bind_param($stmt, "sss", $_SESSION["aktSeite"], $_SESSION["aktFB"], $frage);
-            //Run Code in DB
-            mysqli_stmt_execute($stmt);
-        }
+        insertFrageN($conn, $sql, $frage);
     }        
     
     //aktSeite wieder auf 1 setzen
