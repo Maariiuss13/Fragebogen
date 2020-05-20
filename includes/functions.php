@@ -113,6 +113,22 @@ function deleteFrageboegen($conn, $sql, $titel){
 
 }
 
+//Funktion zum Löschen von Fragen auf der Seite FragenBearbeiten
+function deleteFragen($conn, $sql, $titelFB, $frageNr){
+    //prepared statement erstellen
+    $stmt=mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)){
+        //header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehler");
+        exit();
+    }
+    else{
+    //Verknüpfung Parameter mit Placeholdern
+    mysqli_stmt_bind_param($stmt, "ss", $titelFB, $frageNr);
+    //Run Code in DB
+    mysqli_stmt_execute($stmt);
+    }
+}
+
 
 
 

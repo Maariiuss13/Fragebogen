@@ -18,7 +18,7 @@ include 'includes/header.php';
 
     <form action="includes/dbDeleteFragen.php" method="post">
         <fieldset>
-            <label for="fbTitelAlt">Fragen</label>
+            <label for="fragen">Fragen</label>
             <select name="fragen">
                 <?php
                     //Template für prepared statement

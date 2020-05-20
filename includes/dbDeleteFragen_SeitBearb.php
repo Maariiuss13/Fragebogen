@@ -11,7 +11,7 @@ $titelFB = $_SESSION['bearbeitenFB'];
 
 
 if (isset($_POST["löschenFrage"])) {
-
+    //Select Fragennr zu ausgewählter Frage
     $sqlNr= "SELECT * FROM Fragen WHERE Titel = '$titelFB' AND Fragestellung = '$frage'";
     $result = mysqli_query($conn, $sqlNr);
     $row = mysqli_fetch_assoc($result);
@@ -20,8 +20,7 @@ if (isset($_POST["löschenFrage"])) {
     //Prüfen, ob DS zu Befrager gehört, fehlt!!!!!!!!!!!!
     //Delete Frage
     $sql = "DELETE FROM Fragen WHERE Titel = ? AND FrageNr= ?;";
-
-    deleteFrageboegen($conn, $sql, $titelFB, $frageNr);
+    deleteFragen($conn, $sql, $titelFB, $frageNr);
     //Update Fragennr notwendig? !!!!!!!!!!!!!!!!!!
 }
 

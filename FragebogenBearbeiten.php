@@ -6,6 +6,7 @@ include 'includes/functions.php';
   <h2 align="center">Fragebogen Bearbeiten</h2>
   <div>
     <p>Bitte wählen Sie einen Fragebogen aus, bei welchem Sie die Fragen bearbeiten möchten. <br/>
+    Fragebogen, die bereits von Studenten bearbeitet worden, können nicht bearbeitet werden.<br/>
     Der Titel kann nicht geändert werden. <br/>
     </p>
     
@@ -23,7 +24,7 @@ include 'includes/functions.php';
                 <?php
                     $befrager=$_SESSION['session_bname'];
                     //Template für prepared statement
-                    $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
+                    $sql= "SELECT titel FROM frageboegen WHERE Befrager=? AND frageboegen.titel NOT IN (SELECT bearbeitenFB.titel FROM bearbeitenFB);";
                     auswahlFbBefragerBearbeiten($conn, $sql, $befrager);  
                 ?>
             </select>

@@ -1,31 +1,26 @@
 <?php
 include 'dbHandler.php';
+include 'functions.php';
 session_start();
 
 
 // Deklaration Variablen
 $frage = $_POST["fragen"];
 $befrager = $_SESSION["session_bname"];
+$titelFB = $_SESSION["KopieFB"];
 
 
 if (isset($_POST["löschenFrage"])) {
+
+    $sqlNr= "SELECT * FROM Fragen WHERE Titel = '$titelFB' AND Fragestellung = '$frage'";
+    $result = mysqli_query($conn, $sqlNr);
+    $row = mysqli_fetch_assoc($result);
+    $frageNr = $row['FrageNr'];
+
     //Delete Frage
-    $sql = "DELETE FROM Fragen WHERE Fragestellung = ?;";
-    mysqli_stmt_init($conn);
-    // prepared statement erstellt
-    $stmt= mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehler");
-    }
-    else{
-        //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $frage);
-        //Parameter in DB verwenden
-        mysqli_stmt_execute($stmt);
-        mysqli_query($conn, $sql);
-        //Update Fragennr notwendig? !!!!!!!!!!!!!!!!!!
-    }
+    $sql = "DELETE FROM Fragen WHERE Titel = ? AND FrageNr= ?;";
+    deleteFragen($conn, $sql, $titelFB, $frageNr);
+
 }
 
 
