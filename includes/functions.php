@@ -50,6 +50,30 @@ function echoFbBefrager ($conn, $sql, $befrager){
     }
 }
 
+//Funktion zur Ausgabe aller kopierten Fragen --> FrageKopieBearbeiten funktioniert nicht!!!!!!!!!!!!!!!!!!!
+function echoFragenKopie($conn, $sql, $titelFB){
+    // prepared statement erstellt
+    $stmt= mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../FrageKopieBearbeiten.php?error=SQLFehler");
+        echo "SQL Fehler bei Abfrage Fragebogen";
+    }
+    else{
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $titelFB);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result= mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while($row= mysqli_fetch_assoc($result)){
+            echo "<option>".$row['Fragestellung']."</option>";
+        }
+    } 
+}
+
+
 //Funktion zur Auswahl des Fragebogens zum Bearbeiten
 function auswahlFbBefragerBearbeiten($conn, $sql, $befrager){
     // prepared statement erstellt
@@ -130,6 +154,48 @@ function deleteFragen($conn, $sql, $titelFB, $frageNr){
 }
 
 
+//Funktion, um für Insert die FrageNr festzulegen - Rückgabe eines Int, der ein Wert höher als bisherige FrageNr
+function defineFrageNr($conn, $sql){
+    //Senden Befehl an DB und Ausführen
+    $frErg = mysqli_query($conn, $sql);
+    //Zuweisung Ergebnis einer Variable
+    $anzFr = mysqli_fetch_assoc($frErg);
+    //FrageNr definieren
+    $frageNr = $anzFr['maxAnz']+1;
+    return $frageNr;
+}
+
+
+//Funktion zum Insert Frage bei FragebogenKopie
+function insertFrageK($conn, $sql, $frageNr, $titel, $frage){
+    //prepared statement erstellen
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehlerFB");
+        exit();
+    } else {
+        //Verknüpfung Parameter mit Placeholdern
+        mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
+        //Run Code in DB
+        mysqli_stmt_execute($stmt);
+    }
+}
+
+
+//Funktion zum Insert Fragen bei FragenBearbeiten
+function insertFrageB($conn, $sql, $frageNr, $titel, $frage){
+    //prepared statement erstellen
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehlerFB");
+        exit();
+    } else {
+        //Verknüpfung Parameter mit Placeholdern
+        mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
+        //Run Code in DB
+        mysqli_stmt_execute($stmt);
+    }
+}
 
 
 

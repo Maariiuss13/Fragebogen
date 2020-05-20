@@ -13,7 +13,7 @@ include 'includes/header.php';
     <!-- Echo Befrager-->
     <?php
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
-        echo "<p> Ersteller Fragebogen: ".$_SESSION["KopieFB"]."</p><br/>";
+        echo "<p> Ersteller Fragebogen: ".$_SESSION['KopieFB']."</p><br/>";
     ?>
 
     <form action="includes/dbDeleteFragen.php" method="post">
@@ -27,11 +27,12 @@ include 'includes/header.php';
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
                     if (!mysqli_stmt_prepare($stmt, $sql)){
-                        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+                        header("Location: ../Befrager.php?error=SQLFehler");
+                        echo "SQL Fehler bei Abfrage Fragebogen";
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
-                        mysqli_stmt_bind_param($stmt, "s", $_SESSION["KopieFB"]);
+                        mysqli_stmt_bind_param($stmt, "s", $_SESSION['KopieFB']);
                         //Parameter in DB verwenden
                         mysqli_stmt_execute($stmt);
                         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
