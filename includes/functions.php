@@ -154,6 +154,20 @@ function deleteFragen($conn, $sql, $titelFB, $frageNr){
 }
 
 
+//Funktion zum Insert eines neuen Fragenbogens
+function insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager){
+    $stmt=mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler");
+    }
+    else{
+        //Verknüpfung Parameter mit Placeholdern
+        mysqli_stmt_bind_param($stmt, "sss", $titel, $beschreibung, $befrager);
+        //Run Code in DB
+        mysqli_stmt_execute($stmt);
+    }
+}
+
 //Funktion, um für Insert die FrageNr festzulegen - Rückgabe eines Int, der ein Wert höher als bisherige FrageNr
 function defineFrageNr($conn, $sql){
     //Senden Befehl an DB und Ausführen
