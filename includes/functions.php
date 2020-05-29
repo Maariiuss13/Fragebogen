@@ -179,6 +179,34 @@ function deleteFragen($conn, $sql, $titelFB, $frageNr)
     }
 }
 
+//Funktion zum Update der FrageNr´s nach Löschen einer Frage aus Fragebogen
+function updatefragenr($conn, $sql, $titelFB){
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $titelFB);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis durchlaufen und Fragenr updaten
+        $i=1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $frageArr = $row['FrageNr'];
+            $sqlUpd = "UPDATE fragen SET frageNr = $i WHERE frageNr= $frageArr AND titel = '$titelFB';";
+            if(!mysqli_query($conn, $sqlUpd)){
+                echo mysqli_error($conn);
+                exit();
+            };
+            $i++;
+        }
+         
+    }
+}
+
 
 //Funktion zum Insert eines neuen Fragenbogens
 function insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager)
