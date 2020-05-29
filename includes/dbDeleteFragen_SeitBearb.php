@@ -17,17 +17,15 @@ if (isset($_POST["löschenFrage"])) {
     $row = mysqli_fetch_assoc($result);
     $frageNr = $row['FrageNr'];
 
-    //Prüfen, ob DS zu Befrager gehört, fehlt!!!!!!!!!!!!
     //Delete Frage
     $sql = "DELETE FROM Fragen WHERE Titel = ? AND FrageNr= ?;";
     deleteFragen($conn, $sql, $titelFB, $frageNr);
-    //Update Fragennr notwendig? !!!!!!!!!!!!!!!!!!
+    
+    //Update Fragennr
+    $sqlSel= "SELECT * FROM fragen WHERE titel=? ORDER BY 'FrageNr';";
+    updatefragenr($conn, $sqlSel, $titelFB);
 }
 
 
 //Aktualisierung FragenBearbeiten-Seite
-if (!$sql) {
-    echo mysqli_error($sql);
-} else {
-    header("Location: ../FragenBearbeiten.php?FrageLöschen=erfolgreich");
-}
+header("Location: ../FragenBearbeiten.php?FrageLöschen=erfolgreich");
