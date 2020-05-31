@@ -19,6 +19,7 @@ if(isset($_POST["Bweiter"])){
     $stmt=mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)){
         header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
+        exit();
     }
     else{
         //Verknüpfung Parameter mit Placeholdern

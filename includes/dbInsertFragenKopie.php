@@ -1,5 +1,6 @@
 <?php
 include 'dbHandler.php';
+include 'functions.php';
 session_start();
 
 
@@ -10,12 +11,8 @@ $befrager = $_SESSION["session_bname"];
 
 //FrageNr festlegen
 $sqlFr = "SELECT MAX(FrageNr) AS maxAnz FROM Fragen Where Titel='$titel';";
-//Senden Befehl an DB und Ausführen
-$frErg = mysqli_query($conn, $sqlFr);
-//Zuweisung Ergebnis einer Variable
-$anzFr = mysqli_fetch_assoc($frErg);
-//FrageNr definieren
-$frageNr = $anzFr['maxAnz']+1;
+$frageNr = defineFrageNr($conn, $sqlFr);
+
 
 //neuen Fragebogen speichern
 if (isset($_POST["speichernNeueFrage"])) {
@@ -32,18 +29,7 @@ if (isset($_POST["speichernNeueFrage"])) {
     else {
         //Insert SQL-Befehl Frage
         $sql = "INSERT INTO fragen(FrageNr, Titel, Fragestellung) VALUES(?, ?, ?);";
-        //prepared statement erstellen
-        $stmt = mysqli_stmt_init($conn);
-        if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehlerFB");
-            exit();
-        } else {
-            //Verknüpfung Parameter mit Placeholdern
-            mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
-            //Run Code in DB
-            mysqli_stmt_execute($stmt);
-            //mysqli_stmt_close($stmt);
-        }
+        insertFrageK($conn, $sql, $frageNr, $titel, $frage);
     }
 }
 

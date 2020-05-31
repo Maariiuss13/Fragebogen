@@ -1,6 +1,6 @@
 <?php
 include 'dbHandler.php';
-//include 'functions.php';
+include 'functions.php';
 session_start();
 
 
@@ -22,58 +22,26 @@ if(isset($_POST["speichernFragebogen"])){
         exit();
     }
     //Prüfen, ob AnzahlFragen > 0
-    elseif(($_POST["anzahlFragen"]<=0)){
+    if(($_POST["anzahlFragen"]<=0)){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
         exit();
     }
     //Prüfen, ob Titel länger als 10 Char
-    elseif(strlen($titel)>10){
+    if(strlen($titel)>10){
         header("Location: ../FragebogenNeu.php?error=TitelZuLang");
         exit();
     } 
     else{
-    //Prüfung doppelter Titel
+        //Prüfung doppelter Titel
         $sqlTitel="SELECT titel FROM frageboegen WHERE titel=?;";
         //Funktion zum Prüfen, ob Titel bereits in DB vorhanden
-        //checkTitelDB($conn, $sqlTitel, $titel);
-                // Initialisieren mit der richtigen Verbindung
-                $stmt = mysqli_stmt_init($conn);
-                // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-                if (!mysqli_stmt_prepare($stmt, $sqlTitel)) {
-                    // Wenn ja, dann SQL-Fehler
-                    header("Location: ../FragebogenNeu.php?error=sqlerror");
-                    exit();
-                } 
-                else {
-                    // Benutzereingaben Titel
-                    mysqli_stmt_bind_param($stmt, "s", $titel);
-                    // Ausführen der Anweisung in der Datenbank
-                    mysqli_stmt_execute($stmt);
-                    // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $stmt
-                    mysqli_stmt_store_result($stmt);
-                    // Prüft die Anzahl der Ergebnisse der Variable $stmt
-                    $resultCheck = mysqli_stmt_num_rows($stmt);
-                    // Wenn größer 0 -> Titel schon vergeben
-                    if ($resultCheck > 0) {
-                        header("Location: ../FragebogenNeu.php?error=TitelBereitsVergeben");
-                    exit();
-                    }
-                }
+        checkTitelDB($conn, $sqlTitel, $titel);
 
 
-    //Insert SQL-Befehl Fragebogen
+        //Insert Fragebogen
         $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
         //prepared statement erstellen
-        $stmt=mysqli_stmt_init($conn);
-        if (!mysqli_stmt_prepare($stmt, $sql)){
-            header("Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler");
-        }
-        else{
-           //Verknüpfung Parameter mit Placeholdern
-           mysqli_stmt_bind_param($stmt, "sss", $titel, $beschreibung, $befrager);
-           //Run Code in DB
-           mysqli_stmt_execute($stmt);
-        }
+        insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager);
     }
 }
 

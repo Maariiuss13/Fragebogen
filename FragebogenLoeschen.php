@@ -5,6 +5,7 @@ include 'includes/header.php';
 <h2 align="center">Fragebogen Löschen</h2>
   <div>
     <p>Bitte wählen Sie einen Fragebogen aus, bei welchem Sie die Fragen löschen möchten. <br/>
+    Es können nur Fragebogen gelöscht werden, welche noch nicht von Studenten bearbeitet worden sind. </br>
     Dieser Vorgang kann nicht rückgängig gemacht werden, alle zu dem Fragebogen zugehörigen Fragen werden ebenfalls gelöscht. <br/>
     </p>
     
@@ -23,7 +24,7 @@ include 'includes/header.php';
                 // Echo Erstellte Fragebögen des angemeldeten Befragers
                     $befrager=$_SESSION['session_bname'];
                     //Template für prepared statement
-                    $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
+                    $sql= "SELECT titel FROM frageboegen WHERE Befrager=? AND frageboegen.titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
                     // prepared statement erstellt
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
@@ -47,6 +48,10 @@ include 'includes/header.php';
         </fieldset>
         </br> </br>
         <input type="submit" name="FragebogenLöschen" value="Fragebogen löschen">
+    </form>
+
+    <form action="Befrager.php" method="post">
+        <input type="submit" name="fragenAbschluss" value="Bearbeitung beenden">
     </form>
 
 </div>
