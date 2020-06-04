@@ -1,4 +1,8 @@
 <?php
+include 'functions.php';
+?>
+
+<?php
 // Prüfen, ob der Befrager auf den Button klickt
 if (isset($_POST['fragebogenzuordnen'])) {
 
@@ -23,21 +27,7 @@ if (isset($_POST['fragebogenzuordnen'])) {
     } else {
         // Eingegebene Daten in Datenbank einfügen
         $sql = "INSERT INTO freischaltenfb (Titel, Kurs) VALUES ('$Titel', '$Kuerzel')";
-        // Initialisieren mit der richtigen Verbindung
-        $statement = mysqli_stmt_init($conn);
-        // Prüfung auf Übereinstimmung
-        if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn nicht, Fehlermeldung
-            header("Location: ../KursFragebogenZuordnen.php?error=sqlerror");
-            exit();
-        } else {
-            // Benutzereingaben beim Anmeldeversuch
-            mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Titel);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($statement);
-            header("Location: ../KursFragebogenZuordnen.php?fragebogenzuordnen=erfolgreich");
-            exit();
-        }
+        insertZuordnung($conn, $sql, $Kuerzel, $Titel);
     }
     // closing of the statements
     mysqli_stmt_close($statement);

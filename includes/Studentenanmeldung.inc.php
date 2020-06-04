@@ -1,4 +1,8 @@
 <?php
+include 'functions.php';
+?>
+
+<?php
 // Prüfen, ob der Student auf den Button klickt
 if (isset($_POST['studentenanmeldung'])) {
 
@@ -27,25 +31,7 @@ if (isset($_POST['studentenanmeldung'])) {
             header("Location: ../Studentenanmeldung.php?error=sqlerror");
             exit();
         } else {
-            // Benutzereingaben beim Anmeldeversuch
-            mysqli_stmt_bind_param($statement, "ss", $MNR, $MNR);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($statement);
-            // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-            // werden in der Variable $result gespeichert
-            $result = mysqli_stmt_get_result($statement);
-            // Prüfung, ob $result leer ist oder ein Ergebnis liefert
-            if ($row = mysqli_fetch_assoc($result)) {
-                // Wenn nein, wird Session aktiviert und Weiterleitung auf Seite Studentenanmeldung
-                session_start();
-                $_SESSION['session_mnr'] = $row['MNR'];
-                header("Location: ../Studenten.php?anmelden=success");
-                exit();
-            } else {
-                // Wenn leer, dann ist Matrikelnummer nicht vorhanden
-                header("Location: ../Studentenanmeldung.php?error=matrikelnummernichtvergeben");
-                exit();
-            }
+            anmeldenStudent($statement);
         }
         // closing of the statements
         mysqli_stmt_close($statement);
