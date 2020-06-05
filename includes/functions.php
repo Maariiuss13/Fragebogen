@@ -284,7 +284,7 @@ function insertFrageB($conn, $sql, $frageNr, $titel, $frage)
     }
 }
 
-
+// Funktion zum Prüfen, ob Kurs bereits in DB vorhanden ist
 function checkKurs($conn, $sql, $Kuerzel, $Kurs)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -307,6 +307,7 @@ function checkKurs($conn, $sql, $Kuerzel, $Kurs)
     }
 }
 
+// Funktion zum Einfügen von Kursen in die Datenbank
 function insertKurs($conn, $sql, $Kuerzel, $Kurs)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -326,6 +327,7 @@ function insertKurs($conn, $sql, $Kuerzel, $Kurs)
     }
 }
 
+// Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
 function anmeldenBefrager($conn, $sql, $BName, $Passwort)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -369,6 +371,7 @@ function anmeldenBefrager($conn, $sql, $BName, $Passwort)
     }
 }
 
+// Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
 function checkBefrager($conn, $sql, $befragername)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -390,6 +393,7 @@ function checkBefrager($conn, $sql, $befragername)
     }
 }
 
+// Funktion zum Einfügen von Befragern in die Datenbank
 function insertBefrager($conn, $sql, $passwort, $befragername)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -411,6 +415,7 @@ function insertBefrager($conn, $sql, $passwort, $befragername)
     }
 }
 
+// Funktion zum Einfügen der Daten in die Datenbank
 function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -430,6 +435,7 @@ function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
     }
 }
 
+// Prüfung, ob Student in der Datenbank bereits enthalten ist
 function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -452,6 +458,7 @@ function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
     }
 }
 
+// Funktion zum Einfügen von Studenten in die Datenbank
 function insertStudent($conn, $sql, $MNR, $Kurskuerzel)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -471,6 +478,7 @@ function insertStudent($conn, $sql, $MNR, $Kurskuerzel)
     }
 }
 
+// Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
 function anmeldenStudent($statement)
 {
     // Benutzereingaben beim Anmeldeversuch
@@ -494,6 +502,7 @@ function anmeldenStudent($statement)
     }
 }
 
+// Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
 function offeneFragebogen($conn, $sql, $student)
 {
     //Template für prepared statement
@@ -517,6 +526,7 @@ function offeneFragebogen($conn, $sql, $student)
     }
 }
 
+// Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
 function fragebogenInBearbeitung($conn, $sql, $student)
 {
     //Template für prepared statement
@@ -540,6 +550,7 @@ function fragebogenInBearbeitung($conn, $sql, $student)
     }
 }
 
+// Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
 function kurse($conn, $sql)
 {
     // Echo Erstellte Fragebögen des angemeldeten Befragers
@@ -565,6 +576,7 @@ function kurse($conn, $sql)
     }
 }
 
+// Funktion, die alle Fragebögen die in der Datenbank gespeichert sind, anzeigt
 function frageboegen($conn, $sql, $befrager)
 {
     // Echo Erstellte Fragebögen des angemeldeten Befragers

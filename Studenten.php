@@ -13,6 +13,7 @@ $mnr = $_SESSION['session_mnr'];
         <legend>Offene Fragebogen</legend>
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
+            // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
             offeneFragebogen($conn, $sql, $student);
             ?>
         </select>
@@ -25,6 +26,7 @@ $mnr = $_SESSION['session_mnr'];
         <legend>Fragebogen in Bearbeitung</legend>
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
+            // Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
             fragebogenInBearbeitung($conn, $sql, $student);
             ?>
         </select>

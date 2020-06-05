@@ -1,33 +1,30 @@
 <?php
 include 'functions.php';
+include 'dbHandler.php';
 ?>
 
 <?php
-// Prüfen, ob der Befrager auf den Button klickt
+// Prüfung - Anmeldebutton gedrückt
 if (isset($_POST['befrageranmeldung'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $BName = $_POST['befragername'];
     $Passwort = $_POST['passwort'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    // Prüfung, ob Felder befüllt
     if (empty($BName) || empty($Passwort)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Befrageranmeldung.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
         // Prüfung, ob Daten in der Tabelle enthalten sind
         $sql = "SELECT * FROM befrager WHERE BName='$BName'";
+        // Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
         anmeldenBefrager($conn, $sql, $BName, $Passwort);
     }
-    // Close of the statements
+    // Statements schließen
     mysqli_stmt_close($statement);
-    // Beendet die Verbindung
+    // Verbindung beenden
     mysqli_close($conn);
 }

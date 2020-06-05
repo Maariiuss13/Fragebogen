@@ -1,24 +1,20 @@
 <?php
 include 'functions.php';
+include 'dbHandler.php';
 ?>
 
 <?php
-// Prüfen, ob der Befrager auf den Button klickt
+// Neuen Befrager speichern
 if (isset($_POST['befragerregistrierung'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $befragername = $_POST['befragername'];
     $passwort = $_POST['passwort'];
     $passwortWiederholen = $_POST['passwortWiederholen'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    // Prüfung, ob Felder befüllt
     if (empty($befragername) || empty($passwort) || empty($passwortWiederholen)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Befragerregistrierung.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts
         exit();
@@ -31,21 +27,23 @@ if (isset($_POST['befragerregistrierung'])) {
         header("Location: ../Befragerregistrierung.php?error=überprüfepasswörter&befragername=" . $befragername);
         exit();
     } else {
-        // Prüfung, ob Daten in der Tabelle enthalten sind
+        // Prüfung doppelter Befragernamen
         $sql = "SELECT BName FROM befrager WHERE BName=?";
+        // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
         checkBefrager($conn, $sql, $befragername);
             // Wenn größer 0 -> Befragername schon vergeben
             if ($resultCheck > 0) {
                 header("Location: ../Befragerregistrierung.php?error=befragernamebereitsvergeben");
                 exit();
             } else {
-                // Eingegebene Daten in Datenbank einfügen
+                // Insert SQL-Befehl befrager
                 $sql = "INSERT INTO befrager (BName, Passwort) VALUES (?, ?)";
+                // Funktion zum Einfügen von Befragern in die Datenbank
                 insertBefrager($conn, $sql, $passwort, $befragername);
             }
         }
-    // closing of the statements
+    // Statements schließen
     mysqli_stmt_close($statement);
-    // Beendet die Verbindung
+    // Verbindung beenden
     mysqli_close($conn);
 } 
