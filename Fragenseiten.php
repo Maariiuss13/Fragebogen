@@ -5,6 +5,7 @@ if (isset($_POST["FragebogenBearbeiten"])) {
 
   $FbTitelIB = $_POST['fbTitel'];
 
+  //Status des Fragebogens auf in Bearbeitung setzen
   $sql = "SELECT * FROM bearbeitenfb WHERE Titel='$FbTitelIB'";
   $statement = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($statement, $sql)) {
