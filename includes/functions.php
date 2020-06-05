@@ -237,7 +237,8 @@ function defineFrageNr($conn, $sql)
 
 
 //Funktion zum Insert Fragen bei FragebogenNeu
-function insertFrageN($conn, $sql, $frage){
+function insertFrageN($conn, $sql, $frage)
+{
     //prepared statement erstellen
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -280,5 +281,311 @@ function insertFrageB($conn, $sql, $frageNr, $titel, $frage)
         mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
         //Run Code in DB
         mysqli_stmt_execute($stmt);
+    }
+}
+
+
+function checkKurs($conn, $sql, $Kuerzel, $Kurs)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Kurs.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $resultCheck = mysqli_stmt_num_rows($statement);
+    }
+}
+
+function insertKurs($conn, $sql, $Kuerzel, $Kurs)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Prüfung auf Übereinstimmung
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn nicht, Fehlermeldung
+        header("Location: ../Kurs.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        header("Location: ../Kurs.php?kursanlegen=erfolgreich");
+        exit();
+    }
+}
+
+function anmeldenBefrager($conn, $sql, $BName, $Passwort)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Befrageranmeldung.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $BName, $BName);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $result = mysqli_stmt_get_result($statement);
+        // Prüfung, ob $result leer ist oder ein Ergebnis liefert
+        if ($row = mysqli_fetch_assoc($result)) {
+            // Prüft, ob das eingegebene Passwort mit dem aus der Datenbank übereinstimmt
+            $passwortCheck = password_verify($Passwort, $row['Passwort']);
+            // Wenn nein, Fehlermeldung
+            if ($passwortCheck == false) {
+                header("Location: ../Befrageranmeldung.php?error=falscherbefragernameoderpasswort");
+                exit();
+                // Wenn ja, Session wird gestartet und Weiterleitung auf die Befragerseite
+            } else if ($passwortCheck == true) {
+                session_start();
+                $_SESSION['session_bname'] = $row['BName'];
+                header("Location: ../Befrager.php?anmeldung=erfolgreich");
+                exit();
+            } else {
+                header("Location: ../Befrageranmeldung.php?error=keineübereinstimmung");
+                exit();
+            }
+        } else {
+            // Kein Benutzer, der mit den eingegebenen Daten übereinstimmt in der Datenbank
+            header("Location: ../Befrageranmeldung.php?error=keinbefrager");
+            exit();
+        }
+    }
+}
+
+function checkBefrager($conn, $sql, $befragername)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Befragerregistrierung.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "s", $befragername);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+        // Prüft die Anzahl der Ergebnisse der Variable $statement
+        $resultCheck = mysqli_stmt_num_rows($statement);
+    }
+}
+
+function insertBefrager($conn, $sql, $passwort, $befragername)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Prüfung auf Übereinstimmung
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn nicht, Fehlermeldung
+        header("Location: ../Befragerregistrierung.php?error=sqlerror");
+        exit();
+    } else {
+        //Hashing-Operation am Passwort
+        $hashedPasswort = password_hash($passwort, PASSWORD_DEFAULT);
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $befragername, $hashedPasswort);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        header("Location: ../Befrageranmeldung.php?anmeldung=erfolgreich");
+        exit();
+    }
+}
+
+function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Prüfung auf Übereinstimmung
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn nicht, Fehlermeldung
+        header("Location: ../KursFragebogenZuordnen.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Titel);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        header("Location: ../KursFragebogenZuordnen.php?fragebogenzuordnen=erfolgreich");
+        exit();
+    }
+}
+
+function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Kurs.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $resultCheck = mysqli_stmt_num_rows($statement);
+    }
+}
+
+function insertStudent($conn, $sql, $MNR, $Kurskuerzel)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Prüfung auf Übereinstimmung
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn nicht, Fehlermeldung
+        header("Location: ../Kurs.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        header("Location: ../Kurs.php?studentanlegen=erfolgreich");
+        exit();
+    }
+}
+
+function anmeldenStudent($statement)
+{
+    // Benutzereingaben beim Anmeldeversuch
+    mysqli_stmt_bind_param($statement, "ss", $MNR, $MNR);
+    // Ausführen der Anweisung in der Datenbank
+    mysqli_stmt_execute($statement);
+    // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+    // werden in der Variable $result gespeichert
+    $result = mysqli_stmt_get_result($statement);
+    // Prüfung, ob $result leer ist oder ein Ergebnis liefert
+    if ($row = mysqli_fetch_assoc($result)) {
+        // Wenn nein, wird Session aktiviert und Weiterleitung auf Seite Studentenanmeldung
+        session_start();
+        $_SESSION['session_mnr'] = $row['MNR'];
+        header("Location: ../Studenten.php?anmelden=success");
+        exit();
+    } else {
+        // Wenn leer, dann ist Matrikelnummer nicht vorhanden
+        header("Location: ../Studentenanmeldung.php?error=matrikelnummernichtvergeben");
+        exit();
+    }
+}
+
+function offeneFragebogen($conn, $sql, $student)
+{
+    //Template für prepared statement
+    $sql = "SELECT titel FROM freischaltenfb WHERE freischaltenfb.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb)";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $student);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option>" . $row['titel'] . "</option>";
+        }
+    }
+}
+
+function fragebogenInBearbeitung($conn, $sql, $student)
+{
+    //Template für prepared statement
+    $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'i'";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $student);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option>" . $row['titel'] . "</option>";
+        }
+    }
+}
+
+function kurse($conn, $sql)
+{
+    // Echo Erstellte Fragebögen des angemeldeten Befragers
+    $befrager = $_SESSION['session_bname'];
+    //Template für prepared statement
+    $sql = "SELECT Kuerzel FROM kurse";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $befrager);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option>" . $row['Kuerzel'] . "</option>";
+        }
+    }
+}
+
+function frageboegen($conn, $sql, $befrager)
+{
+    // Echo Erstellte Fragebögen des angemeldeten Befragers
+    $befrager = $_SESSION['session_bname'];
+    //Template für prepared statement
+    $sql = "SELECT Titel FROM frageboegen";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $befrager);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option>" . $row['Titel'] . "</option>";
+        }
     }
 }
