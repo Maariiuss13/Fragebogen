@@ -65,6 +65,7 @@ if (isset($_GET["error"])) {
         <select style="padding: 12px 7px" name="kurs" size="0" readonly>
             <option>-- Kurs des Studenten auswählen --</option>
             <?php
+            // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
             kurse($conn, $sql);
             ?>
         </select>

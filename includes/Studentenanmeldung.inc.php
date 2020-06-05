@@ -1,41 +1,38 @@
 <?php
 include 'functions.php';
+include 'dbHandler.php';
 ?>
 
 <?php
-// Prüfen, ob der Student auf den Button klickt
+// Prüfung - Anmeldebutton gedrückt
 if (isset($_POST['studentenanmeldung'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $MNR = $_POST['mnr'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    // Prüfung, ob Felder befüllt
     if (empty($MNR)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Studentenanmeldung.php?error=leeresFeld");
-        // Stoppt die Ausführung
+        // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung, ob Daten in der Tabelle enthalten sind
+        // Prüfung doppelter Matrikelnummern
         $sql = "SELECT MNR FROM studenten WHERE MNR='$MNR'";
         // Initialisieren mit der richtigen Verbindung
         $statement = mysqli_stmt_init($conn);
         // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
+            // Ja - SQL-Fehler
             header("Location: ../Studentenanmeldung.php?error=sqlerror");
             exit();
         } else {
+            // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
             anmeldenStudent($statement);
         }
-        // closing of the statements
+        // Statements schließen
         mysqli_stmt_close($statement);
-        // Beendet die Verbindung
+        // Verbindung beenden
         mysqli_close($conn);
     }
 }

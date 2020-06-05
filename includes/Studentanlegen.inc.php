@@ -1,42 +1,40 @@
 <?php
 include 'functions.php';
+include 'dbHandler.php';
 ?>
 
 <?php
-// Prüfen, ob der Befrager auf den Button klickt
+// neuen Studenten speichern
 if (isset($_POST['studentanlegen'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $MNR = $_POST['mnr'];
     $Kurskuerzel = $_POST['kurs'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    //Prüfung, ob Felder befüllt 
     if (empty($MNR)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Kurs.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung, ob Daten in der Tabelle enthalten sind
+        // Prüfung doppelter Studenten
         $sql = "SELECT * FROM studenten WHERE MNR='$MNR' OR Kurs='$Kurskuerzel'";
+        // Prüfung, ob Student in der Datenbank bereits enthalten ist
         checkStudent($conn, $sql, $MNR, $Kurskuerzel);
         // Wenn größer 0 -> Matrikelnummer schon vergeben
         if ($resultCheck > 0) {
             header("Location: ../Kurs.php?error=matrikelnummerbereitsvergeben");
             exit();
         } else {
-            // Eingegebene Daten in Datenbank einfügen
+            // Insert SQL-Befehl studenten
             $sql = "INSERT INTO studenten (MNR, Kurs) VALUES (?, ?)";
+            // Funktion zum Einfügen von Studenten in die Datenbank
             insertStudent($conn, $sql, $MNR, $Kurskuerzel);
         }
     }
-    // closing of the statements
+    // Statements schließen
     mysqli_stmt_close($statement);
-    // Beendet die Verbindung
+    // Verbindung beenden
     mysqli_close($conn);
 }
