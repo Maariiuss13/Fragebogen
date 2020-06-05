@@ -602,6 +602,18 @@ function frageboegen($conn, $sql, $befrager)
     }
 }
 
+// Funktion, die den Status eines Fragebogens ändert
+function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
+{
+    $statement = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($statement, $sql)) {
+    header("Location: ../Studenten.php?error=sqlerror");
+    exit();
+  } else {
+    mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
+    mysqli_stmt_execute($statement);
+  }
+
 function titelFragebogen($conn, $sql, $befrager)
 {
     //Abfrage SQL

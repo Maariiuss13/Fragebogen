@@ -1,6 +1,9 @@
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
+//aus DB freigegebene Fragebogen des Studenten holen
+$mnr = $_SESSION['session_mnr'];
+
 if (isset($_POST["FragebogenBearbeiten"])) {
 
   $FbTitelIB = $_POST['fbTitel'];
