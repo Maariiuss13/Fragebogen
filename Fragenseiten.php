@@ -6,21 +6,13 @@ $mnr = $_SESSION['session_mnr'];
 
 if (isset($_POST["FragebogenBearbeiten"])) {
 
-  $FbTitelIB = $_POST['fbTitel'];
+  $FbTitel = $_POST['fbTitel'];
 
-  $sql = "SELECT * FROM bearbeitenfb WHERE Titel='$FbTitelIB'";
-  $statement = mysqli_stmt_init($conn);
-  if (!mysqli_stmt_prepare($statement, $sql)) {
-    header("Location: ../Studenten.php?error=sqlerror");
-    exit();
-  } else {
-    $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status, Kommentar) VALUES ('$FbTitelIB', ?, 'in Bearbeitung', ?)";
-    $statement = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-      header("Location: ../Studenten.php?error=sqlerror");
-      exit();
-    } 
-  }
+  $neuerStatus = 'B';
+
+  $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status) VALUES (?, ?, ?)";
+  // Funktion, die den Status eines Fragebogens ändert
+  statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus);
 }
 
 //DB-Abfrage Anzahl Fragen
