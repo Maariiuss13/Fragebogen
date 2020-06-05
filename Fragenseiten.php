@@ -1,5 +1,4 @@
-<?php
-include 'includes/header.php';
+<?php include 'includes/header.php';
 include 'includes/functions.php';
 
 //aus DB freigegebene Fragebogen des Studenten holen
@@ -56,27 +55,7 @@ if ($result) {
 
   <fieldset>
     <?php
-    //aus DB aktuelle Frage holen
-    //Template für prepared statement
-    $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
-    // prepared statement erstellt
-    $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
-    } else {
-      //Verknüpfung Parameter zu Placeholder
-      $aktFr = $_SESSION["aktSeite"];
-      mysqli_stmt_bind_param($stmt, "s", $aktFr);
-      //Parameter in DB verwenden
-      mysqli_stmt_execute($stmt);
-      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-      $result = mysqli_stmt_get_result($stmt);
-      //Ergebnis ausgeben
-      while ($row = mysqli_fetch_assoc($result)) {
-        echo $row['Fragestellung'];
-      }
-    }
+          aktuelleFrageFB($sql, $conn);
     ?>
   </fieldset>
 
@@ -100,25 +79,25 @@ if ($result) {
     </br>
     </br>
     <input type="submit" value="Zurück" name="Bzurück" <?php
-                                                        //Deaktivieren Button auf Seite 1 
-                                                        if ($_SESSION["aktSeite"] <= 1) {
-                                                          echo "disabled";
-                                                        }
-                                                        ?> />
+           //Deaktivieren Button auf Seite 1 
+           if ($_SESSION["aktSeite"] <= 1) {
+           echo "disabled";
+          }
+          ?> />
     <input type="submit" value="Weiter" name="Bweiter" style="float: right;" <?php
-                                                                              //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
-                                                                              if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {
-                                                                                echo "disabled";
-                                                                              }
-                                                                              ?> />
+              //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
+             if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {
+              echo "disabled";
+              }
+             ?> />
     </br>
     </br>
     <input type="submit" value="Abschließen" name="Babschluss" style="float: right;" <?php
-                                                                                      //Button solange aktiviert, wie akt. Seite != Gesamtanzahl Seiten
-                                                                                      if ($_SESSION["aktSeite"] != $_SESSION["anzFr"]) {
-                                                                                        echo "disabled";
-                                                                                      }
-                                                                                      ?> />
+          //Button solange aktiviert, wie akt. Seite != Gesamtanzahl Seiten
+          if ($_SESSION["aktSeite"] != $_SESSION["anzFr"]) {
+          echo "disabled";
+       }
+      ?> />
   </form>
 
 </section>

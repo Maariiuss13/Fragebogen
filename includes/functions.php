@@ -610,4 +610,41 @@ function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
     mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
     mysqli_stmt_execute($statement);
   }
+
+function titelFragebogen($conn, $sql, $befrager)
+{
+    //Abfrage SQL
+    $befrager=$_SESSION['session_bname'];
+    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
+    //Speicherung Ergebnis in Variable
+    $result= mysqli_query($conn, $sql);
+    //Ausgabe Ergebnis
+    while($row= mysqli_fetch_assoc($result)){
+    echo "<option>".$row['titel']."</option>";
+    }
+}
+
+function aktuelleFrageFB($sql, $conn)
+{
+    //aus DB aktuelle Frage holen
+    //Template für prepared statement
+    $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
+    } else {
+      //Verknüpfung Parameter zu Placeholder
+      $aktFr = $_SESSION["aktSeite"];
+      mysqli_stmt_bind_param($stmt, "s", $aktFr);
+      //Parameter in DB verwenden
+      mysqli_stmt_execute($stmt);
+      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+      $result = mysqli_stmt_get_result($stmt);
+      //Ergebnis ausgeben
+      while ($row = mysqli_fetch_assoc($result)) {
+        echo $row['Fragestellung'];
+      }
+    }
 }
