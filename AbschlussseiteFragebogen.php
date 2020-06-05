@@ -1,5 +1,6 @@
 <?php include 'includes/header.php';
 require 'includes/dbHandler.php';
+include 'includes/functions.php';
 
 if (isset($_POST['aktion']) and $_POST['aktion']=='Speichern') {
   
@@ -84,15 +85,7 @@ function bereinigen($inhalt='') {
 <label for="fbTitel">Wählen Sie einen Fragebogen aus: </label>
             <select name="fbTitel">
                 <?php
-                    //Abfrage SQL
-                    $befrager=$_SESSION['session_bname'];
-                    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
-                    //Speicherung Ergebnis in Variable
-                    $result= mysqli_query($conn, $sql);
-                    //Ausgabe Ergebnis
-                    while($row= mysqli_fetch_assoc($result)){
-                    echo "<option>".$row['titel']."</option>";
-                    }
+                    titelFragebogen($conn, $sql, $befrager);
                 ?>
             </select>
   <p>Wir bedanken uns recht herzlich bei Ihrer aktiven Teilnahme! Bis zum nächsten Mal!</p>

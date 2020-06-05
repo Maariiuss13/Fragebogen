@@ -1,20 +1,20 @@
 <?php
-// Prüfen, ob der Befrager auf den Button klickt
+include 'functions.php';
+include 'dbHandler.php';
+?>
+
+<?php
+// Neuen Befrager speichern
 if (isset($_POST['befragerregistrierung'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $befragername = $_POST['befragername'];
     $passwort = $_POST['passwort'];
     $passwortWiederholen = $_POST['passwortWiederholen'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    // Prüfung, ob Felder befüllt
     if (empty($befragername) || empty($passwort) || empty($passwortWiederholen)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Befragerregistrierung.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts
         exit();
@@ -27,53 +27,23 @@ if (isset($_POST['befragerregistrierung'])) {
         header("Location: ../Befragerregistrierung.php?error=überprüfepasswörter&befragername=" . $befragername);
         exit();
     } else {
-        // Prüfung, ob Daten in der Tabelle enthalten sind
+        // Prüfung doppelter Befragernamen
         $sql = "SELECT BName FROM befrager WHERE BName=?";
-        // Initialisieren mit der richtigen Verbindung
-        $statement = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-        if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
-            header("Location: ../Befragerregistrierung.php?error=sqlerror");
-            exit();
-        } else {
-            // Benutzereingaben beim Anmeldeversuch
-            mysqli_stmt_bind_param($statement, "s", $befragername);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($statement);
-            // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-            mysqli_stmt_store_result($statement);
-            // Prüft die Anzahl der Ergebnisse der Variable $statement
-            $resultCheck = mysqli_stmt_num_rows($statement);
+        // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
+        checkBefrager($conn, $sql, $befragername);
             // Wenn größer 0 -> Befragername schon vergeben
             if ($resultCheck > 0) {
                 header("Location: ../Befragerregistrierung.php?error=befragernamebereitsvergeben");
                 exit();
             } else {
-                // Eingegebene Daten in Datenbank einfügen
+                // Insert SQL-Befehl befrager
                 $sql = "INSERT INTO befrager (BName, Passwort) VALUES (?, ?)";
-                // Initialisieren mit der richtigen Verbindung
-                $statement = mysqli_stmt_init($conn);
-                // Prüfung auf Übereinstimmung
-                if (!mysqli_stmt_prepare($statement, $sql)) {
-                    // Wenn nicht, Fehlermeldung
-                    header("Location: ../Befragerregistrierung.php?error=sqlerror");
-                    exit();
-                } else {
-                    //Hashing-Operation am Passwort
-                    $hashedPasswort = password_hash($passwort, PASSWORD_DEFAULT);
-                    // Benutzereingaben beim Anmeldeversuch
-                    mysqli_stmt_bind_param($statement, "ss", $befragername, $hashedPasswort);
-                    // Ausführen der Anweisung in der Datenbank
-                    mysqli_stmt_execute($statement);
-                    header("Location: ../Befrageranmeldung.php?anmeldung=erfolgreich");
-                    exit();
-                }
+                // Funktion zum Einfügen von Befragern in die Datenbank
+                insertBefrager($conn, $sql, $passwort, $befragername);
             }
         }
-    }
-    // closing of the statements
+    // Statements schließen
     mysqli_stmt_close($statement);
-    // Beendet die Verbindung
+    // Verbindung beenden
     mysqli_close($conn);
 } 

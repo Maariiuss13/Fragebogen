@@ -1,55 +1,38 @@
 <?php
-// Prüfen, ob der Student auf den Button klickt
+include 'functions.php';
+include 'dbHandler.php';
+?>
+
+<?php
+// Prüfung - Anmeldebutton gedrückt
 if (isset($_POST['studentenanmeldung'])) {
 
-    // Datenbankverbindung ausführen
-    require 'dbHandler.php';
-
-    // Informationsabruf, wenn sich der Benutzer angemeldet hat
+    // Deklaration Variablen
     $MNR = $_POST['mnr'];
 
-    //Fehlerbehandlungen
-
-    // Prüfung, ob etwas in die Felder eingetragen wurde
+    // Prüfung, ob Felder befüllt
     if (empty($MNR)) {
-        // Anzeige eines Fehlercodes in der URL
+        // Fehlercode in URL
         header("Location: ../Studentenanmeldung.php?error=leeresFeld");
-        // Stoppt die Ausführung
+        // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung, ob Daten in der Tabelle enthalten sind
+        // Prüfung doppelter Matrikelnummern
         $sql = "SELECT MNR FROM studenten WHERE MNR='$MNR'";
         // Initialisieren mit der richtigen Verbindung
         $statement = mysqli_stmt_init($conn);
         // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
+            // Ja - SQL-Fehler
             header("Location: ../Studentenanmeldung.php?error=sqlerror");
             exit();
         } else {
-            // Benutzereingaben beim Anmeldeversuch
-            mysqli_stmt_bind_param($statement, "ss", $MNR, $MNR);
-            // Ausführen der Anweisung in der Datenbank
-            mysqli_stmt_execute($statement);
-            // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-            // werden in der Variable $result gespeichert
-            $result = mysqli_stmt_get_result($statement);
-            // Prüfung, ob $result leer ist oder ein Ergebnis liefert
-            if ($row = mysqli_fetch_assoc($result)) {
-                // Wenn nein, wird Session aktiviert und Weiterleitung auf Seite Studentenanmeldung
-                session_start();
-                $_SESSION['session_mnr'] = $row['MNR'];
-                header("Location: ../Studenten.php?anmelden=success");
-                exit();
-            } else {
-                // Wenn leer, dann ist Matrikelnummer nicht vorhanden
-                header("Location: ../Studentenanmeldung.php?error=matrikelnummernichtvergeben");
-                exit();
-            }
+            // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
+            anmeldenStudent($statement);
         }
-        // closing of the statements
+        // Statements schließen
         mysqli_stmt_close($statement);
-        // Beendet die Verbindung
+        // Verbindung beenden
         mysqli_close($conn);
     }
 }

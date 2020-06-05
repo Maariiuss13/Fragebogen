@@ -1,4 +1,24 @@
 <?php include 'includes/header.php';
+include 'includes/functions.php';
+
+if (isset($_POST["FragebogenBearbeiten"])) {
+
+  $FbTitelIB = $_POST['fbTitel'];
+
+  $sql = "SELECT * FROM bearbeitenfb WHERE Titel='$FbTitelIB'";
+  $statement = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($statement, $sql)) {
+    header("Location: ../Studenten.php?error=sqlerror");
+    exit();
+  } else {
+    $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status, Kommentar) VALUES ('$FbTitelIB', ?, 'in Bearbeitung', ?)";
+    $statement = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+      header("Location: ../Studenten.php?error=sqlerror");
+      exit();
+    } 
+  }
+}
 
 //DB-Abfrage Anzahl Fragen
 if (isset($_POST["FragebogenBearbeiten"])) {
@@ -30,38 +50,18 @@ if ($result) {
   <h1>Willkommen auf der Fragenseite!</h1>
   <p>Some subtitle message</p>
   <?php
-    echo "<p> Student: ".$_SESSION['session_mnr']."</p><br/>";
-    echo "<p> Fragebogen: ".$_SESSION["titelFB"]."</p><br/>";
+  echo "<p> Student: " . $_SESSION['session_mnr'] . "</p><br/>";
+  echo "<p> Fragebogen: " . $_SESSION["titelFB"] . "</p><br/>";
   ?>
 </section>
 
 <section class="questions">
   <p class="abc">Seite: <?php echo $_SESSION["aktSeite"] ?> von <?php echo $_SESSION["anzFr"] ?></p>
-  
+
   <fieldset>
-  <?php
-  //aus DB aktuelle Frage holen
-  //Template für prepared statement
-  $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
-  // prepared statement erstellt
-  $stmt = mysqli_stmt_init($conn);
-  // prepared statement vorbereiten
-  if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
-  } else {
-      //Verknüpfung Parameter zu Placeholder
-      $aktFr= $_SESSION["aktSeite"];
-      mysqli_stmt_bind_param($stmt, "s", $aktFr);
-      //Parameter in DB verwenden
-      mysqli_stmt_execute($stmt);
-      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-      $result = mysqli_stmt_get_result($stmt);
-      //Ergebnis ausgeben
-      while ($row = mysqli_fetch_assoc($result)) {
-          echo $row['Fragestellung'];
-      }
-  }
-  ?>
+    <?php
+          aktuelleFrageFB($sql, $conn);
+    ?>
   </fieldset>
 
 
@@ -69,7 +69,7 @@ if ($result) {
 
     <fieldset>
       <input type="radio" id="1" name="bewertung" value=1>
-      <label for="1"> 1 Stern</label> 
+      <label for="1"> 1 Stern</label>
       <input type="radio" id="2" name="bewertung" value=2>
       <label for="2"> 2 Sterne</label>
       <input type="radio" id="3" name="bewertung" value=3>
@@ -83,35 +83,30 @@ if ($result) {
     <input />-->
     </br>
     </br>
-    <input type="submit" value="Zurück" name="Bzurück" 
-      <?php
-        //Deaktivieren Button auf Seite 1 
-        if ($_SESSION["aktSeite"] <= 1) {
-          echo "disabled";
-        }
-        ?> 
-      />
-    <input type="submit" value="Weiter" name="Bweiter" style="float: right;" 
-      <?php
-        //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
-        if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {
-          echo "disabled";
-        }
-        ?> 
-        />
+    <input type="submit" value="Zurück" name="Bzurück" <?php
+           //Deaktivieren Button auf Seite 1 
+           if ($_SESSION["aktSeite"] <= 1) {
+           echo "disabled";
+          }
+          ?> />
+    <input type="submit" value="Weiter" name="Bweiter" style="float: right;" <?php
+              //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
+             if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {
+              echo "disabled";
+              }
+             ?> />
     </br>
     </br>
-    <input type="submit" value="Abschließen" name="Babschluss" style="float: right;" 
-      <?php
-        //Button solange aktiviert, wie akt. Seite != Gesamtanzahl Seiten
-        if ($_SESSION["aktSeite"] != $_SESSION["anzFr"]) {
+    <input type="submit" value="Abschließen" name="Babschluss" style="float: right;" <?php
+          //Button solange aktiviert, wie akt. Seite != Gesamtanzahl Seiten
+          if ($_SESSION["aktSeite"] != $_SESSION["anzFr"]) {
           echo "disabled";
-        }
-        ?> 
-    />
+       }
+      ?> />
   </form>
 
 </section>
 
 </body>
+
 </html>

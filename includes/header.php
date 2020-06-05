@@ -1,4 +1,5 @@
 <?php
+include 'includes/dbHandler.php';
 // Aktiviert eine Session
 session_start();
 // Prüfung, ob eine Sessionvariable belegt ist
@@ -11,9 +12,6 @@ if (isset($_SESSION['session_bname']) || isset($_SESSION['session_mnr'])) {
   header("Location: Startseite.php");
   exit();
 }
-?>
-<?php
-include 'includes/dbHandler.php';
 ?>
 
 <!DOCTYPE html>
