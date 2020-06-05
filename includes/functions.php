@@ -599,8 +599,8 @@ function frageboegen($conn, $sql, $befrager)
     }
 }
 
-// Funktion, die den Status eines Fragebogens ändert
-function statusFBaendern($conn, $sql, $FbTitel, $mnr, $neuerStatus)
+// Funktion, die den Status eines Fragebogens auf in Bearbeitung setzt
+function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
 {
     $statement = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($statement, $sql)) {
@@ -610,6 +610,18 @@ function statusFBaendern($conn, $sql, $FbTitel, $mnr, $neuerStatus)
     mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
     mysqli_stmt_execute($statement);
   }
+}
+
+//Funktion, die den Status eines Fragebogens auf Fertig setzt
+function statusFertig($conn, $sql, $neuerStatus, $FbTitel, $mnr){
+    $statement = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+      header("Location: ../Studenten.php?error=sqlerror");
+      exit();
+    } else {
+      mysqli_stmt_bind_param($statement, "sss", $neuerStatus, $FbTitel, $mnr);
+      mysqli_stmt_execute($statement);
+    }
 }
 
 //WOHER????????????????

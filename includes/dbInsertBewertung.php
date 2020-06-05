@@ -1,5 +1,6 @@
 <?php
 include 'dbHandler.php';
+include 'functions';
 session_start();
 
 // Deklaration Variablen
@@ -56,12 +57,16 @@ if(isset($_POST["Babschluss"])){
         mysqli_stmt_execute($stmt);
     }
 
+    //Status Fragebbogen auf Status F - fertig setzen
+    $titelFB=$_SESSION["titelFB"];
+    $mnr = $_SESSION['session_mnr'];
+    $neuerStatus='F';
+    $sqlSt="UPDATE bearbeitenfb SET Status=? WHERE Titel=? AND MNR=?";
+    statusFertig($conn, $sqlSt, $neuerStatus, $titelFB, $mnr);
+
     //aktSeite wieder auf 1 setzen
     $_SESSION["aktSeite"]=1;
     //Weiterleitung auf neue Fragenseite
     header("Location: ../AbschlussseiteFragebogen.php?ErfassungAbgeschlossen");
-    
-    //Status Fragebbogen auf Status F - fertig setzen
-    
 }
 

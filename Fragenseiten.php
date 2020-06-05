@@ -13,7 +13,7 @@ if (isset($_POST["FragebogenBearbeiten"])) {
   $neuerStatus = 'B';
   $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status) VALUES (?, ?, ?)";
   // Funktion, die den Status eines Fragebogens ändert
-  statusFBaendern($conn, $sql, $FbTitel, $mnr, $neuerStatus);
+  statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus);
 
   //DB-Abfrage Anzahl Fragen in Session-Variable speichern
   $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$FbTitel';";
