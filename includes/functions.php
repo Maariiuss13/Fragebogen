@@ -600,7 +600,7 @@ function frageboegen($conn, $sql, $befrager)
 }
 
 // Funktion, die den Status eines Fragebogens ändert
-function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
+function statusFBaendern($conn, $sql, $FbTitel, $mnr, $neuerStatus)
 {
     $statement = mysqli_stmt_init($conn);
   if (!mysqli_stmt_prepare($statement, $sql)) {
@@ -610,7 +610,9 @@ function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
     mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
     mysqli_stmt_execute($statement);
   }
+}
 
+//WOHER????????????????
 function titelFragebogen($conn, $sql, $befrager)
 {
     //Abfrage SQL
@@ -624,27 +626,18 @@ function titelFragebogen($conn, $sql, $befrager)
     }
 }
 
-function aktuelleFrageFB($sql, $conn)
-{
-    //aus DB aktuelle Frage holen
-    //Template für prepared statement
-    $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
-    // prepared statement erstellt
+function aktFrageFB($conn, $sql, $anzFr, $titelFB){
     $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
-    } else {
-      //Verknüpfung Parameter zu Placeholder
-      $aktFr = $_SESSION["aktSeite"];
-      mysqli_stmt_bind_param($stmt, "s", $aktFr);
-      //Parameter in DB verwenden
-      mysqli_stmt_execute($stmt);
-      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-      $result = mysqli_stmt_get_result($stmt);
-      //Ergebnis ausgeben
-      while ($row = mysqli_fetch_assoc($result)) {
-        echo $row['Fragestellung'];
-      }
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../Fragenseiten.php?error=sqlerror");
+    }
+    else{
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $anzFr);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo $row['Fragestellung'];
+        }
     }
 }

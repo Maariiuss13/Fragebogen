@@ -1,49 +1,46 @@
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
-//aus DB freigegebene Fragebogen des Studenten holen
-$mnr = $_SESSION['session_mnr'];
 
+
+//Beim Start Fragebogen Ausfüllen ausführen
 if (isset($_POST["FragebogenBearbeiten"])) {
-
+  //Variablen deklarieren
+  $mnr = $_SESSION['session_mnr'];
   $FbTitel = $_POST['fbTitel'];
-
+  
+  //Status Fragebogen auf B - in Bearbeitung setzen
   $neuerStatus = 'B';
-
   $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status) VALUES (?, ?, ?)";
   // Funktion, die den Status eines Fragebogens ändert
-  statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus);
-}
+  statusFBaendern($conn, $sql, $FbTitel, $mnr, $neuerStatus);
 
-//DB-Abfrage Anzahl Fragen
-if (isset($_POST["FragebogenBearbeiten"])) {
-  $titelFB = $_POST["fbTitel"];
-  $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$titelFB';";
+  //DB-Abfrage Anzahl Fragen in Session-Variable speichern
+  $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$FbTitel';";
   $resultAnzFr = mysqli_query($conn, $sqlAnzFr);
   $anzFr = mysqli_fetch_assoc($resultAnzFr);
   $_SESSION["anzFr"] = $anzFr["anzFr"];
-}
 
-//Deklaration Session-Variablen
-if (isset($_POST["FragebogenBearbeiten"])) {
+  //Deklaration Session-Variablen für weiteres Ausfüllen Fragebogen
   $_SESSION["aktSeite"] = 1;
-  $_SESSION["titelFB"] = $_POST["fbTitel"];
+  $_SESSION["titelFB"] = $FbTitel;
+
 }
 
 
-
-$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";
+//????????????????????????????????????????????????????
+/*$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";
 $result = mysqli_query($conn, $sql);
 if ($result) {
   $resultArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
+}*/
 ?>
 
 <link href="Fragenseitendesign.css" rel="stylesheet">
 
 <section class="welcome">
   <h1>Willkommen auf der Fragenseite!</h1>
-  <p>Some subtitle message</p>
+  <p>Bitte wählen Sie eine Bewertung aus</p>
   <?php
   echo "<p> Student: " . $_SESSION['session_mnr'] . "</p><br/>";
   echo "<p> Fragebogen: " . $_SESSION["titelFB"] . "</p><br/>";
@@ -55,7 +52,12 @@ if ($result) {
 
   <fieldset>
     <?php
-          aktuelleFrageFB($sql, $conn);
+      $aktFr = $_SESSION["aktSeite"];
+      $titelFb = $_SESSION["titelFB"];
+      
+      //aktuelle Frage aus DB holen
+      $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=?;";
+      aktFrageFB($conn, $sqlFr, $titelFb, $aktFr);
     ?>
   </fieldset>
 
@@ -74,16 +76,9 @@ if ($result) {
       <input type="radio" id="5" name="bewertung" value=5>
       <label for="5"> 5 Sterne</label>
     </fieldset>
-    <!-- Select einfügen 
-    <input />-->
     </br>
     </br>
-    <input type="submit" value="Zurück" name="Bzurück" <?php
-           //Deaktivieren Button auf Seite 1 
-           if ($_SESSION["aktSeite"] <= 1) {
-           echo "disabled";
-          }
-          ?> />
+    
     <input type="submit" value="Weiter" name="Bweiter" style="float: right;" <?php
               //Deaktivieren Button, wenn akt. Seite = Gesamtanzahl Seiten
              if ($_SESSION["aktSeite"] >= $_SESSION["anzFr"]) {

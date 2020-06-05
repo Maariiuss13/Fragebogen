@@ -60,14 +60,8 @@ if(isset($_POST["Babschluss"])){
     $_SESSION["aktSeite"]=1;
     //Weiterleitung auf neue Fragenseite
     header("Location: ../AbschlussseiteFragebogen.php?ErfassungAbgeschlossen");
-}
-
-
-//Vorgehen bei Button Zurück
-if(isset($_POST["Bzurück"])){
-    //Runterzählen aktSeite
-    $_SESSION["aktSeite"]--;
-    //Weiterleitung auf neue Fragenseite
-    header("Location: ../Fragenseiten.php?Back");
+    
+    //Status Fragebbogen auf Status F - fertig setzen
+    
 }
 
