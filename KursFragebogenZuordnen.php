@@ -22,6 +22,7 @@ if (isset($_GET["fragebogenzuordnen"])) {
         <label for="kurskuerzel"><b>Kurs</b></label>
         <select style="padding: 12px 7px" name="kurskuerzel" size="0" readonly>
             <?php
+            // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
             kurse($conn, $sql);
             ?>
         </select>
@@ -29,6 +30,7 @@ if (isset($_GET["fragebogenzuordnen"])) {
         <label for="fragebogentitel"><b>Fragebogen</b></label>
         <select style="padding: 12px 7px" name="fragebogentitel" size="0" readonly>
             <?php
+            // Funktion, die alle Fragebögen die in der Datenbank gespeichert sind, anzeigt
             frageboegen($conn, $sql, $befrager);
             ?>
         </select>
