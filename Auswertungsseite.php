@@ -1,5 +1,7 @@
 <?php include 'includes/header.php';
 include 'includes/dbHandler.php';
+include 'includes/functions.php';
+
 $sql= "SELECT * FROM frageboegen WHERE befrager = 'Marius';";
         $result = mysqli_query($conn, $sql);
         if ($result) {
@@ -41,15 +43,7 @@ if ($result) {
     <label for="fbTitel">Name Fragebogen: </label>
             <select name="fbTitel">
                 <?php
-                    //Abfrage SQL
-                    $befrager=$_SESSION['session_bname'];
-                    $sql= "SELECT titel FROM frageboegen WHERE Befrager='$befrager';";
-                    //Speicherung Ergebnis in Variable
-                    $result= mysqli_query($conn, $sql);
-                    //Ausgabe Ergebnis
-                    while($row= mysqli_fetch_assoc($result)){
-                    echo "<option>".$row['titel']."</option>";
-                    }
+                    test($conn, $sql, $befrager);
                 ?>
             </select>
     <p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>
