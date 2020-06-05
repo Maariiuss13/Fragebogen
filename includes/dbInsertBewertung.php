@@ -1,6 +1,6 @@
 <?php
 include 'dbHandler.php';
-include 'functions';
+include 'functions.php';
 session_start();
 
 // Deklaration Variablen
