@@ -4,6 +4,10 @@ include 'includes/functions.php';
 <?php
 $mnr = $_SESSION['session_mnr'];
 $FbTitel = $_SESSION["titelFB"];
+
+if (!isset($_SESSION["Babschluss"])){
+    header ("Location: Studenten.php");
+}
 ?>
 
 
@@ -22,9 +26,9 @@ $FbTitel = $_SESSION["titelFB"];
 
     <form action="includes/dbInsertKommentar.php" method="POST">
         <label for="text">Kommentar:</label><br />
-        <textarea id="text" name="text" cols="35" rows="4"></textarea><br />
-
-        <input type="submit" value="Speichern" name="Speichern" />
+        <input type="text" name="kommentar" size="100">
+        </br> </br>
+        <input type="submit" value="Speichern" name="kommentarSpeichern" />
     </form>
 
     <form action="Studenten.php">

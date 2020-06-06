@@ -2,10 +2,10 @@
 include 'includes/functions.php';
 
 //Beim Start Fragebogen Ausfüllen ausführen
-if (isset($_POST['FragebogenBearbeiten'])) {
+if (isset($_POST["FragebogenBearbeiten"])) {
   //Variablen deklarieren
-  $mnr = $_SESSION['session_mnr'];
-  $FbTitel = $_POST['fbTitel'];
+  $mnr = $_SESSION["session_mnr"];
+  $FbTitel = $_POST["fbTitel"];
   
   //Status Fragebogen auf B - in Bearbeitung setzen
   $neuerStatus = 'B';
@@ -25,12 +25,10 @@ if (isset($_POST['FragebogenBearbeiten'])) {
 
 }
 
+//Wenn kein Fragebogen ausgewählt, Rücksendung auf Studentenseite
 if ($_SESSION["titelFB"] == '') {
   header("Location: Studenten.php?KeinFragebogenAusgewaehlt");
 }
-
-
-
 
 //????????????????????????????????????????????????????
 /*$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";

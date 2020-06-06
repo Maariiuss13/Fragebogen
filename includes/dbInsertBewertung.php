@@ -66,7 +66,8 @@ if(isset($_POST["Babschluss"])){
 
     //aktSeite wieder auf 1 setzen
     $_SESSION["aktSeite"]=1;
-    //Weiterleitung auf neue Fragenseite
+    //Weiterleitung auf Abschlusseite
     header("Location: ../AbschlussseiteFragebogen.php?ErfassungAbgeschlossen");
+    $_SESSION["Babschluss"] = $_POST["Babschluss"];
 }
 
