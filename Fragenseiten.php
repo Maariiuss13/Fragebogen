@@ -4,7 +4,7 @@ include 'includes/functions.php';
 
 
 //Beim Start Fragebogen Ausfüllen ausführen
-if (isset($_POST["FragebogenBearbeiten"])) {
+if (isset($_POST['FragebogenBearbeiten']) && $_POST['fbTitel'] != '') {
   //Variablen deklarieren
   $mnr = $_SESSION['session_mnr'];
   $FbTitel = $_POST['fbTitel'];
@@ -26,6 +26,10 @@ if (isset($_POST["FragebogenBearbeiten"])) {
   $_SESSION["titelFB"] = $FbTitel;
 
 }
+else {
+  header("Location: Studenten.php?KeinFragebogenAusgewaehlt");
+}
+
 
 
 //????????????????????????????????????????????????????
