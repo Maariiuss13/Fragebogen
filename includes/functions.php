@@ -653,3 +653,20 @@ function aktFrageFB($conn, $sql, $titelFB,$anzFr){
         }
     }
 }
+
+//Funktion, die den Bewertungswert zu einer Frage zurückgibt
+//$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
+function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB){
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../Fragenseiten2.php?error=sqlerror");
+    }
+    else{
+        mysqli_stmt_bind_param($stmt, "sss", $mnr, $frageNr, $titelFB);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            return $row['Bewertungswert'];
+        }
+    }
+}

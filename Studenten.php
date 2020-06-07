@@ -21,7 +21,7 @@ $mnr = $_SESSION['session_mnr'];
     </fieldset>
 </form>
 
-<form action="Fragenseiten.php" method="post">
+<form action="Fragenseiten2.php" method="post">
     <fieldset>
         <legend>Fragebogen in Bearbeitung</legend>
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
@@ -30,6 +30,6 @@ $mnr = $_SESSION['session_mnr'];
             fragebogenInBearbeitung($conn, $sql, $student);
             ?>
         </select>
-        <button type="submit" name="FragebogenBearbeiten" value="Fragebogen bearbeiten">Fragebogen starten!</button>
+        <button type="submit" name="FragebogenBearbeiten2" value="Fragebogen bearbeiten">Fragebogen starten!</button>
     </fieldset>
 </form>
