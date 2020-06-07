@@ -14,7 +14,7 @@ $mnr = $_SESSION['session_mnr'];
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
             // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
-            offeneFragebogen($conn, $sql, $student);
+            offeneFragebogen($conn, $sql, $mnr);
             ?>
         </select>
         <button type="submit" name="FragebogenBearbeiten">Fragebogen starten!</button>

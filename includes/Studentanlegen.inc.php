@@ -22,6 +22,9 @@ if (isset($_POST['studentanlegen'])) {
         $sql = "SELECT * FROM studenten WHERE MNR='$MNR' OR Kurs='$Kurskuerzel'";
         // Prüfung, ob Student in der Datenbank bereits enthalten ist
         checkStudent($conn, $sql, $MNR, $Kurskuerzel);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $resultCheck = mysqli_stmt_num_rows($statement);
         // Wenn größer 0 -> Matrikelnummer schon vergeben
         if ($resultCheck > 0) {
             header("Location: ../Kurs.php?error=matrikelnummerbereitsvergeben");
