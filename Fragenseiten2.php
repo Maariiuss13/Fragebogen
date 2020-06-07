@@ -51,7 +51,6 @@ if ($_SESSION["titelFB"] == '') {
 
 
   <form action="includes/dbUpdateBewertung.php" method="POST">
-
     <fieldset>    
       <p><?php
         $mnr = $_SESSION["session_mnr"];
