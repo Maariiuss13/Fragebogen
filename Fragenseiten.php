@@ -56,8 +56,7 @@ if ($result) {
     <?php
       $aktFr = $_SESSION["aktSeite"];
       $titelFb = $_SESSION["titelFB"];
-      
-      //aktuelle Frage aus DB holen
+      //aktuelle Frage aus DB holen und ausgeben
       $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=?;";
       aktFrageFB($conn, $sqlFr, $titelFb, $aktFr);
     ?>

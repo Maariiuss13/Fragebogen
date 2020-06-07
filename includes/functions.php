@@ -638,7 +638,7 @@ function titelFragebogen($conn, $sql, $befrager)
     }
 }
 
-function aktFrageFB($conn, $sql, $anzFr, $titelFB){
+function aktFrageFB($conn, $sql, $titelFB,$anzFr){
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("Location: ../Fragenseiten.php?error=sqlerror");
