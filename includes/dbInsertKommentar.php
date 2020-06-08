@@ -4,7 +4,7 @@ include 'functions.php';
 session_start();
 
 // Deklaration Variablen
-$kommentar = $_POST["kommentar"];
+$kommentar = htmlspecialchars(stripslashes(trim($_POST["kommentar"])));
 
 if(isset($_POST["kommentarSpeichern"])){
     //Prüfen, ob Felder befüllt

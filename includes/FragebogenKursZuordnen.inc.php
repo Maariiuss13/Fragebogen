@@ -8,8 +8,8 @@ include 'dbHandler.php';
 if (isset($_POST['fragebogenzuordnen'])) {
 
     // Deklaration Variablen
-    $Kuerzel = $_POST['kurskuerzel'];
-    $Titel = $_POST['fragebogentitel'];
+    $Kuerzel = htmlspecialchars(stripslashes(trim($_POST['kurskuerzel'])));
+    $Titel = htmlspecialchars(stripslashes(trim($_POST['fragebogentitel'])));
 
     // Prüfung doppelter Titel
     $sql = "SELECT * FROM freischaltenfb WHERE Titel='$Titel'";

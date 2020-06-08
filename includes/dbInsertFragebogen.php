@@ -5,13 +5,13 @@ session_start();
 
 
 // Deklaration Variablen
-$titel = $_POST["titelFragebogen"];
-$beschreibung = $_POST["beschreibungFB"];
+$titel = htmlspecialchars(stripslashes(trim($_POST["titelFragebogen"])));
+$beschreibung = htmlspecialchars(stripslashes(trim($_POST["beschreibungFB"])));
 $befrager = $_SESSION["session_bname"];
 
 //Deklaration Session-Variablen für Fragenseiten
-$_SESSION["anzFragen"] = $_POST["anzahlFragen"];
-$_SESSION["aktFB"] = $_POST["titelFragebogen"];
+$_SESSION["anzFragen"] = htmlspecialchars(stripslashes(trim($_POST["anzahlFragen"])));
+$_SESSION["aktFB"] = htmlspecialchars(stripslashes(trim($_POST["titelFragebogen"])));
 $_SESSION["aktSeite"] = 1;
 
 
@@ -22,7 +22,7 @@ if(isset($_POST["speichernFragebogen"])){
         exit();
     }
     //Prüfen, ob AnzahlFragen > 0
-    if(($_POST["anzahlFragen"]<=0)){
+    if((htmlspecialchars(stripslashes(trim($_POST["anzahlFragen"])))<=0)){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
         exit();
     }

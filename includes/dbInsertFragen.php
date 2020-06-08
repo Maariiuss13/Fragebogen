@@ -6,7 +6,7 @@ session_start();
 
 
 // Deklaration Variablen
-$frage = $_POST["frage"];
+$frage = htmlspecialchars(stripslashes(trim($_POST["frage"])));
 
 
 //Vorgehen bei Button Weiter
