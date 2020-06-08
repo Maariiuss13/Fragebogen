@@ -8,7 +8,7 @@ include 'dbHandler.php';
 if (isset($_POST['studentenanmeldung'])) {
 
     // Deklaration Variablen
-    $MNR = $_POST['mnr'];
+    $MNR = htmlspecialchars(stripslashes(trim($_POST['mnr'])));
 
     // Prüfung, ob Felder befüllt
     if (empty($MNR)) {

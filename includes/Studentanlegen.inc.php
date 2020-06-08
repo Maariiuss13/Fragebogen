@@ -8,13 +8,13 @@ include 'dbHandler.php';
 if (isset($_POST['studentanlegen'])) {
 
     // Deklaration Variablen
-    $MNR = $_POST['mnr'];
-    $Kurskuerzel = $_POST['kurs'];
+    $MNR = htmlspecialchars(stripslashes(trim($_POST['mnr'])));
+    $Kurskuerzel = htmlspecialchars(stripslashes(trim($_POST['kurs'])));
 
     //Prüfung, ob Felder befüllt 
     if (empty($MNR)) {
         // Fehlercode in URL
-        header("Location: ../Kurs.php?error=leerefelder");
+        header("Location: ../Kurs.php?error=leerefelderstudent");
         // Stoppt die Ausführung des Skripts
         exit();
     } else {

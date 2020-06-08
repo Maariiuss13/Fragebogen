@@ -5,7 +5,7 @@ session_start();
 
 
 // Deklaration Variablen
-$frage = $_POST["neueFrage"];
+$frage = htmlspecialchars(stripslashes(trim($_POST["neueFrage"])));
 $titel = $_SESSION["KopieFB"];
 $befrager = $_SESSION["session_bname"];
 

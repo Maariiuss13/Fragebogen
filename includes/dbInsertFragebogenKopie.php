@@ -5,13 +5,13 @@ session_start();
 
 
 // Deklaration Variablen
-$titelAlt = $_POST["fbTitelAlt"];
-$titelNeu = $_POST["fbTitelNeu"];
+$titelAlt = htmlspecialchars(stripslashes(trim($_POST["fbTitelAlt"])));
+$titelNeu = htmlspecialchars(stripslashes(trim($_POST["fbTitelNeu"])));
 $befrager = $_SESSION["session_bname"];
 
 //Deklaration Session-Variablen für Fragenseiten
-$_SESSION["alterFB"] = $_POST["fbTitelAlt"];
-$_SESSION["KopieFB"] = $_POST["fbTitelNeu"];
+$_SESSION["alterFB"] = htmlspecialchars(stripslashes(trim($_POST["fbTitelAlt"])));
+$_SESSION["KopieFB"] = htmlspecialchars(stripslashes(trim($_POST["fbTitelNeu"])));
 
 
 //Beschreibung kopieren

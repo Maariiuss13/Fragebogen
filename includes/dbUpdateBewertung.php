@@ -4,7 +4,7 @@ include 'functions.php';
 session_start();
 
 // Deklaration Variablen
-$bewertung = $_POST["bewertung"];
+$bewertung = htmlspecialchars(stripslashes(trim($_POST["bewertung"])));
 
 //Vorgehen bei Button Weiter
 if(isset($_POST["Bweiter"])){
@@ -68,6 +68,6 @@ if(isset($_POST["Babschluss"])){
     $_SESSION["aktSeite"]=1;
     //Weiterleitung auf Abschlusseite
     header("Location: ../AbschlussseiteFragebogen.php?ErfassungAbgeschlossen");
-    $_SESSION["Babschluss"] = $_POST["Babschluss"];
+    $_SESSION["Babschluss"] = htmlspecialchars(stripslashes(trim($_POST["Babschluss"])));
 }
 

@@ -5,7 +5,7 @@ include 'includes/functions.php';
 if (isset($_POST["FragebogenBearbeiten2"])) {
   //Variablen deklarieren
   $mnr = $_SESSION["session_mnr"];
-  $FbTitel = $_POST["fbTitel"];
+  $FbTitel = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
   
   //DB-Abfrage Anzahl Fragen in Session-Variable speichern
   $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$FbTitel';";

@@ -5,7 +5,7 @@ include 'includes/functions.php';
 if (isset($_POST["FragebogenBearbeiten"])) {
   //Variablen deklarieren
   $mnr = $_SESSION["session_mnr"];
-  $FbTitel = $_POST["fbTitel"];
+  $FbTitel = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
   
   //Status Fragebogen auf B - in Bearbeitung setzen
   $neuerStatus = 'B';

@@ -8,8 +8,8 @@ include 'dbHandler.php';
 if (isset($_POST['befrageranmeldung'])) {
 
     // Deklaration Variablen
-    $BName = $_POST['befragername'];
-    $Passwort = $_POST['passwort'];
+    $BName = htmlspecialchars(stripslashes(trim($_POST['befragername'])));
+    $Passwort = htmlspecialchars(stripslashes(trim($_POST['passwort'])));
 
     // Prüfung, ob Felder befüllt
     if (empty($BName) || empty($Passwort)) {

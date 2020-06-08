@@ -9,7 +9,7 @@ include 'includes/functions.php';
 // Fehlermeldungen bzw. Erfolgsmeldungen, die bei Unstimmigkeiten 
 // bzw. Erfolg bei der Anmeldung geworfen werden 
 if (isset($_GET["error"])) {
-    if ($_GET["error"] == "leerefelder") {
+    if ($_GET["error"] == "leerefelderkurs") {
         echo '<p align="center" style="color: red;">Füllen Sie bitte alle Felder aus!</p>';
     } else if ($_GET["error"] == "kursnamebereitsvergeben") {
         echo '<p align="center" style="color: red;">Dieser Kursname ist bereits vergeben!</p>';
@@ -45,7 +45,7 @@ if (isset($_GET["error"])) {
 // Fehlermeldungen bzw. Erfolgsmeldungen, die bei Unstimmigkeiten 
 // bzw. Erfolg bei der Anmeldung geworfen werden 
 if (isset($_GET["error"])) {
-    if ($_GET["error"] == "leerefelder") {
+    if ($_GET["error"] == "leerefelderstudent") {
         echo '<p align="center" style="color: red;">Füllen Sie bitte alle Felder aus!</p>';
     } else if ($_GET["error"] == "matrikelnummerbereitsvergeben") {
         echo '<p align="center" style="color: red;">Diese Matrikelnummer ist bereits vergeben!</p>';
