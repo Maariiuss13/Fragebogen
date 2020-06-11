@@ -8,9 +8,9 @@ include 'dbHandler.php';
 if (isset($_POST['befragerregistrierung'])) {
 
     // Deklaration Variablen
-    $befragername = $_POST['befragername'];
-    $passwort = $_POST['passwort'];
-    $passwortWiederholen = $_POST['passwortWiederholen'];
+    $befragername = htmlspecialchars(stripslashes(trim($_POST['befragername'])));
+    $passwort = htmlspecialchars(stripslashes(trim($_POST['passwort'])));
+    $passwortWiederholen = htmlspecialchars(stripslashes(trim($_POST['passwortWiederholen'])));
 
     // Prüfung, ob Felder befüllt
     if (empty($befragername) || empty($passwort) || empty($passwortWiederholen)) {

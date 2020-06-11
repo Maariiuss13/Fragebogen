@@ -2,17 +2,11 @@
 include 'includes/functions.php';
 
 //Beim Start Fragebogen Ausfüllen ausführen
-if (isset($_POST["FragebogenBearbeiten"])) {
+if (isset($_POST["FragebogenBearbeiten2"])) {
   //Variablen deklarieren
   $mnr = $_SESSION["session_mnr"];
   $FbTitel = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
   
-  //Status Fragebogen auf B - in Bearbeitung setzen
-  $neuerStatus = 'B';
-  $sql = "INSERT INTO bearbeitenfb (Titel, MNR, Status) VALUES (?, ?, ?)";
-  // Funktion, die den Status eines Fragebogens ändert
-  statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus);
-
   //DB-Abfrage Anzahl Fragen in Session-Variable speichern
   $sqlAnzFr = "SELECT COUNT(FrageNr) AS anzFr from fragen where Titel = '$FbTitel';";
   $resultAnzFr = mysqli_query($conn, $sqlAnzFr);
@@ -56,18 +50,53 @@ if ($_SESSION["titelFB"] == '') {
   </fieldset>
 
 
-  <form action="includes/dbInsertBewertung.php" method="POST">
+  <form action="includes/dbUpdateBewertung.php" method="POST">
+    <fieldset>    
+      <p><?php
+        $mnr = $_SESSION["session_mnr"];
+        $titelFB = $_SESSION["titelFB"];
+        $frageNr = $_SESSION["aktSeite"];
+        //Bewertungswert in Variable $bewertung speichern 
+        $sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
+        $bewertung = aktAntwF($conn, $sqlV, $mnr, $frageNr, $titelFB);
+        echo $bewertung."</br>".$mnr."</br>".$titelFB."</br>".$frageNr;
+      ?>
+      </p>
 
-    <fieldset>
-      <input type="radio" id="1" name="bewertung" value=1>
+      <input type="radio" id="1" name="bewertung" value=1 <?php
+            //Setzen des Radio-Buttons
+            if ($bewertung == 1) {
+              echo "checked";
+            }
+            ?> />
       <label for="1"> 1 Stern</label>
-      <input type="radio" id="2" name="bewertung" value=2>
+      <input type="radio" id="2" name="bewertung" value=2 <?php
+            //Setzen des Radio-Buttons
+            if ($bewertung == 2) {
+              echo "checked";
+            }
+            ?> />
       <label for="2"> 2 Sterne</label>
-      <input type="radio" id="3" name="bewertung" value=3>
+      <input type="radio" id="3" name="bewertung" value=3 <?php
+            //Setzen des Radio-Buttons
+            if ($bewertung == 3) {
+              echo "checked";
+            }
+            ?> />
       <label for="3"> 3 Sterne</label>
-      <input type="radio" id="4" name="bewertung" value=4>
+      <input type="radio" id="4" name="bewertung" value=4 <?php
+            //Setzen des Radio-Buttons
+            if ($bewertung == 4) {
+              echo "checked";
+            }
+            ?> />
       <label for="4"> 4 Sterne</label>
-      <input type="radio" id="5" name="bewertung" value=5>
+      <input type="radio" id="5" name="bewertung" value=5 <?php
+            //Setzen des Radio-Buttons
+            if ($bewertung == 5) {
+              echo "checked";
+            }
+            ?> />
       <label for="5"> 5 Sterne</label>
     </fieldset>
     </br>

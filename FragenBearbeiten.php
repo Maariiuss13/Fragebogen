@@ -14,7 +14,7 @@ include 'includes/header.php';
     <?php
         //Deklaration Variablen
         if (isset($_POST['FragebogenBearbeiten'])){
-            $_SESSION['bearbeitenFB'] = $_POST["fbTitel"];
+            $_SESSION['bearbeitenFB'] = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
         }
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
         echo "<p> Ersteller Fragebogen: ".$_SESSION['bearbeitenFB']."</p><br/>";

@@ -5,7 +5,7 @@ session_start();
 
 
 // Deklaration Variablen
-$titel = $_POST["titelFragebogen"];
+$titel = htmlspecialchars(stripslashes(trim($_POST["titelFragebogen"])));
 $befrager = $_SESSION["session_bname"];
 
 
