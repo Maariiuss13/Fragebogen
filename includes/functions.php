@@ -1,14 +1,14 @@
 <?php
 
-//Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist FragebogenNEU
-function checkTitelDB($conn, $sql, $titel)
+//Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist
+function checkTitelDB($conn, $sql, $titel, $sqlerror, $error)
 {
     // Initialisieren mit der richtigen Verbindung
     $stmt = mysqli_stmt_init($conn);
     // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         // Wenn ja, dann SQL-Fehler
-        header("Location: ../FragebogenNeu.php?error=sqlerror");
+        header($sqlerror);
         exit();
     } else {
         // Benutzereingaben Titel
@@ -21,21 +21,21 @@ function checkTitelDB($conn, $sql, $titel)
         $resultCheck = mysqli_stmt_num_rows($stmt);
         // Wenn größer 0 -> Titel schon vergeben
         if ($resultCheck > 0) {
-            header("Location: ../FragebogenNeu.php?error=TitelBereitsVorhanden");
+            header($error);
             exit();
         }
     }
 }
 
 //Funktion zur Prüfung, ob Frage bereits vorhanden für FragebogenNEU
-function checkFrage($conn, $sql, $frage)
+function checkFrage($conn, $sql, $frage, $sqlerror, $error)
 {
     // Initialisieren mit der richtigen Verbindung
     $stmt = mysqli_stmt_init($conn);
     // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         // Wenn ja, dann SQL-Fehler
-        header("Location: ../FragenseitenNeu.php?error=sqlerror");
+        header($sqlerror);
         exit();
     } else {
         // Benutzereingaben Frage
@@ -48,7 +48,7 @@ function checkFrage($conn, $sql, $frage)
         $resultCheck = mysqli_stmt_num_rows($stmt);
         // Wenn größer 0 -> Titel schon vergeben
         if ($resultCheck > 0) {
-            header("Location: ../FragebogenNeu.php?error=FrageBereitsVorhanden");
+            header($error);
             exit();
         }
     }
@@ -56,13 +56,13 @@ function checkFrage($conn, $sql, $frage)
 
 
 //Funktion zur Ausgabe Fragebogen des Befragers
-function echoFbBefrager($conn, $sql, $befrager)
+function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
@@ -85,7 +85,6 @@ function echoFragenKopie($conn, $sql, $titelFB)
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("Location: ../FrageKopieBearbeiten.php?error=SQLFehler");
-        echo "SQL Fehler bei Abfrage Fragebogen";
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $titelFB);
@@ -209,11 +208,11 @@ function updatefragenr($conn, $sql, $titelFB){
 
 
 //Funktion zum Insert eines neuen Fragenbogens
-function insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager)
+function insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerror)
 {
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter mit Placeholdern
         mysqli_stmt_bind_param($stmt, "sss", $titel, $beschreibung, $befrager);

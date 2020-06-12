@@ -35,22 +35,19 @@ if(isset($_POST["speichernFragebogen"])){
         //Prüfung doppelter Titel
         $sqlTitel="SELECT titel FROM frageboegen WHERE titel=?;";
         //Funktion zum Prüfen, ob Titel bereits in DB vorhanden
-        checkTitelDB($conn, $sqlTitel, $titel);
-
+        $sqlerror= "Location: ../FragebogenNeu.php?error=sqlerror";
+        $error= "Location: ../FragebogenNeu.php?error=TitelBereitsVorhanden";
+        checkTitelDB($conn, $sqlTitel, $titel, $sqlerror, $error);
 
         //Insert Fragebogen
         $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
         //prepared statement erstellen
-        insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager);
+        $sqlerror="Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler";
+        insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerror);
     }
 }
 
 
 
 //Weiterleitung auf Fragen-Seite
-if (!$sql) {
-    echo mysqli_error($sql);
-}
-else {
-    header("Location: ../FragenseitenNeu.php?FragebogenSpeichern=erfolgreich");
-}
+header("Location: ../FragenseitenNeu.php?FragebogenSpeichern=erfolgreich");
