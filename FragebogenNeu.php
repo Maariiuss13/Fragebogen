@@ -40,7 +40,10 @@ include 'includes/header.php';
         </form>
         
     </div>
-
+    
+    <div align="right" style="padding-top: 10px">
+    <a href=Befrager.php>Zurück zur Startseite der Befrager</a>
+    </div>
 
 </body>
 </html>
