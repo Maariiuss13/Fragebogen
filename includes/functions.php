@@ -125,12 +125,12 @@ function auswahlFragen($conn, $sql, $titelFB, $sqlerror)
 
 
 //Funktion zum Löschen von Fragebogen mit dazugehörigen Fragen
-function deleteFrageboegen($conn, $sql, $titel)
+function deleteFrageboegen($conn, $sql, $titel, $sqlerror)
 {
     //prepared statement erstellen
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FragebogenLoeschen.php?error=SQLBefehlFehler");
+        header($sqlerror);
         exit();
     } else {
         //Verknüpfung Parameter mit Placeholdern
@@ -141,12 +141,12 @@ function deleteFrageboegen($conn, $sql, $titel)
 }
 
 //Funktion zum Löschen von Fragen auf der Seite FragenBearbeiten
-function deleteFragen($conn, $sql, $titelFB, $frageNr)
+function deleteFragen($conn, $sql, $titelFB, $frageNr, $sqlerror)
 {
     //prepared statement erstellen
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        //header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehler");
+        header($sqlerror);
         exit();
     } else {
         //Verknüpfung Parameter mit Placeholdern
@@ -157,11 +157,11 @@ function deleteFragen($conn, $sql, $titelFB, $frageNr)
 }
 
 //Funktion zum Update der FrageNr´s nach Löschen einer Frage aus Fragebogen
-function updatefragenr($conn, $sql, $titelFB){
+function updatefragenr($conn, $sql, $titelFB, $sqlerror){
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $titelFB);
@@ -213,49 +213,16 @@ function defineFrageNr($conn, $sql)
 
 
 
-//Funktion zum Insert Fragen bei FragebogenNeu
-function insertFrageN($conn, $sql, $frage)
+//Funktion zum Insert Fragen
+function insertFrage($conn, $sql, $aktS, $titelFb, $frage, $sqlerror)
 {
     //prepared statement erstellen
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FragebogenNeu.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter mit Placeholdern
-        mysqli_stmt_bind_param($stmt, "sss", $_SESSION["aktSeite"], $_SESSION["aktFB"], $frage);
-        //Run Code in DB
-        mysqli_stmt_execute($stmt);
-    }
-}
-
-//Funktion zum Insert Frage bei FragebogenKopie
-function insertFrageK($conn, $sql, $frageNr, $titel, $frage)
-{
-    //prepared statement erstellen
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FragenKopieBearbeiten.php?error=SQLBefehlFehlerFB");
-        exit();
-    } else {
-        //Verknüpfung Parameter mit Placeholdern
-        mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
-        //Run Code in DB
-        mysqli_stmt_execute($stmt);
-    }
-}
-
-
-//Funktion zum Insert Fragen bei FragenBearbeiten
-function insertFrageB($conn, $sql, $frageNr, $titel, $frage)
-{
-    //prepared statement erstellen
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FragenBearbeiten.php?error=SQLBefehlFehlerFB");
-        exit();
-    } else {
-        //Verknüpfung Parameter mit Placeholdern
-        mysqli_stmt_bind_param($stmt, "sss", $frageNr, $titel, $frage);
+        mysqli_stmt_bind_param($stmt, "sss", $aktS, $titelFb, $frage);
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
@@ -643,6 +610,7 @@ function auswertungFunktion($conn,$sql, $fbtitel, $kurs){
     }*/
 //Funktion, die den Bewertungswert zu einer Frage zurückgibt
 //$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
+}
 function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB){
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
