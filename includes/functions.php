@@ -27,7 +27,7 @@ function checkTitelDB($conn, $sql, $titel, $sqlerror, $error)
     }
 }
 
-//Funktion zur Prüfung, ob Frage bereits vorhanden für FragebogenNEU
+//Funktion zur Prüfung, ob Frage bereits vorhanden
 function checkFrage($conn, $sql, $frage, $sqlerror, $error)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -77,37 +77,14 @@ function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
     }
 }
 
-//Funktion zur Ausgabe aller kopierten Fragen --> FrageKopieBearbeiten funktioniert nicht!!!!!!!!!!!!!!!!!!!
-function echoFragenKopie($conn, $sql, $titelFB)
-{
-    // prepared statement erstellt
-    $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FrageKopieBearbeiten.php?error=SQLFehler");
-    } else {
-        //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $titelFB);
-        //Parameter in DB verwenden
-        mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-        $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $row['Fragestellung'] . "</option>";
-        }
-    }
-}
-
-
 //Funktion zur Auswahl des Fragebogens zum Bearbeiten
-function auswahlFbBefragerBearbeiten($conn, $sql, $befrager)
+function auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
@@ -123,14 +100,15 @@ function auswahlFbBefragerBearbeiten($conn, $sql, $befrager)
 }
 
 
+//TODO
 //Funktion zur Auswahl einer Frage zum Löschen
-function auswahlFragen($conn, $sql, $titelFB)
+function auswahlFragen($conn, $sql, $titelFB, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $titelFB);
