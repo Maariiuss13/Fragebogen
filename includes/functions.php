@@ -631,6 +631,16 @@ function aktFrageFB($conn, $sql, $titelFB,$anzFr){
     }
 }
 
+function auswertungFunktion($conn,$sql, $fbtitel, $kurs){
+    $sql= "CALL getResultCalculation(".$fbtitel." , "."\"".$kurs."\""." );";
+    //Speicherung Ergebnis in Variable
+    $result= mysqli_query($conn, $sql);
+    //Ausgabe Ergebnis
+    $row = mysqli_fetch_assoc($result);
+    /*
+    while($row = mysqli_fetch_assoc($result)){
+    echo "FrageNr: ".$row['FrageNr']."<br> Minimum: ".$row['min']."<br> Maximum: ".$row['max']."<br> Standardabweichung: ".$row['stddev'].";";
+    }*/
 //Funktion, die den Bewertungswert zu einer Frage zurückgibt
 //$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
 function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB){
