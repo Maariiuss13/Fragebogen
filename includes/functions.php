@@ -1,5 +1,49 @@
 <?php
 
+// Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
+function anmeldenBefrager($conn, $sql, $BName, $Passwort, $mess1, $mess2, $mess3, $mess4, $mess5)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header($mess1);
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $BName, $BName);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $result = mysqli_stmt_get_result($statement);
+        // Prüfung, ob $result leer ist oder ein Ergebnis liefert
+        if ($row = mysqli_fetch_assoc($result)) {
+            // Prüft, ob das eingegebene Passwort mit dem aus der Datenbank übereinstimmt
+            $passwortCheck = password_verify($Passwort, $row['Passwort']);
+            // Wenn nein, Fehlermeldung
+            if ($passwortCheck == false) {
+                header($mess2);
+                exit();
+                // Wenn ja, Session wird gestartet und Weiterleitung auf die Befragerseite
+            } else if ($passwortCheck == true) {
+                session_start();
+                $_SESSION['session_bname'] = $row['BName'];
+                header($mess3);
+                exit();
+            } else {
+                header($mess4);
+                exit();
+            }
+        } else {
+            // Kein Benutzer, der mit den eingegebenen Daten übereinstimmt in der Datenbank
+            header($mess5);
+            exit();
+        }
+    }
+}
+
 //Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist
 function checkTitelDB($conn, $sql, $titel, $sqlerror, $error)
 {
@@ -264,50 +308,6 @@ function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
         mysqli_stmt_execute($statement);
         header($mess);
         exit();
-    }
-}
-
-// Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
-function anmeldenBefrager($conn, $sql, $BName, $Passwort)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Befrageranmeldung.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $BName, $BName);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-        // werden in der Variable $result gespeichert
-        $result = mysqli_stmt_get_result($statement);
-        // Prüfung, ob $result leer ist oder ein Ergebnis liefert
-        if ($row = mysqli_fetch_assoc($result)) {
-            // Prüft, ob das eingegebene Passwort mit dem aus der Datenbank übereinstimmt
-            $passwortCheck = password_verify($Passwort, $row['Passwort']);
-            // Wenn nein, Fehlermeldung
-            if ($passwortCheck == false) {
-                header("Location: ../Befrageranmeldung.php?error=falscherbefragernameoderpasswort");
-                exit();
-                // Wenn ja, Session wird gestartet und Weiterleitung auf die Befragerseite
-            } else if ($passwortCheck == true) {
-                session_start();
-                $_SESSION['session_bname'] = $row['BName'];
-                header("Location: ../Befrager.php?anmeldung=erfolgreich");
-                exit();
-            } else {
-                header("Location: ../Befrageranmeldung.php?error=keineübereinstimmung");
-                exit();
-            }
-        } else {
-            // Kein Benutzer, der mit den eingegebenen Daten übereinstimmt in der Datenbank
-            header("Location: ../Befrageranmeldung.php?error=keinbefrager");
-            exit();
-        }
     }
 }
 
