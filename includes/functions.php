@@ -1,5 +1,27 @@
 <?php
 
+// Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
+function checkBefrager($conn, $sql, $befragername)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Befragerregistrierung.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "s", $befragername);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+        // Prüft die Anzahl der Ergebnisse der Variable $statement
+        $resultCheck = mysqli_stmt_num_rows($statement);
+    }
+}
+
 // Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
 function anmeldenBefrager($conn, $sql, $BName, $Passwort, $mess1, $mess2, $mess3, $mess4, $mess5)
 {
@@ -311,27 +333,7 @@ function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
     }
 }
 
-// Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
-function checkBefrager($conn, $sql, $befragername)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Befragerregistrierung.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "s", $befragername);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
-        // Prüft die Anzahl der Ergebnisse der Variable $statement
-        $resultCheck = mysqli_stmt_num_rows($statement);
-    }
-}
+
 
 // Funktion zum Einfügen von Befragern in die Datenbank
 function insertBefrager($conn, $sql, $passwort, $befragername)
