@@ -3,7 +3,7 @@ include 'includes/functions.php';
 
 //Beim Start Fragebogen Ausfüllen ausführen
 if (isset($_POST["FragebogenBearbeiten"])) {
-  //Variablen deklarieren
+
   $mnr = $_SESSION["session_mnr"];
   $FbTitel = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
   
@@ -22,7 +22,6 @@ if (isset($_POST["FragebogenBearbeiten"])) {
   //Deklaration Session-Variablen für weiteres Ausfüllen Fragebogen
   $_SESSION["aktSeite"] = 1;
   $_SESSION["titelFB"] = $FbTitel;
-
 }
 
 //Wenn kein Fragebogen ausgewählt, Rücksendung auf Studentenseite

@@ -20,8 +20,25 @@ if (isset($_POST['kursanlegen'])) {
     } else {
         // Prüfung, ob doppelte Kursekürzel
         $sql = "SELECT * FROM kurse WHERE Kuerzel='$Kuerzel'";
-        // Funktion zum Prüfen, ob Kurs bereits in DB vorhanden ist
-        checkKurs($conn, $sql, $Kuerzel, $Kurs);
+        $sqlerror = "Location: ../Kurs.php?error=sqlerror";
+        // Initialisieren mit der richtigen Verbindung
+        $statement = mysqli_stmt_init($conn);
+        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        if (!mysqli_stmt_prepare($statement, $sql)) {
+            // Wenn ja, dann SQL-Fehler
+            header($sqlerror);
+            exit();
+        } else {
+            // Benutzereingaben beim Anmeldeversuch
+            mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
+            // Ausführen der Anweisung in der Datenbank
+            mysqli_stmt_execute($statement);
+            // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+            mysqli_stmt_store_result($statement);
+            // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+            // werden in der Variable $result gespeichert
+            $resultCheck = mysqli_stmt_num_rows($statement);
+        }
         // Wenn größer 0 -> Kursname schon vergeben
         if ($resultCheck > 0) {
             header("Location: ../Kurs.php?error=kursnamebereitsvergeben");
@@ -30,7 +47,9 @@ if (isset($_POST['kursanlegen'])) {
             // Insert SQL-Befehl kurse
             $sql = "INSERT INTO kurse (Kuerzel, KName) VALUES (?, ?)";
             // Funktion zum Einfügen von Kursen in die Datenbank
-            insertKurs($conn, $sql, $Kuerzel, $Kurs);
+            $sqlerror = "Location: ../Kurs.php?error=sqlerror";
+            $mess = "Location: ../Kurs.php?kursanlegen=erfolgreich";
+            insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess);
         }
     }
     // Statements schließen

@@ -33,7 +33,10 @@ if((isset($_POST["Bweiter"])) || (isset($_POST["Babschluss"]))){
 
         //Insert SQL-Befehl Fragebogen
         $sql= "INSERT INTO fragen(fragenr, titel, fragestellung) VALUES(?, ?, ?);";
-        insertFrageN($conn, $sql, $frage);
+        $sqlerror="Location: ../FragenseitenNeu.php?error=SQLBefehlFehlerFB";
+        $aktSeite=$_SESSION["aktSeite"]; 
+        $titelFb=$_SESSION["aktFB"];
+        insertFrage($conn, $sql, $aktSeite, $titelFb, $frage, $sqlerror);
     }
 }        
 
