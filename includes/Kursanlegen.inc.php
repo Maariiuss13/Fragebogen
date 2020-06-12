@@ -20,8 +20,9 @@ if (isset($_POST['kursanlegen'])) {
     } else {
         // Prüfung, ob doppelte Kursekürzel
         $sql = "SELECT * FROM kurse WHERE Kuerzel='$Kuerzel'";
+        $sqlerror="Location: ../Kurs.php?error=sqlerror";
         // Funktion zum Prüfen, ob Kurs bereits in DB vorhanden ist
-        checkKurs($conn, $sql, $Kuerzel, $Kurs);
+        checkKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror);
         // Wenn größer 0 -> Kursname schon vergeben
         if ($resultCheck > 0) {
             header("Location: ../Kurs.php?error=kursnamebereitsvergeben");
@@ -30,7 +31,9 @@ if (isset($_POST['kursanlegen'])) {
             // Insert SQL-Befehl kurse
             $sql = "INSERT INTO kurse (Kuerzel, KName) VALUES (?, ?)";
             // Funktion zum Einfügen von Kursen in die Datenbank
-            insertKurs($conn, $sql, $Kuerzel, $Kurs);
+            $sqlerror="Location: ../Kurs.php?error=sqlerror";
+            $mess="Location: ../Kurs.php?kursanlegen=erfolgreich";
+            insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess);
         }
     }
     // Statements schließen

@@ -54,6 +54,28 @@ function checkFrage($conn, $sql, $frage, $sqlerror, $error)
     }
 }
 
+// Funktion zum Prüfen, ob Kurs bereits in DB vorhanden ist
+function checkKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header($sqlerror);
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $resultCheck = mysqli_stmt_num_rows($statement);
+    }
+}
 
 //Funktion zur Ausgabe Fragebogen des Befragers
 function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
@@ -184,7 +206,6 @@ function updatefragenr($conn, $sql, $titelFB, $sqlerror){
     }
 }
 
-
 //Funktion zum Insert eines neuen Fragenbogens
 function insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerror)
 {
@@ -211,8 +232,6 @@ function defineFrageNr($conn, $sql)
     return $frageNr;
 }
 
-
-
 //Funktion zum Insert Fragen
 function insertFrage($conn, $sql, $aktS, $titelFb, $frage, $sqlerror)
 {
@@ -228,45 +247,22 @@ function insertFrage($conn, $sql, $aktS, $titelFb, $frage, $sqlerror)
     }
 }
 
-// Funktion zum Prüfen, ob Kurs bereits in DB vorhanden ist
-function checkKurs($conn, $sql, $Kuerzel, $Kurs)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Kurs.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
-        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-        // werden in der Variable $result gespeichert
-        $resultCheck = mysqli_stmt_num_rows($statement);
-    }
-}
-
 // Funktion zum Einfügen von Kursen in die Datenbank
-function insertKurs($conn, $sql, $Kuerzel, $Kurs)
+function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
 {
     // Initialisieren mit der richtigen Verbindung
     $statement = mysqli_stmt_init($conn);
     // Prüfung auf Übereinstimmung
     if (!mysqli_stmt_prepare($statement, $sql)) {
         // Wenn nicht, Fehlermeldung
-        header("Location: ../Kurs.php?error=sqlerror");
+        header($sqlerror);
         exit();
     } else {
         // Benutzereingaben beim Anmeldeversuch
         mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
         // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($statement);
-        header("Location: ../Kurs.php?kursanlegen=erfolgreich");
+        header($mess);
         exit();
     }
 }
