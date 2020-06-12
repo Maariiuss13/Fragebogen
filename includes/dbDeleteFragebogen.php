@@ -22,7 +22,8 @@ if(isset($_POST["FragebogenLöschen"])){
         LEFT JOIN fragen on fragen.Titel = frageboegen.Titel
         WHERE frageboegen.Titel= ? AND frageboegen.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb);";
         //Löschen des Fragebogens mit Fragen
-        deleteFrageboegen($conn, $sql, $titel);        
+        $sqlerror="Location: ../FragebogenLoeschen.php?error=SQLBefehlFehler";
+        deleteFrageboegen($conn, $sql, $titel, $sqlerror);        
     }
 }
 

@@ -19,11 +19,13 @@ if (isset($_POST["löschenFrage"])) {
 
     //Delete Frage
     $sql = "DELETE FROM Fragen WHERE Titel = ? AND FrageNr= ?;";
-    deleteFragen($conn, $sql, $titelFB, $frageNr);
+    $sqlerror="Location: ../FragenBearbeiten.php?error=SQLBefehlFehler";
+    deleteFragen($conn, $sql, $titelFB, $frageNr, $sqlerror);
     
     //Update Fragennr
     $sqlSel= "SELECT * FROM fragen WHERE titel=? ORDER BY 'FrageNr';";
-    updatefragenr($conn, $sqlSel, $titelFB);
+    $sqlerror="Location: ../FragenBearbeiten.php?error=SQLBefehlFehler";
+    updatefragenr($conn, $sqlSel, $titelFB, $sqlerror);
 }
 
 

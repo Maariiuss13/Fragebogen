@@ -29,7 +29,8 @@ if (isset($_POST["speichernNeueFrage"])) {
     else {
         //Insert SQL-Befehl Frage
         $sql = "INSERT INTO fragen(FrageNr, Titel, Fragestellung) VALUES(?, ?, ?);";
-        insertFrageB($conn, $sql, $frageNr, $titel, $frage);
+        $sqlerror="Location: ../FragenBearbeiten.php?error=SQLBefehlFehlerFB";
+        insertFrage($conn, $sql, $frageNr, $titel, $frage, $sqlerror);
     }
 }
 
