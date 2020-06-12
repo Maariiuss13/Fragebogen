@@ -43,7 +43,7 @@ if ($result) {
     <label for="fbTitel">Name Fragebogen: </label>
             <select name="fbTitel">
                 <?php
-                    test($conn, $sql, $befrager);
+                    titelFragebogen($conn, $sql, $befrager);
                 ?>
             </select>
     <p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>
@@ -85,6 +85,21 @@ if ($result) {
    </tr>
    
     </table>
+  </div>
+  <div>
+
+
+<?php
+
+$fbtitel = "Sport";
+$kurs = "WWI";
+auswertungFunktion($conn, $sql, $fbtitel, $kurs);
+
+
+
+?>
+
+
   </div>
 
 </body>

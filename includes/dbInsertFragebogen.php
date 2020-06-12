@@ -5,13 +5,13 @@ session_start();
 
 
 // Deklaration Variablen
-$titel = $_POST["titelFragebogen"];
-$beschreibung = $_POST["beschreibungFB"];
+$titel = htmlspecialchars(stripslashes(trim($_POST["titelFragebogen"])));
+$beschreibung = htmlspecialchars(stripslashes(trim($_POST["beschreibungFB"])));
 $befrager = $_SESSION["session_bname"];
 
 //Deklaration Session-Variablen für Fragenseiten
-$_SESSION["anzFragen"] = $_POST["anzahlFragen"];
-$_SESSION["aktFB"] = $_POST["titelFragebogen"];
+$_SESSION["anzFragen"] = htmlspecialchars(stripslashes(trim($_POST["anzahlFragen"])));
+$_SESSION["aktFB"] = htmlspecialchars(stripslashes(trim($_POST["titelFragebogen"])));
 $_SESSION["aktSeite"] = 1;
 
 
@@ -22,7 +22,7 @@ if(isset($_POST["speichernFragebogen"])){
         exit();
     }
     //Prüfen, ob AnzahlFragen > 0
-    if(($_POST["anzahlFragen"]<=0)){
+    if((htmlspecialchars(stripslashes(trim($_POST["anzahlFragen"])))<=0)){
         header("Location: ../FragebogenNeu.php?error=AnzahlFragenKleinerGleichNull");
         exit();
     }
@@ -35,22 +35,19 @@ if(isset($_POST["speichernFragebogen"])){
         //Prüfung doppelter Titel
         $sqlTitel="SELECT titel FROM frageboegen WHERE titel=?;";
         //Funktion zum Prüfen, ob Titel bereits in DB vorhanden
-        checkTitelDB($conn, $sqlTitel, $titel);
-
+        $sqlerror= "Location: ../FragebogenNeu.php?error=sqlerror";
+        $error= "Location: ../FragebogenNeu.php?error=TitelBereitsVorhanden";
+        checkTitelDB($conn, $sqlTitel, $titel, $sqlerror, $error);
 
         //Insert Fragebogen
         $sql= "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
         //prepared statement erstellen
-        insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager);
+        $sqlerror="Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler";
+        insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerror);
     }
 }
 
 
 
 //Weiterleitung auf Fragen-Seite
-if (!$sql) {
-    echo mysqli_error($sql);
-}
-else {
-    header("Location: ../FragenseitenNeu.php?FragebogenSpeichern=erfolgreich");
-}
+header("Location: ../FragenseitenNeu.php?FragebogenSpeichern=erfolgreich");

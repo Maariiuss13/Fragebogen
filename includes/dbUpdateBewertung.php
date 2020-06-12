@@ -10,21 +10,21 @@ $bewertung = htmlspecialchars(stripslashes(trim($_POST["bewertung"])));
 if(isset($_POST["Bweiter"])){
     //Prüfen, ob Felder befüllt
     if(empty($bewertung)){
-        header("Location: ../Fragenseiten.php?error=leerefelder");
+        header("Location: ../Fragenseiten2.php?error=leerefelder");
         exit();
     }
 
-    //Insert SQL-Befehl Fragebogen
-    $sql= "INSERT INTO beantwortenF(MNR, FrageNr, titel, Bewertungswert) VALUES(?, ?, ?, ?);";
+    //Update Bewertungswert Frage
+    $sql= "INSERT INTO beantwortenf(mnr, fragenr, titel, bewertungswert) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE bewertungswert = ?;";
     //prepared statement erstellen
     $stmt=mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
+        header("Location: ../Fragenseiten2.php?error=SQLBefehlFehler");
         exit();
     }
     else{
         //Verknüpfung Parameter mit Placeholdern
-        mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['session_mnr'], $_SESSION["aktSeite"], $_SESSION["titelFB"], $bewertung);
+        mysqli_stmt_bind_param($stmt, "sssss", $_SESSION["session_mnr"], $_SESSION["aktSeite"], $_SESSION["titelFB"], $bewertung, $bewertung);
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
@@ -32,27 +32,27 @@ if(isset($_POST["Bweiter"])){
     //Hochzählen aktSeite
     $_SESSION["aktSeite"]++;
     //Weiterleitung auf neue Fragenseite
-    header("Location: ../Fragenseiten.php?Next");
+    header("Location: ../Fragenseiten2.php?Next");
 }
 
 //Vorgehen bei Button Abschluss 
 if(isset($_POST["Babschluss"])){
     //Prüfen, ob Felder befüllt
     if(empty($bewertung)){
-        header("Location: ../Fragenseiten.php?error=leerefelder");
+        header("Location: ../Fragenseiten2.php?error=leerefelder");
         exit();
     }
 
-    //Insert SQL-Befehl Fragebogen
-    $sql= "INSERT INTO beantwortenF(MNR, FrageNr, titel, Bewertungswert) VALUES(?, ?, ?, ?);";
+    //Update Bewertungswert Frage
+    $sql= "INSERT INTO beantwortenf(mnr, fragenr, titel, bewertungswert) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE bewertungswert = ?;";
     //prepared statement erstellen
     $stmt=mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
+        header("Location: ../Fragenseiten2.php?error=SQLBefehlFehler");
     }
     else{
         //Verknüpfung Parameter mit Placeholdern
-        mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['session_mnr'], $_SESSION["aktSeite"], $_SESSION["titelFB"], $bewertung);
+        mysqli_stmt_bind_param($stmt, "sssss", $_SESSION["session_mnr"], $_SESSION["aktSeite"], $_SESSION["titelFB"], $bewertung, $bewertung);
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }

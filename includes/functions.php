@@ -1,14 +1,14 @@
 <?php
 
-//Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist FragebogenNEU
-function checkTitelDB($conn, $sql, $titel)
+//Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist
+function checkTitelDB($conn, $sql, $titel, $sqlerror, $error)
 {
     // Initialisieren mit der richtigen Verbindung
     $stmt = mysqli_stmt_init($conn);
     // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         // Wenn ja, dann SQL-Fehler
-        header("Location: ../FragebogenNeu.php?error=sqlerror");
+        header($sqlerror);
         exit();
     } else {
         // Benutzereingaben Titel
@@ -21,21 +21,21 @@ function checkTitelDB($conn, $sql, $titel)
         $resultCheck = mysqli_stmt_num_rows($stmt);
         // Wenn größer 0 -> Titel schon vergeben
         if ($resultCheck > 0) {
-            header("Location: ../FragebogenNeu.php?error=TitelBereitsVorhanden");
+            header($error);
             exit();
         }
     }
 }
 
-//Funktion zur Prüfung, ob Frage bereits vorhanden für FragebogenNEU
-function checkFrage($conn, $sql, $frage)
+//Funktion zur Prüfung, ob Frage bereits vorhanden
+function checkFrage($conn, $sql, $frage, $sqlerror, $error)
 {
     // Initialisieren mit der richtigen Verbindung
     $stmt = mysqli_stmt_init($conn);
     // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         // Wenn ja, dann SQL-Fehler
-        header("Location: ../FragenseitenNeu.php?error=sqlerror");
+        header($sqlerror);
         exit();
     } else {
         // Benutzereingaben Frage
@@ -48,7 +48,7 @@ function checkFrage($conn, $sql, $frage)
         $resultCheck = mysqli_stmt_num_rows($stmt);
         // Wenn größer 0 -> Titel schon vergeben
         if ($resultCheck > 0) {
-            header("Location: ../FragebogenNeu.php?error=FrageBereitsVorhanden");
+            header($error);
             exit();
         }
     }
@@ -56,13 +56,13 @@ function checkFrage($conn, $sql, $frage)
 
 
 //Funktion zur Ausgabe Fragebogen des Befragers
-function echoFbBefrager($conn, $sql, $befrager)
+function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
@@ -77,38 +77,14 @@ function echoFbBefrager($conn, $sql, $befrager)
     }
 }
 
-//Funktion zur Ausgabe aller kopierten Fragen --> FrageKopieBearbeiten funktioniert nicht!!!!!!!!!!!!!!!!!!!
-function echoFragenKopie($conn, $sql, $titelFB)
-{
-    // prepared statement erstellt
-    $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../FrageKopieBearbeiten.php?error=SQLFehler");
-        echo "SQL Fehler bei Abfrage Fragebogen";
-    } else {
-        //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $titelFB);
-        //Parameter in DB verwenden
-        mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-        $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $row['Fragestellung'] . "</option>";
-        }
-    }
-}
-
-
 //Funktion zur Auswahl des Fragebogens zum Bearbeiten
-function auswahlFbBefragerBearbeiten($conn, $sql, $befrager)
+function auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
@@ -124,14 +100,15 @@ function auswahlFbBefragerBearbeiten($conn, $sql, $befrager)
 }
 
 
+//TODO
 //Funktion zur Auswahl einer Frage zum Löschen
-function auswahlFragen($conn, $sql, $titelFB)
+function auswahlFragen($conn, $sql, $titelFB, $sqlerror)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $titelFB);
@@ -209,11 +186,11 @@ function updatefragenr($conn, $sql, $titelFB){
 
 
 //Funktion zum Insert eines neuen Fragenbogens
-function insertFragebogenNeu($conn, $sql, $titel, $beschreibung, $befrager)
+function insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerror)
 {
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../dbInsertFragebogen.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter mit Placeholdern
         mysqli_stmt_bind_param($stmt, "sss", $titel, $beschreibung, $befrager);
@@ -452,9 +429,6 @@ function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
         mysqli_stmt_execute($statement);
         // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
         mysqli_stmt_store_result($statement);
-        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-        // werden in der Variable $result gespeichert
-        $resultCheck = mysqli_stmt_num_rows($statement);
     }
 }
 
@@ -503,10 +477,10 @@ function anmeldenStudent($statement)
 }
 
 // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
-function offeneFragebogen($conn, $sql, $student)
+function offeneFragebogen($conn, $sql, $mnr)
 {
     //Template für prepared statement
-    $sql = "SELECT titel FROM freischaltenfb WHERE freischaltenfb.Titel NOT IN (SELECT bearbeitenfb.Titel from bearbeitenfb)";
+    $sql = "SELECT titel from freischaltenfb inner join studenten on studenten.Kurs=freischaltenfb.Kurs where mnr=$mnr AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=$mnr)";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
@@ -514,7 +488,7 @@ function offeneFragebogen($conn, $sql, $student)
         header("Location: ../Studenten.php?error=SQLBefehlFehler");
     } else {
         //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $student);
+        mysqli_stmt_bind_param($stmt, "s", $mnr);
         //Parameter in DB verwenden
         mysqli_stmt_execute($stmt);
         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
@@ -530,7 +504,7 @@ function offeneFragebogen($conn, $sql, $student)
 function fragebogenInBearbeitung($conn, $sql, $student)
 {
     //Template für prepared statement
-    $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'i'";
+    $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'B'";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
@@ -602,6 +576,32 @@ function frageboegen($conn, $sql, $befrager)
     }
 }
 
+// Funktion, die den Status eines Fragebogens auf in Bearbeitung setzt
+function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
+{
+    $statement = mysqli_stmt_init($conn);
+  if (!mysqli_stmt_prepare($statement, $sql)) {
+    header("Location: ../Studenten.php?error=sqlerror");
+    exit();
+  } else {
+    mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
+    mysqli_stmt_execute($statement);
+  }
+}
+
+//Funktion, die den Status eines Fragebogens auf Fertig setzt
+function statusFertig($conn, $sql, $neuerStatus, $FbTitel, $mnr){
+    $statement = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+      header("Location: ../Studenten.php?error=sqlerror");
+      exit();
+    } else {
+      mysqli_stmt_bind_param($statement, "sss", $neuerStatus, $FbTitel, $mnr);
+      mysqli_stmt_execute($statement);
+    }
+}
+
+//WOHER????????????????
 function titelFragebogen($conn, $sql, $befrager)
 {
     //Abfrage SQL
@@ -615,29 +615,45 @@ function titelFragebogen($conn, $sql, $befrager)
     }
 }
 
-
-function aktuelleFrageFB($sql, $conn)
-{
-    //aus DB aktuelle Frage holen
-    //Template für prepared statement
-    $sql = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND FrageNr=?;";
-    // prepared statement erstellt
+function aktFrageFB($conn, $sql, $titelFB,$anzFr){
     $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: ../Fragenseiten.php?error=SQLBefehlFehler");
-    } else {
-      //Verknüpfung Parameter zu Placeholder
-      $aktFr = $_SESSION["aktSeite"];
-      mysqli_stmt_bind_param($stmt, "s", $aktFr);
-      //Parameter in DB verwenden
-      mysqli_stmt_execute($stmt);
-      //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-      $result = mysqli_stmt_get_result($stmt);
-      //Ergebnis ausgeben
-      while ($row = mysqli_fetch_assoc($result)) {
-        echo $row['Fragestellung'];
-      }
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../Fragenseiten.php?error=sqlerror");
     }
+    else{
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $anzFr);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo $row['Fragestellung'];
+        }
+    }
+}
 
+function auswertungFunktion($conn,$sql, $fbtitel, $kurs){
+    $sql= "CALL getResultCalculation(".$fbtitel." , "."\"".$kurs."\""." );";
+    //Speicherung Ergebnis in Variable
+    $result= mysqli_query($conn, $sql);
+    //Ausgabe Ergebnis
+    $row = mysqli_fetch_assoc($result);
+    /*
+    while($row = mysqli_fetch_assoc($result)){
+    echo "FrageNr: ".$row['FrageNr']."<br> Minimum: ".$row['min']."<br> Maximum: ".$row['max']."<br> Standardabweichung: ".$row['stddev'].";";
+    }*/
+//Funktion, die den Bewertungswert zu einer Frage zurückgibt
+//$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
+function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB){
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        header("Location: ../Fragenseiten2.php?error=sqlerror");
+    }
+    else{
+        mysqli_stmt_bind_param($stmt, "sss", $mnr, $frageNr, $titelFB);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            return $row['Bewertungswert'];
+        }
+    }
 }

@@ -14,10 +14,16 @@ include 'includes/header.php';
     <?php
         //Deklaration Variablen
         if (isset($_POST['FragebogenBearbeiten'])){
-            $_SESSION['bearbeitenFB'] = $_POST["fbTitel"];
+            $_SESSION['bearbeitenFB'] = htmlspecialchars(stripslashes(trim($_POST["fbTitel"])));
         }
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
         echo "<p> Ersteller Fragebogen: ".$_SESSION['bearbeitenFB']."</p><br/>";
+
+        if (isset($_GET["error"])) {
+            if ($_GET["error"] == "TitelZuLang") {
+                echo '<p align="center" style="color: red;">Die Fragestellung ist zu lang</p>';
+            }
+        }
     ?>
 
     <form action="includes/dbDeleteFragen_SeitBearb.php" method="post">
@@ -27,6 +33,9 @@ include 'includes/header.php';
                 <?php
                     //Template für prepared statement
                     $sql= "SELECT * FROM fragen WHERE Titel=?;";
+                    $titelFB=$_SESSION['bearbeitenFB'];
+                    //TODO
+                    //auswahlFragen($conn, $sql, $titelFB);
                     // prepared statement erstellt
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
@@ -35,7 +44,7 @@ include 'includes/header.php';
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
-                        mysqli_stmt_bind_param($stmt, "s", $_SESSION['bearbeitenFB']);
+                        mysqli_stmt_bind_param($stmt, "s", $titelFB);
                         //Parameter in DB verwenden
                         mysqli_stmt_execute($stmt);
                         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
@@ -53,7 +62,9 @@ include 'includes/header.php';
         </br> </br>
     </form>
 
+
     <form action="includes/dbInsertFragenBearbeiten.php" method="post">
+
         <fieldset>
             <label for="neueFrage">Neue Frage</label>
             <input type="text" placeholder="Titel" name="neueFrage">

@@ -14,14 +14,14 @@ $mnr = $_SESSION['session_mnr'];
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
             // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
-            offeneFragebogen($conn, $sql, $student);
+            offeneFragebogen($conn, $sql, $mnr);
             ?>
         </select>
         <button type="submit" name="FragebogenBearbeiten">Fragebogen starten!</button>
     </fieldset>
 </form>
 
-<form action="Fragenseiten.php" method="post">
+<form action="Fragenseiten2.php" method="post">
     <fieldset>
         <legend>Fragebogen in Bearbeitung</legend>
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
@@ -30,6 +30,6 @@ $mnr = $_SESSION['session_mnr'];
             fragebogenInBearbeitung($conn, $sql, $student);
             ?>
         </select>
-        <button type="submit" name="FragebogenBearbeiten" value="Fragebogen bearbeiten">Fragebogen starten!</button>
+        <button type="submit" name="FragebogenBearbeiten2" value="Fragebogen bearbeiten">Fragebogen starten!</button>
     </fieldset>
 </form>

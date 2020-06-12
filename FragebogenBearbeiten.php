@@ -25,7 +25,8 @@ include 'includes/functions.php';
                     $befrager=$_SESSION['session_bname'];
                     //Template für prepared statement
                     $sql= "SELECT titel FROM frageboegen WHERE Befrager=? AND frageboegen.titel NOT IN (SELECT bearbeitenFB.titel FROM bearbeitenFB);";
-                    auswahlFbBefragerBearbeiten($conn, $sql, $befrager);  
+                    $sqlerror="Location: ../FragebogenBearbeiten.php?error=SQLBefehlFehler";
+                    auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror);  
                 ?>
             </select>
         </fieldset>
@@ -35,6 +36,9 @@ include 'includes/functions.php';
 
 </div>
 
+<div align="right" style="padding-top: 10px">
+    <a href=Befrager.php>Zurück zur Startseite der Befrager</a>
+</div>
 
 </body>
 </html>

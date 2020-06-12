@@ -14,7 +14,8 @@ include 'includes/functions.php';
         //Template für prepared statement
         $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
         //Ausgabe Fragebogen Befrager
-        echoFbBefrager ($conn, $sql, $befrager);        
+        $sqlerror="Location: ../Befrager.php?error=SQLBefehlFehler";
+        echoFbBefrager ($conn, $sql, $befrager, $sqlerror);        
     ?>
                 
 </div>

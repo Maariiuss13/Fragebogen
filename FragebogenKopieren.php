@@ -15,6 +15,15 @@ include 'includes/header.php';
     <?php
         $befrager=$_SESSION['session_bname'];
         echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";
+
+        if (isset($_GET["error"])) {
+            if ($_GET["error"] == "TitelGleich") {
+                echo '<p align="center" style="color: red;">Der neue und alte Titel dürfen nicht gleich sein.</p>';
+            }
+            if ($_GET["error"] == "TitelBereitsVorhanden") {
+                echo '<p align="center" style="color: red;">Der Titel ist bereits vergeben</p>';
+            }
+        }
     ?>
 
     <form action="includes/dbInsertFragebogenKopie.php" method="post">
@@ -24,13 +33,17 @@ include 'includes/header.php';
             <select name="fbTitelAlt">
                 <?php
                     $befrager=$_SESSION['session_bname'];
-                    //Template für prepared statement
+                    
                     $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
+                    //TODO
+                    /*echoFbBefrager($conn, $sql, $befrager, $sqlerror);
+                    $sqlerror ="Location: ../FragebogenKopieren.php?error=SQLBefehlFehler";*/
+                    
                     // prepared statement erstellt
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
                     if (!mysqli_stmt_prepare($stmt, $sql)){
-                        header("Location: ../Befrager.php?error=SQLBefehlFehler");
+                        header($sqlerror);
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
@@ -56,6 +69,9 @@ include 'includes/header.php';
 
 </div>
 
+<div align="right" style="padding-top: 10px">
+    <a href=Befrager.php>Zurück zur Startseite der Befrager</a>
+</div>
 
 </body>
 </html>

@@ -8,13 +8,13 @@ include 'dbHandler.php';
 if (isset($_POST['studentanlegen'])) {
 
     // Deklaration Variablen
-    $MNR = $_POST['mnr'];
-    $Kurskuerzel = $_POST['kurs'];
+    $MNR = htmlspecialchars(stripslashes(trim($_POST['mnr'])));
+    $Kurskuerzel = htmlspecialchars(stripslashes(trim($_POST['kurs'])));
 
     //Prüfung, ob Felder befüllt 
     if (empty($MNR)) {
         // Fehlercode in URL
-        header("Location: ../Kurs.php?error=leerefelder");
+        header("Location: ../Kurs.php?error=leerefelderstudent");
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
@@ -22,6 +22,9 @@ if (isset($_POST['studentanlegen'])) {
         $sql = "SELECT * FROM studenten WHERE MNR='$MNR' OR Kurs='$Kurskuerzel'";
         // Prüfung, ob Student in der Datenbank bereits enthalten ist
         checkStudent($conn, $sql, $MNR, $Kurskuerzel);
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
+        $resultCheck = mysqli_stmt_num_rows($statement);
         // Wenn größer 0 -> Matrikelnummer schon vergeben
         if ($resultCheck > 0) {
             header("Location: ../Kurs.php?error=matrikelnummerbereitsvergeben");
