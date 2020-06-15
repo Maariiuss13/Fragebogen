@@ -38,6 +38,9 @@ $befrager=$_SESSION['session_bname'];
     if ($_GET["error"] == "KursFBerror") {
       echo '<p align="center" style="color: red;">Der ausgewählte Fragebogen ist nicht dem ausgewählten Kurs zugeordnet.</p>';
     }
+    if ($_GET["error"] == "keineErgebnisse") {
+      echo '<p align="center" style="color: red;">Für den ausgewählten Fragebogen liegen noch keine Ergebnisse zu jeder Frage vor.</p>';
+    }
   }
   ?>
 </div>

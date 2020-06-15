@@ -654,6 +654,11 @@ function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
       $result = mysqli_stmt_get_result($stmt);
       //Definiere Variable $count - Anzahl der rows im Ergebnis
       $count = mysqli_num_rows($result);
+
+      if ($count <= 0){
+        header ("Location: Auswertungsseite2.php?error=keineErgebnisse");
+        exit();
+      }
       
       //Varianz berechnen
       $var = 0.0;
