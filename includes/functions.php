@@ -140,6 +140,27 @@ function checkFrage($conn, $sql, $frage, $sqlerror, $error)
     }
 }
 
+//Autor: Dajana Thoebes
+//Funktion zum Prüfen, ob Titel und Kurs einander zugeordnet sind
+function checkFragebogenKursZuordnung($conn, $sql, $titelFB, $kurs) {
+    $stmt= mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)){
+      header("Location: ../Auswertungsseite2.php?error=sqlerror");
+      exit();
+    }
+    else{
+      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_store_result($stmt);
+      $resultcheck = mysqli_stmt_num_rows($stmt);
+      if ($resultcheck<=0) {
+        header("Location: Auswertungsseite.php?error=KursFBerror");
+        exit;
+      }
+  
+    }
+}
+
 //Funktion zur Ausgabe Fragebogen des Befragers
 function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
 {
@@ -178,7 +199,7 @@ function echoAnzahlTeilnehmer($conn, $sql, $titelFB, $kurs)
     mysqli_stmt_close($stmt);
 }
 
-function echoKommentare($conn, $sql, $titelFB)
+function echoKommentare($conn, $sql, $titelFB, $kurs)
 {
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
@@ -187,14 +208,14 @@ function echoKommentare($conn, $sql, $titelFB)
         header("Location: ../Auswertungsseite2.php?error=SQLBefehlFehler45");
     } else {
         //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $titelFB);
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
         //Parameter in DB verwenden
         mysqli_stmt_execute($stmt);
         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
         $result = mysqli_stmt_get_result($stmt);
         //Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<td>" . $row['Kommentar'] . "</td>";
+            echo "<tr><td>" . $row['Kommentar'] . "</td></tr>";
         }
     }
     mysqli_stmt_close($stmt);
@@ -621,6 +642,29 @@ function aktFrageFB($conn, $sql, $titelFB, $anzFr)
         }
     }
 }
+
+function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
+{
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
+    } else {
+      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      //Definiere Variable $count - Anzahl der rows im Ergebnis
+      $count = mysqli_num_rows($result);
+      
+      //Varianz berechnen
+      $var = 0.0;
+      while ($row = mysqli_fetch_assoc($result)) {
+        $var += pow($row['Bewertungswert'] - $avg, 2);
+      }
+      $var = $var / $count;
+      return $var;
+    }
+}
+
 
 function auswertungFunktion($conn, $sql, $fbtitel, $kurs)
 {
