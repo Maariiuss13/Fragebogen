@@ -59,7 +59,6 @@ if ($_SESSION["titelFB"] == '') {
         //Bewertungswert in Variable $bewertung speichern 
         $sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
         $bewertung = aktAntwF($conn, $sqlV, $mnr, $frageNr, $titelFB);
-        echo $bewertung."</br>".$mnr."</br>".$titelFB."</br>".$frageNr;
       ?>
       </p>
 
