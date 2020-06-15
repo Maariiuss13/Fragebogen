@@ -1,5 +1,25 @@
 <?php
 
+// Prüfung, ob Student in der Datenbank bereits enthalten ist
+function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
+{
+    // Initialisieren mit der richtigen Verbindung
+    $statement = mysqli_stmt_init($conn);
+    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    if (!mysqli_stmt_prepare($statement, $sql)) {
+        // Wenn ja, dann SQL-Fehler
+        header("Location: ../Kurs.php?error=sqlerror");
+        exit();
+    } else {
+        // Benutzereingaben beim Anmeldeversuch
+        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
+        // Ausführen der Anweisung in der Datenbank
+        mysqli_stmt_execute($statement);
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+        mysqli_stmt_store_result($statement);
+    }
+}
+
 // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
 function checkBefrager($conn, $sql, $befragername)
 {
@@ -228,7 +248,7 @@ function deleteFrageboegen($conn, $sql, $titel, $sqlerror)
     }
 }
 
-//Funktion zum Löschen von Fragen auf der Seite FragenBearbeiten
+//Funktion zum Löschen von Fragen
 function deleteFragen($conn, $sql, $titelFB, $frageNr, $sqlerror)
 {
     //prepared statement erstellen
@@ -333,8 +353,6 @@ function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
     }
 }
 
-
-
 // Funktion zum Einfügen von Befragern in die Datenbank
 function insertBefrager($conn, $sql, $passwort, $befragername)
 {
@@ -357,7 +375,7 @@ function insertBefrager($conn, $sql, $passwort, $befragername)
     }
 }
 
-// Funktion zum Einfügen der Daten in die Datenbank
+// Funktion zum Einfügen der Daten in die Datenbank - Zuordnung Fragebogen zu Kurs
 function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
 {
     // Initialisieren mit der richtigen Verbindung
@@ -374,26 +392,6 @@ function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
         mysqli_stmt_execute($statement);
         header("Location: ../KursFragebogenZuordnen.php?fragebogenzuordnen=erfolgreich");
         exit();
-    }
-}
-
-// Prüfung, ob Student in der Datenbank bereits enthalten ist
-function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Kurs.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
     }
 }
 
@@ -442,7 +440,7 @@ function anmeldenStudent($statement)
 }
 
 // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
-function offeneFragebogen($conn, $sql, $mnr)
+function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
 {
     //Template für prepared statement
     $sql = "SELECT titel from freischaltenfb inner join studenten on studenten.Kurs=freischaltenfb.Kurs where mnr=$mnr AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=$mnr)";
@@ -450,7 +448,7 @@ function offeneFragebogen($conn, $sql, $mnr)
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $mnr);
@@ -466,7 +464,7 @@ function offeneFragebogen($conn, $sql, $mnr)
 }
 
 // Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
-function fragebogenInBearbeitung($conn, $sql, $student)
+function fragebogenInBearbeitung($conn, $sql, $student, $sqlerror)
 {
     //Template für prepared statement
     $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'B'";
@@ -474,7 +472,7 @@ function fragebogenInBearbeitung($conn, $sql, $student)
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../Studenten.php?error=SQLBefehlFehler");
+        header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $student);
@@ -489,6 +487,7 @@ function fragebogenInBearbeitung($conn, $sql, $student)
     }
 }
 
+//TODO
 // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
 function kurse($conn, $sql)
 {
@@ -515,6 +514,7 @@ function kurse($conn, $sql)
     }
 }
 
+//TODO KursFragebogenZuordnen
 // Funktion, die alle Fragebögen die in der Datenbank gespeichert sind, anzeigt
 function frageboegen($conn, $sql, $befrager)
 {
@@ -566,7 +566,7 @@ function statusFertig($conn, $sql, $neuerStatus, $FbTitel, $mnr){
     }
 }
 
-//WOHER????????????????
+//TODO Auswertungsseite
 function titelFragebogen($conn, $sql, $befrager)
 {
     //Abfrage SQL
