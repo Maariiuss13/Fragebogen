@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';

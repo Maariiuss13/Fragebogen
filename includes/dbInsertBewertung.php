@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes, Marius Müller -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';

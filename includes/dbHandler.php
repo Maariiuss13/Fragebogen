@@ -1,3 +1,4 @@
+<!-- Autoren: Dajena Thoebes, Lukas Ströbele -->
 <?php
 $dbServername="localhost";
 $dbUsername="root";

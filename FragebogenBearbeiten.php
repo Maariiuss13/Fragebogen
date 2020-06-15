@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes -->
 <?php
 include 'includes/header.php';
 include 'includes/functions.php';
