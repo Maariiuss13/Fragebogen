@@ -18,19 +18,33 @@ if (isset($_POST['befragerregistrierung'])) {
         header("Location: ../Befragerregistrierung.php?error=leerefelder");
         // Stoppt die Ausführung des Skripts
         exit();
-      // Pattern des Befragernamens
+        // Pattern des Befragernamens
     } else if (!preg_match("/^[a-zA-Z0-9ßäöüÄÖÜ]*$/", $befragername)) {
         header("Location: ../Befragerregistrierung.php?error=ungültigerbefragername");
         exit();
-      // Fehlerbehandlung bei Ungleichheit des Passwörter  
+        // Fehlerbehandlung bei Ungleichheit des Passwörter  
     } else if ($passwort !== $passwortWiederholen) {
         header("Location: ../Befragerregistrierung.php?error=überprüfepasswörter&befragername=" . $befragername);
         exit();
     } else {
         // Prüfung doppelter Befragernamen
         $sql = "SELECT BName FROM befrager WHERE BName=?";
-        // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
-        checkBefrager($conn, $sql, $befragername);
+        // Initialisieren mit der richtigen Verbindung
+        $statement = mysqli_stmt_init($conn);
+        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        if (!mysqli_stmt_prepare($statement, $sql)) {
+            // Wenn ja, dann SQL-Fehler
+            header("Location: ../Befragerregistrierung.php?error=sqlerror");
+            exit();
+        } else {
+            // Benutzereingaben beim Anmeldeversuch
+            mysqli_stmt_bind_param($statement, "s", $befragername);
+            // Ausführen der Anweisung in der Datenbank
+            mysqli_stmt_execute($statement);
+            // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
+            mysqli_stmt_store_result($statement);
+            // Prüft die Anzahl der Ergebnisse der Variable $statement
+            $resultCheck = mysqli_stmt_num_rows($statement);
             // Wenn größer 0 -> Befragername schon vergeben
             if ($resultCheck > 0) {
                 header("Location: ../Befragerregistrierung.php?error=befragernamebereitsvergeben");
@@ -42,8 +56,9 @@ if (isset($_POST['befragerregistrierung'])) {
                 insertBefrager($conn, $sql, $passwort, $befragername);
             }
         }
+    }
     // Statements schließen
     mysqli_stmt_close($statement);
     // Verbindung beenden
     mysqli_close($conn);
-} 
+}
