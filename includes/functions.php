@@ -162,7 +162,23 @@ function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
     }
 }
 
-//Funktion zur Auswahl des Fragebogens zum Bearbeiten
+function echoAnzahlTeilnehmer($conn, $sql, $titelFB)
+{
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Auswertungsseite2.php?error=SQLBefehlFehler");
+    } else {
+        mysqli_stmt_bind_param($stmt, "s", $titelFB);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "Anzahl Teilnehmer: " . $row['AnzahlTeiln'] . "</br>";
+        }
+    }
+    mysqli_stmt_close($stmt);
+}
+
+//Funktion zur Ausgabe von Titeln der Fragebogen des Bearbeiters (zur Auswahl des Fragebogens zum Bearbeiten oder Auswerten)
 function auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror)
 {
     // prepared statement erstellt
