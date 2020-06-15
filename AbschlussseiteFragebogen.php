@@ -1,5 +1,6 @@
 <?php include 'includes/header.php';
 include 'includes/functions.php';
+
 ?>
 <?php
 $mnr = $_SESSION['session_mnr'];

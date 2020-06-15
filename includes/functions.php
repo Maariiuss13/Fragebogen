@@ -42,6 +42,10 @@ function anmeldenBefrager($conn, $sql, $BName, $Passwort, $mess1, $mess2, $mess3
             exit();
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zur Prüfung, ob Titel bereits in DB vorhanden ist
@@ -69,6 +73,10 @@ function checkTitelDB($conn, $sql, $titel, $sqlerror, $error)
             exit();
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zur Prüfung, ob Frage bereits vorhanden
@@ -96,6 +104,10 @@ function checkFrage($conn, $sql, $frage, $sqlerror, $error)
             exit();
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zur Ausgabe Fragebogen des Befragers
@@ -118,6 +130,10 @@ function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
             echo $row['titel'] . "</br>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zur Auswahl des Fragebogens zum Bearbeiten
@@ -140,6 +156,10 @@ function auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror)
             echo "<option>" . $row['titel'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 
@@ -164,6 +184,10 @@ function auswahlFragen($conn, $sql, $titelFB, $sqlerror)
             echo "<option>" . $row['Fragestellung'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 
@@ -181,6 +205,10 @@ function deleteFrageboegen($conn, $sql, $titel, $sqlerror)
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zum Löschen von Fragen auf der Seite FragenBearbeiten
@@ -197,6 +225,10 @@ function deleteFragen($conn, $sql, $titelFB, $frageNr, $sqlerror)
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zum Update der FrageNr´s nach Löschen einer Frage aus Fragebogen
@@ -225,6 +257,10 @@ function updatefragenr($conn, $sql, $titelFB, $sqlerror)
             $i++;
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zum Insert eines neuen Fragenbogens
@@ -239,6 +275,10 @@ function insertFragebogen($conn, $sql, $titel, $beschreibung, $befrager, $sqlerr
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion, um für Insert die FrageNr festzulegen - Rückgabe eines Int, der ein Wert höher als bisherige FrageNr
@@ -251,6 +291,9 @@ function defineFrageNr($conn, $sql)
     //FrageNr definieren
     $frageNr = $anzFr['maxAnz'] + 1;
     return $frageNr;
+    
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion zum Insert Fragen
@@ -266,6 +309,10 @@ function insertFrage($conn, $sql, $aktS, $titelFb, $frage, $sqlerror)
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion zum Einfügen von Kursen in die Datenbank
@@ -286,6 +333,10 @@ function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
         header($mess);
         exit();
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 
@@ -310,6 +361,10 @@ function insertBefrager($conn, $sql, $passwort, $befragername)
         header("Location: ../Befrageranmeldung.php?anmeldung=erfolgreich");
         exit();
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion zum Einfügen der Daten in die Datenbank
@@ -330,6 +385,10 @@ function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
         header("Location: ../KursFragebogenZuordnen.php?fragebogenzuordnen=erfolgreich");
         exit();
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Prüfung, ob Student in der Datenbank bereits enthalten ist
@@ -350,6 +409,10 @@ function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
         // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
         mysqli_stmt_store_result($statement);
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion zum Einfügen von Studenten in die Datenbank
@@ -370,6 +433,10 @@ function insertStudent($conn, $sql, $MNR, $Kurskuerzel)
         header("Location: ../Kurs.php?studentanlegen=erfolgreich");
         exit();
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
@@ -394,6 +461,8 @@ function anmeldenStudent($statement)
         header("Location: ../Studentenanmeldung.php?error=matrikelnummernichtvergeben");
         exit();
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
 }
 
 // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
@@ -418,6 +487,10 @@ function offeneFragebogen($conn, $sql, $mnr)
             echo "<option>" . $row['titel'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
@@ -442,6 +515,10 @@ function fragebogenInBearbeitung($conn, $sql, $student)
             echo "<option>" . $row['titel'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
@@ -468,6 +545,10 @@ function kurse($conn, $sql)
             echo "<option>" . $row['Kuerzel'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion, die alle Fragebögen die in der Datenbank gespeichert sind, anzeigt
@@ -494,6 +575,10 @@ function frageboegen($conn, $sql, $befrager)
             echo "<option>" . $row['Titel'] . "</option>";
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 // Funktion, die den Status eines Fragebogens auf in Bearbeitung setzt
@@ -507,6 +592,10 @@ function statusInBearbeitung($conn, $sql, $FbTitel, $mnr, $neuerStatus)
         mysqli_stmt_bind_param($statement, "sss", $FbTitel, $mnr, $neuerStatus);
         mysqli_stmt_execute($statement);
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Funktion, die den Status eines Fragebogens auf Fertig setzt
@@ -520,6 +609,10 @@ function statusFertig($conn, $sql, $neuerStatus, $FbTitel, $mnr)
         mysqli_stmt_bind_param($statement, "sss", $neuerStatus, $FbTitel, $mnr);
         mysqli_stmt_execute($statement);
     }
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //WOHER????????????????
@@ -534,6 +627,9 @@ function titelFragebogen($conn, $sql, $befrager)
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<option>" . $row['titel'] . "</option>";
     }
+    
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 function aktFrageFB($conn, $sql, $titelFB, $anzFr)
@@ -550,6 +646,10 @@ function aktFrageFB($conn, $sql, $titelFB, $anzFr)
             echo $row['Fragestellung'];
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 function auswertungFunktion($conn, $sql, $fbtitel, $kurs)
@@ -565,6 +665,8 @@ function auswertungFunktion($conn, $sql, $fbtitel, $kurs)
     }
     //Funktion, die den Bewertungswert zu einer Frage zurückgibt
     //$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB)
 {
@@ -579,4 +681,8 @@ function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB)
             return $row['Bewertungswert'];
         }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
