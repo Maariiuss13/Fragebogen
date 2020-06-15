@@ -643,6 +643,8 @@ function aktFrageFB($conn, $sql, $titelFB, $anzFr)
     }
 }
 
+//Autor: Dajana Thoebes
+//Funktion zur Berechnung der Varianz
 function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
 {
     $stmt = mysqli_stmt_init($conn);
@@ -670,21 +672,48 @@ function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
     }
 }
 
-
-function auswertungFunktion($conn, $sql, $fbtitel, $kurs)
+//Autor: Marius Müller, Dajana Thoebes
+//Funktion zur Ausgabe der Auswertungsergebnisse
+function auswertungFunktion($conn, $sql, $titelFB, $kurs)
 {
-    $sql = "CALL getResultCalculation(" . $fbtitel . " , " . "\"" . $kurs . "\"" . " );";
-    //Speicherung Ergebnis in Variable
-    $result = mysqli_query($conn, $sql);
-    //Ausgabe Ergebnis
-    // $row = mysqli_fetch_assoc($result);
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
+    } else {
+      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      while ($row = mysqli_fetch_assoc($result)) {
+        //Ergebnisse ins Array übergeben
+        $auswert["FrageNr"] = $row['FrageNr'];
+        $auswert["Minimum"] = $row['min'];
+        $auswert["Maximum"] = $row['max'];
+        $auswert["Durchschnitt"] = $row['avg'];
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "FrageNr: " . $row['FrageNr'] . "<br> Minimum: " . $row['min'] . "<br> Maximum: " . $row['max'] . "<br> Standardabweichung: " . $row['stddev'] . ";";
+        $avg = $auswert["Durchschnitt"];
+        $frageNr = $row['FrageNr'];
+
+        //Ergebnisse zur Berechnung Varianz holen
+        $sqlbewert = "SELECT * FROM beantwortenf JOIN studenten ON beantwortenf.mnr=studenten.MNR JOIN bearbeitenfb ON beantwortenf.Titel=bearbeitenfb.Titel
+              WHERE beantwortenf.titel=? AND Kurs=? AND frageNr=$frageNr AND status='F';";
+        //Varianz berechnen
+        $var = varianzBerechnen($conn, $sqlbewert, $titelFB, $kurs, $avg);
+
+        //Berechnung Standardabweichung
+        $stdabw = sqrt($var);
+        $auswert["Standardabweichung"] = $stdabw;
+
+        //Ausgeben der Array-Werte
+        echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
+        echo "<td>" . $auswert['Durchschnitt'] . "</td>";
+        echo "<td>" . $auswert['Minimum'] . "</td>";
+        echo "<td>" . $auswert['Maximum'] . "</td>";
+        echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
+      }
+      mysqli_stmt_close($stmt);
     }
-    //Funktion, die den Bewertungswert zu einer Frage zurückgibt
-    //$sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
 }
+
 function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB)
 {
     $stmt = mysqli_stmt_init($conn);

@@ -51,40 +51,9 @@ if (isset($_POST["FragebogenAuswerten"])) {
           FROM beantwortenf AS b JOIN studenten AS s ON b.MNR=s.MNR JOIN bearbeitenfb AS fb ON b.Titel= fb.titel
           WHERE b.Titel = ? AND s.kurs=? AND fb.status='F'
           GROUP BY b.FrageNr;";
+    
+    auswertungFunktion($conn, $sqlAusw, $titelFB, $kurs);
 
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sqlAusw)) {
-      header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
-    } else {
-      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
-      mysqli_stmt_execute($stmt);
-      $result = mysqli_stmt_get_result($stmt);
-      while ($row = mysqli_fetch_assoc($result)) {
-        $auswert["FrageNr"] = $row['FrageNr'];
-        $auswert["Minimum"] = $row['min'];
-        $auswert["Maximum"] = $row['max'];
-        $auswert["Durchschnitt"] = $row['avg'];
-
-        $avg = $auswert["Durchschnitt"];
-        $frageNr = $row['FrageNr'];
-
-        $sqlbewert = "SELECT * FROM beantwortenf JOIN studenten ON beantwortenf.mnr=studenten.MNR 
-              WHERE titel=? AND Kurs=? AND frageNr=$frageNr";
-
-        $var = varianzBerechnen($conn, $sqlbewert, $titelFB, $kurs, $avg);
-
-        //Berechnung Standardabweichung
-        $stdabw = sqrt($var);
-        $auswert["Standardabweichung"] = $stdabw;
-
-        echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
-        echo "<td>" . $auswert['Durchschnitt'] . "</td>";
-        echo "<td>" . $auswert['Minimum'] . "</td>";
-        echo "<td>" . $auswert['Maximum'] . "</td>";
-        echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
-      }
-    }
-    mysqli_stmt_close($stmt);
     ?>
   </table>
 </div>
