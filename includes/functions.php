@@ -162,13 +162,13 @@ function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
     }
 }
 
-function echoAnzahlTeilnehmer($conn, $sql, $titelFB)
+function echoAnzahlTeilnehmer($conn, $sql, $titelFB, $kurs)
 {
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("Location: ../Auswertungsseite2.php?error=SQLBefehlFehler");
     } else {
-        mysqli_stmt_bind_param($stmt, "s", $titelFB);
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         while ($row = mysqli_fetch_assoc($result)) {
@@ -526,6 +526,16 @@ function kurse($conn, $sql)
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<option>" . $row['Kuerzel'] . "</option>";
         }
+    }
+}
+
+//Autor: Dajana Thoebes
+//Funktion, die alle Kurse, welche in freischaltenFB vorhanden sind, anzeigt
+function echokursfreischalten($conn, $sql)
+{
+    $result = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<option>" . $row['kurs'] . "</option>";
     }
 }
 
