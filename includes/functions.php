@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes, Lukas Ströbele, Marius Müller -->
 <?php
 
 // Prüfung, ob Student in der Datenbank bereits enthalten ist

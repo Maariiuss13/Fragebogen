@@ -1,3 +1,4 @@
+<!-- Autor: Lukas Ströbele -->
 <?php
 include 'includes/dbHandler.php';
 // Aktiviert eine Session

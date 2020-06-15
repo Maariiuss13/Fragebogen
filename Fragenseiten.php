@@ -1,3 +1,4 @@
+<!-- Autoren: Dajena Thoebes, Lukas Ströbele, Marius Müller -->
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 

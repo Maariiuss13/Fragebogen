@@ -1,3 +1,4 @@
+<!-- Autor: Lukas Ströbele -->
 <?php
 // Aktiviert eine Session
 session_start();
