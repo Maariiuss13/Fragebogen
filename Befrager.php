@@ -23,7 +23,7 @@ include 'includes/functions.php';
 
 <div>
 
-    <form method='post' action='AuswertungFragebogen.php'> 
+    <form method='post' action='Auswertungsseite.php'> 
         <input type= 'submit' name='auswerten' value='Fragebogen auswerten'/>
     </form> 
     <br/>
