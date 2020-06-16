@@ -176,6 +176,8 @@ function echoFbBefrager($conn, $sql, $befrager, $sqlerror)
     mysqli_stmt_close($stmt);
 }
 
+//Autor: Dajana Thoebes
+//Funktion, die die Anzahl an Teilnehmern (abgeschlossenen Fragebogen) für einen Kurs ausgibt
 function echoAnzahlTeilnehmer($conn, $sql, $titelFB, $kurs)
 {
     $stmt = mysqli_stmt_init($conn);
@@ -192,6 +194,8 @@ function echoAnzahlTeilnehmer($conn, $sql, $titelFB, $kurs)
     mysqli_stmt_close($stmt);
 }
 
+//Autor: Dajana Thoebes
+//Funktion, die die Kommentare eines Kurses zu abgeschlossenen Fragebogen ausgibt
 function echoKommentare($conn, $sql, $titelFB, $kurs)
 {
     // prepared statement erstellt
@@ -235,32 +239,6 @@ function auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror)
         //Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<option>" . $row['titel'] . "</option>";
-        }
-    }
-    // Statements schließen
-    mysqli_stmt_close($stmt);
-}
-
-
-//TODO
-//Funktion zur Auswahl einer Frage zum Löschen
-function auswahlFragen($conn, $sql, $titelFB, $sqlerror)
-{
-    // prepared statement erstellt
-    $stmt = mysqli_stmt_init($conn);
-    // prepared statement vorbereiten
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header($sqlerror);
-    } else {
-        //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $titelFB);
-        //Parameter in DB verwenden
-        mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
-        $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $row['Fragestellung'] . "</option>";
         }
     }
     // Statements schließen
@@ -791,6 +769,7 @@ function auswertungFunktion($conn, $sql, $titelFB, $kurs)
 }
 
 //Autor: Dajana Thoebes
+//Funktion, die den Bewertungswert des Studenten für eine Frage gemäß Fragenummer ausgibt
 function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB)
 {
     $stmt = mysqli_stmt_init($conn);

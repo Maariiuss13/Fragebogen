@@ -34,8 +34,6 @@ include 'includes/header.php';
                     //Template für prepared statement
                     $sql= "SELECT * FROM fragen WHERE Titel=?;";
                     $titelFB=$_SESSION['bearbeitenFB'];
-                    //TODO
-                    //auswahlFragen($conn, $sql, $titelFB);
                     // prepared statement erstellt
                     $stmt= mysqli_stmt_init($conn);
                     // prepared statement vorbereiten
