@@ -53,8 +53,6 @@ $befrager=$_SESSION['session_bname'];
     <label for="fbTitel">Fragebogen: </label>
     <select name="fbTitel">
       <?php
-      //titelFragebogen($conn, $sql, $befrager);
-
       $befrager = $_SESSION['session_bname'];
       //Template für prepared statement
       $sqlFB = "SELECT titel FROM frageboegen WHERE Befrager=? AND frageboegen.titel IN (SELECT bearbeitenFB.titel FROM bearbeitenFB);";

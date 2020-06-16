@@ -14,7 +14,7 @@ $mnr = $_SESSION['session_mnr'];
         <legend>Offene Fragebogen</legend>
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
-            $sqlerror="Location: ../Studenten.php?error=SQLBefehlFehler";
+            $sqlerror="Location: Studenten.php?error=SQLBefehlFehler";
             // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
             offeneFragebogen($conn, $sql, $mnr, $sqlerror);
             ?>
