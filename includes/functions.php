@@ -208,8 +208,8 @@ function echoKommentare($conn, $sql, $titelFB, $kurs)
         $result = mysqli_stmt_get_result($stmt);
         //Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
-            if ($row['Kommentar'] != NULL){
-                echo $row['Kommentar']."</br>";
+            if ($row['Kommentar'] != NULL) {
+                echo $row['Kommentar'] . "</br>";
             }
         }
     }
@@ -608,12 +608,27 @@ function kurse($conn, $sql)
 
 //Autor: Dajana Thoebes
 //Funktion, die alle Kurse, welche in freischaltenFB vorhanden sind, anzeigt
-function echokursfreischalten($conn, $sql)
+function echokursfreischalten($conn, $sql, $befrager)
 {
-    $result = mysqli_query($conn, $sql);
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<option>" . $row['kurs'] . "</option>";
+    // prepared statement erstellt
+    $stmt = mysqli_stmt_init($conn);
+    // prepared statement vorbereiten
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Auswertungsseite.php?error=SQLBefehlFehler");
+    } else {
+        //Verknüpfung Parameter zu Placeholder
+        mysqli_stmt_bind_param($stmt, "s", $befrager);
+        //Parameter in DB verwenden
+        mysqli_stmt_execute($stmt);
+        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        $result = mysqli_stmt_get_result($stmt);
+        //Ergebnis ausgeben
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option>" . $row['Kurs'] ."</option>";
+        }
     }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
 }
 
 
@@ -728,7 +743,8 @@ function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
 
 //Autor: Dajana Thoebes
 //Funktion, die die Ergebnisse des Auswertungs-Arrays ausgibt
-function echoAuswertungsErg($auswert){
+function echoAuswertungsErg($auswert)
+{
     echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
     echo "<td>" . $auswert['Durchschnitt'] . "</td>";
     echo "<td>" . $auswert['Minimum'] . "</td>";
@@ -769,7 +785,6 @@ function auswertungFunktion($conn, $sql, $titelFB, $kurs)
 
             //Ausgeben der Array-Werte
             echoAuswertungsErg($auswert);
-
         }
         mysqli_stmt_close($stmt);
     }

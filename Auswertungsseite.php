@@ -42,9 +42,11 @@ echo "<p> Befrager: " . $_SESSION['session_bname'] . "</p><br/>";
     <label for="kurs">Kurs: </label>
     <select name="kurs">
       <?php
-      //Ausgabe Kurse, für die Fragebögen freigeschaltet sind
-      $sqlKurs = "SELECT DISTINCT kurs FROM freischaltenFB;";
-      echokursfreischalten($conn, $sqlKurs);
+      //Ausgabe Kurse, für die Fragebogen vom Befrager freigeschaltet sind
+      $sqlKurs = "SELECT DISTINCT freischaltenfb.Kurs FROM freischaltenfb JOIN frageboegen ON freischaltenfb.Titel=frageboegen.Titel 
+                  WHERE befrager=?;";
+      $befrager=$_SESSION['session_bname'];
+      echokursfreischalten($conn, $sqlKurs, $befrager);
       ?>
     </select>
     </br> </br>
