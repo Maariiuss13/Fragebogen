@@ -1,3 +1,4 @@
+<!-- Autor: Lukas Ströbele -->
 <?php
 include 'functions.php';
 include 'dbHandler.php';

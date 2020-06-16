@@ -1,3 +1,4 @@
+<!-- Autor: Marius Müller, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
