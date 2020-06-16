@@ -46,13 +46,14 @@ if (isset($_POST["FragebogenAuswerten"])) {
     </tr>
 
     <?php
+    //Auswertungsergebnisse ausgeben
     $auswert = array();
-
     $sqlAusw = "SELECT FrageNr, MIN(Bewertungswert) AS min, MAX(Bewertungswert)AS max, AVG(Bewertungswert) AS avg
           FROM beantwortenf AS b JOIN studenten AS s ON b.MNR=s.MNR JOIN bearbeitenfb AS fb ON b.Titel= fb.titel
           WHERE b.Titel = ? AND s.kurs=? AND fb.status='F'
           GROUP BY b.FrageNr;";
     
+    //Funktion, die die Ergebnisse des Auswertungsarray ausgibt
     auswertungFunktion($conn, $sqlAusw, $titelFB, $kurs);
 
     ?>
@@ -62,16 +63,13 @@ if (isset($_POST["FragebogenAuswerten"])) {
 
 <div class="comments">
   <p>Liste Kommentare</p>
-  <table border="1">
-    <tr>
-      <th>Kommentar</th>
-    </tr>
     <?php
+    //Kommentare ausgeben
     $sqlKomm = "SELECT * FROM bearbeitenfb JOIN studenten ON bearbeitenfb.mnr=studenten.MNR 
                   WHERE titel=? AND Kurs=?";
+    //Funktion, welche die Kommentare ausgibt
     echoKommentare($conn, $sqlKomm, $titelFB, $kurs);
     ?>
-  </table>
 </div>
 
 

@@ -21,9 +21,6 @@ if(isset($_POST["kommentarSpeichern"])){
     insertKommentar($conn, $sql, $kommentar, $titelFB, $mnr);
     
     header("Location: ../Studenten.php?KommentarGespeichert");
-    // Statements schließen
-    mysqli_stmt_close($stmt);
-
 }
 
 // Verbindung beenden

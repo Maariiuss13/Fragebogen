@@ -208,7 +208,9 @@ function echoKommentare($conn, $sql, $titelFB, $kurs)
         $result = mysqli_stmt_get_result($stmt);
         //Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['Kommentar'] . "</td></tr>";
+            if ($row['Kommentar'] != NULL){
+                echo $row['Kommentar']."</br>";
+            }
         }
     }
     mysqli_stmt_close($stmt);
@@ -676,6 +678,7 @@ function statusFertig($conn, $sql, $neuerStatus, $FbTitel, $mnr)
 }
 
 //Autor: Marius Müller, Dajana Thoebes
+//Funktion zur Ausgabe der Frage gemäß der Fragenummer
 function aktFrageFB($conn, $sql, $titelFB, $anzFr, $mnr)
 {
     $stmt = mysqli_stmt_init($conn);
@@ -723,6 +726,16 @@ function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
     }
 }
 
+//Autor: Dajana Thoebes
+//Funktion, die die Ergebnisse des Auswertungs-Arrays ausgibt
+function echoAuswertungsErg($auswert){
+    echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
+    echo "<td>" . $auswert['Durchschnitt'] . "</td>";
+    echo "<td>" . $auswert['Minimum'] . "</td>";
+    echo "<td>" . $auswert['Maximum'] . "</td>";
+    echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
+}
+
 //Autor: Marius Müller, Dajana Thoebes
 //Funktion zur Ausgabe der Auswertungsergebnisse
 function auswertungFunktion($conn, $sql, $titelFB, $kurs)
@@ -755,11 +768,8 @@ function auswertungFunktion($conn, $sql, $titelFB, $kurs)
             $auswert["Standardabweichung"] = $stdabw;
 
             //Ausgeben der Array-Werte
-            echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
-            echo "<td>" . $auswert['Durchschnitt'] . "</td>";
-            echo "<td>" . $auswert['Minimum'] . "</td>";
-            echo "<td>" . $auswert['Maximum'] . "</td>";
-            echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
+            echoAuswertungsErg($auswert);
+
         }
         mysqli_stmt_close($stmt);
     }
@@ -799,6 +809,9 @@ function insertKommentar($conn, $sql, $kommentar, $titelFB, $mnr)
         //Run Code in DB
         mysqli_stmt_execute($stmt);
     }
+
+    // Statements schließen
+    mysqli_stmt_close($stmt);
 }
 
 //Autor: Dajana Thoebes
