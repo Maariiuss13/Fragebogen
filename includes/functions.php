@@ -1,26 +1,6 @@
 <!-- Autor: Dajena Thoebes, Lukas Ströbele, Marius Müller -->
 <?php
 
-// Prüfung, ob Student in der Datenbank bereits enthalten ist
-function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Kurs.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
-    }
-}
-
 // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
 function checkBefrager($conn, $sql, $befragername)
 {

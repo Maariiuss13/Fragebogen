@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes -->
+<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 

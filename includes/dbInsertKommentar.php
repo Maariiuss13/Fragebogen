@@ -1,4 +1,4 @@
-<!-- Autoren: Dajena Thoebes, Marius Müller -->
+<!-- Autoren: Dajena Thoebes, Marius Müller, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';
