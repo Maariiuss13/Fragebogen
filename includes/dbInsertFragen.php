@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
+<!-- Autor: Dajana Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 
 include 'dbHandler.php';

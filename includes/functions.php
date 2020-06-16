@@ -133,22 +133,21 @@ function checkFrage($conn, $sql, $frage, $sqlerror, $error)
 
 //Autor: Dajana Thoebes
 //Funktion zum Prüfen, ob Titel und Kurs einander zugeordnet sind
-function checkFragebogenKursZuordnung($conn, $sql, $titelFB, $kurs) {
-    $stmt= mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)){
-      header("Location: ../Auswertungsseite2.php?error=sqlerror");
-      exit();
-    }
-    else{
-      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_store_result($stmt);
-      $resultcheck = mysqli_stmt_num_rows($stmt);
-      if ($resultcheck<=0) {
-        header("Location: Auswertungsseite.php?error=KursFBerror");
-        exit;
-      }
-  
+function checkFragebogenKursZuordnung($conn, $sql, $titelFB, $kurs)
+{
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Auswertungsseite2.php?error=sqlerror");
+        exit();
+    } else {
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $resultcheck = mysqli_stmt_num_rows($stmt);
+        if ($resultcheck <= 0) {
+            header("Location: Auswertungsseite.php?error=KursFBerror");
+            exit;
+        }
     }
 }
 
@@ -701,26 +700,26 @@ function varianzBerechnen($conn, $sql, $titelFB, $kurs, $avg)
 {
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
+        header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
     } else {
-      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
-      mysqli_stmt_execute($stmt);
-      $result = mysqli_stmt_get_result($stmt);
-      //Definiere Variable $count - Anzahl der rows im Ergebnis
-      $count = mysqli_num_rows($result);
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        //Definiere Variable $count - Anzahl der rows im Ergebnis
+        $count = mysqli_num_rows($result);
 
-      if ($count <= 0){
-        header ("Location: Auswertungsseite2.php?error=keineErgebnisse");
-        exit();
-      }
-      
-      //Varianz berechnen
-      $var = 0.0;
-      while ($row = mysqli_fetch_assoc($result)) {
-        $var += pow($row['Bewertungswert'] - $avg, 2);
-      }
-      $var = $var / $count;
-      return $var;
+        if ($count <= 0) {
+            header("Location: Auswertungsseite2.php?error=keineErgebnisse");
+            exit();
+        }
+
+        //Varianz berechnen
+        $var = 0.0;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $var += pow($row['Bewertungswert'] - $avg, 2);
+        }
+        $var = $var / $count;
+        return $var;
     }
 }
 
@@ -730,39 +729,39 @@ function auswertungFunktion($conn, $sql, $titelFB, $kurs)
 {
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-      header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
+        header("Location: Auswertungsseite2.php?error=SQLBefehlFehler");
     } else {
-      mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
-      mysqli_stmt_execute($stmt);
-      $result = mysqli_stmt_get_result($stmt);
-      while ($row = mysqli_fetch_assoc($result)) {
-        //Ergebnisse ins Array übergeben
-        $auswert["FrageNr"] = $row['FrageNr'];
-        $auswert["Minimum"] = $row['min'];
-        $auswert["Maximum"] = $row['max'];
-        $auswert["Durchschnitt"] = $row['avg'];
+        mysqli_stmt_bind_param($stmt, "ss", $titelFB, $kurs);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            //Ergebnisse ins Array übergeben
+            $auswert["FrageNr"] = $row['FrageNr'];
+            $auswert["Minimum"] = $row['min'];
+            $auswert["Maximum"] = $row['max'];
+            $auswert["Durchschnitt"] = $row['avg'];
 
-        $avg = $auswert["Durchschnitt"];
-        $frageNr = $row['FrageNr'];
+            $avg = $auswert["Durchschnitt"];
+            $frageNr = $row['FrageNr'];
 
-        //Ergebnisse zur Berechnung Varianz holen
-        $sqlbewert = "SELECT * FROM beantwortenf JOIN studenten ON beantwortenf.mnr=studenten.MNR JOIN bearbeitenfb ON beantwortenf.Titel=bearbeitenfb.Titel
+            //Ergebnisse zur Berechnung Varianz holen
+            $sqlbewert = "SELECT * FROM beantwortenf JOIN studenten ON beantwortenf.mnr=studenten.MNR JOIN bearbeitenfb ON beantwortenf.Titel=bearbeitenfb.Titel
               WHERE beantwortenf.titel=? AND Kurs=? AND frageNr=$frageNr AND status='F';";
-        //Varianz berechnen
-        $var = varianzBerechnen($conn, $sqlbewert, $titelFB, $kurs, $avg);
+            //Varianz berechnen
+            $var = varianzBerechnen($conn, $sqlbewert, $titelFB, $kurs, $avg);
 
-        //Berechnung Standardabweichung
-        $stdabw = sqrt($var);
-        $auswert["Standardabweichung"] = $stdabw;
+            //Berechnung Standardabweichung
+            $stdabw = sqrt($var);
+            $auswert["Standardabweichung"] = $stdabw;
 
-        //Ausgeben der Array-Werte
-        echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
-        echo "<td>" . $auswert['Durchschnitt'] . "</td>";
-        echo "<td>" . $auswert['Minimum'] . "</td>";
-        echo "<td>" . $auswert['Maximum'] . "</td>";
-        echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
-      }
-      mysqli_stmt_close($stmt);
+            //Ausgeben der Array-Werte
+            echo "<tr><td>" . $auswert['FrageNr'] . "</td>";
+            echo "<td>" . $auswert['Durchschnitt'] . "</td>";
+            echo "<td>" . $auswert['Minimum'] . "</td>";
+            echo "<td>" . $auswert['Maximum'] . "</td>";
+            echo "<td>" . $auswert['Standardabweichung'] . "</td> </tr>";
+        }
+        mysqli_stmt_close($stmt);
     }
 }
 
@@ -782,4 +781,22 @@ function aktAntwF($conn, $sql, $mnr, $frageNr, $titelFB)
     }
     // Statements schließen
     mysqli_stmt_close($stmt);
+}
+
+
+//Autor: Dajana Thoebes
+//Funktion zum Insert eines Kommentars
+function insertKommentar($conn, $sql, $kommentar, $titelFB, $mnr)
+{
+    //prepared statement erstellen
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../AbschlussseiteFragebogen.php?error=SQLBefehlFehler");
+        exit();
+    } else {
+        //Verknüpfung Parameter mit Placeholdern
+        mysqli_stmt_bind_param($stmt, "sss", $kommentar, $titelFB, $mnr);
+        //Run Code in DB
+        mysqli_stmt_execute($stmt);
+    }
 }

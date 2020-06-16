@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
+<!-- Autor: Dajana Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';
@@ -39,8 +39,4 @@ if (isset($_POST["speichernNeueFrage"])) {
 
 
 //Aktualisieren Seite FragenBearbeiten
-if (!$sql) {
-    echo mysqli_error($sql);
-} else {
-    header("Location: ../FragenKopieBearbeiten.php?FrageEinfügen=erfolgreich");
-}
+header("Location: ../FragenKopieBearbeiten.php?FrageEinfügen=erfolgreich");
