@@ -1,4 +1,5 @@
-<!-- Autor: Marius Müller, Dajana Thoebes -->
+<!-- Autor: Marius Müller, Dajana Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
+
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 

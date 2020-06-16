@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';
@@ -33,6 +34,10 @@ if(isset($_POST["Bweiter"])){
     $_SESSION["aktSeite"]++;
     //Weiterleitung auf neue Fragenseite
     header("Location: ../Fragenseiten2.php?Next");
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 //Vorgehen bei Button Abschluss 
@@ -69,5 +74,9 @@ if(isset($_POST["Babschluss"])){
     //Weiterleitung auf Abschlusseite
     header("Location: ../AbschlussseiteFragebogen.php?ErfassungAbgeschlossen");
     $_SESSION["Babschluss"] = htmlspecialchars(stripslashes(trim($_POST["Babschluss"])));
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 

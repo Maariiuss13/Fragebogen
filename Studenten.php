@@ -1,3 +1,4 @@
+<!-- Autor: Lukas Ströbele -->
 <?php
 include 'includes/header.php';
 include 'includes/functions.php';
