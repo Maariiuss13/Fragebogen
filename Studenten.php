@@ -29,7 +29,7 @@ $mnr = $_SESSION['session_mnr'];
         <select style="padding: 12px 7px" name="fbTitel" size="0" readonly>
             <?php
             // Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
-            fragebogenInBearbeitung($conn, $sql, $student, $sqlerror);
+            fragebogenInBearbeitung($conn, $sql, $mnr, $sqlerror);
             ?>
         </select>
         <button type="submit" name="FragebogenBearbeiten2" value="Fragebogen bearbeiten">Fragebogen starten!</button>

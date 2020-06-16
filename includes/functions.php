@@ -527,7 +527,8 @@ function anmeldenStudent($statement)
 function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
 {
     //Template für prepared statement
-    $sql = "SELECT titel from freischaltenfb inner join studenten on studenten.Kurs=freischaltenfb.Kurs where mnr=$mnr AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=$mnr)";
+    $sql = "SELECT titel from freischaltenfb inner join studenten on studenten.Kurs=freischaltenfb.Kurs 
+            where mnr=$mnr AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=$mnr)";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
@@ -553,7 +554,7 @@ function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
 function fragebogenInBearbeitung($conn, $sql, $student, $sqlerror)
 {
     //Template für prepared statement
-    $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'B'";
+    $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'B' AND mnr=?";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
