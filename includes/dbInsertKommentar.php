@@ -30,6 +30,10 @@ if(isset($_POST["kommentarSpeichern"])){
     }
     
     header("Location: ../Studenten.php?KommentarGespeichert");
+    // Statements schließen
+    mysqli_stmt_close($statement);
+    // Verbindung beenden
+    mysqli_close($conn);
 }
 
 
