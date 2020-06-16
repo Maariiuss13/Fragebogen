@@ -528,7 +528,7 @@ function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
 {
     //Template für prepared statement
     $sql = "SELECT titel from freischaltenfb inner join studenten on studenten.Kurs=freischaltenfb.Kurs 
-            where mnr=$mnr AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=$mnr)";
+            where mnr=? AND freischaltenfb.titel NOT IN (SELECT titel from bearbeitenfb where mnr=?)";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
@@ -536,7 +536,7 @@ function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
         header($sqlerror);
     } else {
         //Verknüpfung Parameter zu Placeholder
-        mysqli_stmt_bind_param($stmt, "s", $mnr);
+        mysqli_stmt_bind_param($stmt, "ss", $mnr, $mnr);
         //Parameter in DB verwenden
         mysqli_stmt_execute($stmt);
         //Daten/Ergebnis aus execute-Fkt in Variable verwenden
