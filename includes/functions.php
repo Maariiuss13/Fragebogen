@@ -800,3 +800,22 @@ function insertKommentar($conn, $sql, $kommentar, $titelFB, $mnr)
         mysqli_stmt_execute($stmt);
     }
 }
+
+//Autor: Dajana Thoebes
+//Funktion zum Update einer Bewertung und wenn noch nicht vorhanden, dann Insert
+function updateinsertBewertung($conn, $sql, $mnr, $frageNr, $titelFB, $bewertung)
+{
+    //prepared statement erstellen
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("Location: ../Fragenseiten2.php?error=SQLBefehlFehler");
+        exit();
+    } else {
+        //Verknüpfung Parameter mit Placeholdern
+        mysqli_stmt_bind_param($stmt, "sssss", $mnr, $frageNr, $titelFB, $bewertung, $bewertung);
+        //Run Code in DB
+        mysqli_stmt_execute($stmt);
+    }
+    // Statements schließen
+    mysqli_stmt_close($stmt);
+}
