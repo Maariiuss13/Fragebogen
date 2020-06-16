@@ -638,7 +638,7 @@ function frageboegen($conn, $sql, $befrager)
     // Echo Erstellte Fragebögen des angemeldeten Befragers
     $befrager = $_SESSION['session_bname'];
     //Template für prepared statement
-    $sql = "SELECT Titel FROM frageboegen";
+    $sql = "SELECT Titel FROM frageboegen WHERE Befrager='$befrager'";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
