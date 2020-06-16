@@ -49,8 +49,8 @@ if ($_SESSION["titelFB"] == '') {
       $aktFr = $_SESSION["aktSeite"];
       $titelFb = $_SESSION["titelFB"];
       //aktuelle Frage aus DB holen und ausgeben
-      $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=?;";
-      aktFrageFB($conn, $sqlFr, $titelFb, $aktFr);
+      $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=? AND MNR=?;";
+      aktFrageFB($conn, $sqlFr, $titelFb, $aktFr, $mnr);
     ?>
   </fieldset>
 
