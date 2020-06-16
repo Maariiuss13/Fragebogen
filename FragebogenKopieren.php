@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes -->
+<!-- Autor: Dajana Thoebes -->
 <?php
 include 'includes/header.php';
 ?>

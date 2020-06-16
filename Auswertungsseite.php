@@ -3,32 +3,10 @@
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
-/*$sql= "SELECT * FROM frageboegen WHERE befrager = 'Marius';";
-        $result = mysqli_query($conn, $sql);
-        if ($result) {
-          $resultArray = mysqli_fetch_all($result,MYSQLI_ASSOC);
-          //print_r($resultArray);
-        } */
-
 //Echo Befrager
 echo "<p> Befrager: " . $_SESSION['session_bname'] . "</p><br/>";
-
-/*$sql = "SELECT * FROM bearbeitenfb WHERE titel = 'Studium';";
-$result = mysqli_query($conn, $sql);
-if ($result) {
-  $resultArray2 = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";
-$result = mysqli_query($conn, $sql);
-if ($result) {
-  $resultArray3 = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-$befrager=$_SESSION['session_bname'];
-        echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";*/
-
 ?>
+
 <link href="Auswertungsdesign.css" rel="stylesheet">
 
 <div class="container">

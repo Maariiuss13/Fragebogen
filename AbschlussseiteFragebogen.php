@@ -1,4 +1,4 @@
-<!-- Autoren: Dajena Thoebes, Marius Müller -->
+<!-- Autoren: Dajana Thoebes, Marius Müller -->
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
