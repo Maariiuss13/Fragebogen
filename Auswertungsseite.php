@@ -1,106 +1,61 @@
+<!-- Autor: Marius Müller -->
 <?php include 'includes/header.php';
-include 'includes/dbHandler.php';
 include 'includes/functions.php';
 
-$sql= "SELECT * FROM frageboegen WHERE befrager = 'Marius';";
+/*$sql= "SELECT * FROM frageboegen WHERE befrager = 'Marius';";
         $result = mysqli_query($conn, $sql);
         if ($result) {
           $resultArray = mysqli_fetch_all($result,MYSQLI_ASSOC);
           //print_r($resultArray);
-        } 
+        } */
 
-$sql= "SELECT * FROM bearbeitenfb WHERE titel = 'Studium';";
+//Echo Befrager
+echo "<p> Befrager: " . $_SESSION['session_bname'] . "</p><br/>";
+
+
+/*$sql = "SELECT * FROM bearbeitenfb WHERE titel = 'Studium';";
 $result = mysqli_query($conn, $sql);
 if ($result) {
-  $resultArray2 = mysqli_fetch_all($result,MYSQLI_ASSOC);
+  $resultArray2 = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-$sql= "SELECT * FROM fragen WHERE titel = 'Studium';";
+$sql = "SELECT * FROM fragen WHERE titel = 'Studium';";
 $result = mysqli_query($conn, $sql);
 if ($result) {
-  $resultArray3 = mysqli_fetch_all($result,MYSQLI_ASSOC);
+  $resultArray3 = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-/*$befrager=$_SESSION['session_bname'];
+$befrager=$_SESSION['session_bname'];
         echo "<p> Ersteller Fragebogen: ".$befrager."</p><br/>";*/
 
 ?>
-  <link href="Auswertungsdesign.css" rel="stylesheet">
+<link href="Auswertungsdesign.css" rel="stylesheet">
 
-
-  <div class="container">
-    <h1 align="center"><b>Willkommen auf der Auswertungsseite des Fragebogens!</b></h1>   
+<div class="container">
+  <h1 align="center"><b>Willkommen auf der Auswertungsseite des Fragebogens!</b></h1>
 </div>
 
-            
-            
-        
- 
-  <br />
-  <div class="main">
-     
-    
-    <label for="fbTitel">Name Fragebogen: </label>
-            <select name="fbTitel">
-                <?php
-                    titelFragebogen($conn, $sql, $befrager);
-                ?>
-            </select>
-    <p>Zeitstempel Auswertung: <input type="number" name="mwst" size="2" value="" readonly></p>
-    <p>Anzahl Teilnehmer: <input type="number" name="mwst" size="2" value="" readonly></p>
-    
-  </div>
-  <br />
-  <div class="table">
-    <table border="1">
-      <tr>
-        <th>Frage</th>
-        <th>Durchschnitt</th>
-        <th>Min</th>
-        <th>Max</th>
-        <th>Standardabweichung</th>
-      </tr>
-      <tr>
+<br />
+<div class="main">
+  <form action="Auswertungsseite2.php" method="post">
+
+    <label for="fbTitel">Fragebogen: </label>
+    <select name="fbTitel">
       <?php
-      echo '<td>'.$resultArray3[0]["Fragestellung"].'</td>';
+      //titelFragebogen($conn, $sql, $befrager);
+
+      $befrager = $_SESSION['session_bname'];
+      //Template für prepared statement
+      $sql = "SELECT titel FROM frageboegen WHERE Befrager=? AND frageboegen.titel IN (SELECT bearbeitenFB.titel FROM bearbeitenFB);";
+      $sqlerror = "Location: ../Auswertungsseite.php?error=SQLBefehlFehler";
+      auswahlFbBefragerBearbeiten($conn, $sql, $befrager, $sqlerror);
       ?>
-      </tr>
-    </table>
-  </div>
-  <br />
-  <div class="comments">
-    <p>Liste Kommentare</p>
-    <table border="1">
-    
-      <tr>
-      <?php
-        echo '<th>Kommentare</th>';
-        
+    </select>
+    </br> </br>
+    <input type="submit" name="FragebogenAuswerten" value="Fragebogen auswerten">
+  </form>
+</div>
 
-      
-      echo '</tr>';
-      echo '<tr>';
-      echo '<td>'.$resultArray2[0]["Kommentar"].'</td>';
-      ?>
-   </tr>
-   
-    </table>
-  </div>
-  <div>
-
-
-<?php
-
-$fbtitel = "Sport";
-$kurs = "WWI";
-auswertungFunktion($conn, $sql, $fbtitel, $kurs);
-
-
-
-?>
-
-
-  </div>
 
 </body>
 

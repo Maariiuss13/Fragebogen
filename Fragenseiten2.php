@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php include 'includes/header.php';
 include 'includes/functions.php';
 
@@ -44,8 +45,8 @@ if ($_SESSION["titelFB"] == '') {
       $aktFr = $_SESSION["aktSeite"];
       $titelFb = $_SESSION["titelFB"];
       //aktuelle Frage aus DB holen und ausgeben
-      $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=?;";
-      aktFrageFB($conn, $sqlFr, $titelFb, $aktFr);
+      $sqlFr = "SELECT * FROM fragen, bearbeitenfb where fragen.Titel=bearbeitenfb.Titel AND fragen.titel=? AND FrageNr=? AND mnr=?;";
+      aktFrageFB($conn, $sqlFr, $titelFb, $aktFr, $mnr);
     ?>
   </fieldset>
 
@@ -59,7 +60,6 @@ if ($_SESSION["titelFB"] == '') {
         //Bewertungswert in Variable $bewertung speichern 
         $sqlV= "SELECT * FROM beantwortenf WHERE mnr=? AND FrageNr=? AND Titel=?";
         $bewertung = aktAntwF($conn, $sqlV, $mnr, $frageNr, $titelFB);
-        echo $bewertung."</br>".$mnr."</br>".$titelFB."</br>".$frageNr;
       ?>
       </p>
 

@@ -1,3 +1,4 @@
+<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 include 'dbHandler.php';
 include 'functions.php';
@@ -29,9 +30,5 @@ if(isset($_POST["FragebogenLöschen"])){
 
 
 //Weiterleitung auf Befrager-Seite
-if (!$sql) {
-    echo mysqli_error($sql);
-}
-else {
-    header("Location: ../FragebogenLoeschen.php?FragebogenLöschen=erfolgreich");
-}
+header("Location: ../FragebogenLoeschen.php?FragebogenLöschen=erfolgreich");
+
