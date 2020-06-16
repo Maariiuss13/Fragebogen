@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
+<!-- Autor: Dajana Thoebes, Lukas Ströbele (Cross-Site-Scripting) -->
 <?php
 include 'includes/header.php';
 ?>
@@ -10,8 +10,7 @@ include 'includes/header.php';
     <p>Es stehen Ihnen die Fragen des ausgewählten Fragebogens zur Auswahl. <br/>
     Sie können für den Fragebogen bestehende Fragen löschen oder neue an das Ende des Fragebogens hinzufügen. <br/>
     </p>
-    
-    <!-- Echo Befrager-->
+
     <?php
         //Deklaration Variablen
         if (isset($_POST['FragebogenBearbeiten'])){

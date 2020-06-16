@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes, Lukas Ströbele, Marius Müller -->
+<!-- Autor: Dajana Thoebes, Lukas Ströbele, Marius Müller -->
 <?php
 
 // Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist

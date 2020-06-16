@@ -1,4 +1,4 @@
-<!-- Autor: Dajena Thoebes -->
+<!-- Autor: Dajana Thoebes -->
 <?php
 include 'includes/header.php';
 ?>
@@ -11,7 +11,6 @@ include 'includes/header.php';
     Sie können für ihren neuen Fragebogen bestehende Fragen löschen oder neue an das Ende des Fragebogens hinzufügen. <br/>
     </p>
     
-    <!-- Echo Befrager-->
     <?php
         echo "<p> Ersteller Fragebogen: ".$_SESSION['session_bname']."</p><br/>";
         echo "<p> Ersteller Fragebogen: ".$_SESSION['KopieFB']."</p><br/>";
@@ -29,7 +28,6 @@ include 'includes/header.php';
                     // prepared statement vorbereiten
                     if (!mysqli_stmt_prepare($stmt, $sql)){
                         header("Location: ../Befrager.php?error=SQLFehler");
-                        echo "SQL Fehler bei Abfrage Fragebogen";
                     }
                     else{
                         //Verknüpfung Parameter zu Placeholder
