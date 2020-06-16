@@ -31,7 +31,7 @@ if ((isset($_POST["Bweiter"])) || (isset($_POST["Babschluss"]))) {
 }
 
 //Vorgehen bei Button Weiter
-if (isset($_POST["Babschluss"])) {
+if (isset($_POST["Bweiter"])) {
     //Hochzählen aktSeite
     $_SESSION["aktSeite"]++;
     //Weiterleitung auf neue Fragenseite

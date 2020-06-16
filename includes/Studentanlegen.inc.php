@@ -20,7 +20,7 @@ if (isset($_POST['studentanlegen'])) {
         exit();
     } else {
         // Prüfung doppelter Studenten
-        $sql = "SELECT * FROM studenten WHERE MNR='$MNR' OR Kurs='$Kurskuerzel'";
+        $sql = "SELECT * FROM studenten WHERE MNR='$MNR' AND Kurs='$Kurskuerzel'";
         // Initialisieren mit der richtigen Verbindung
         $statement = mysqli_stmt_init($conn);
         // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
