@@ -4,8 +4,8 @@ include 'includes/dbHandler.php';
 // Aktiviert eine Session
 session_start();
 // Prüfung, ob eine Sessionvariable belegt ist
-// Wenn ja, ist man angemeldet  
 if (isset($_SESSION['session_bname']) || isset($_SESSION['session_mnr'])) {
+  // Wenn ja, ist man angemeldet  
   echo '<p align="center">Sie sind eingeloggt!</p>';
   // Wenn nein, wird der Benutzer auf die Startseite umgeleitet, 
   // da er ansonsten ohne Anmeldung auf diese Seite kommen würde

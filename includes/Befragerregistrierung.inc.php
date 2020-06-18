@@ -2,9 +2,7 @@
 <?php
 include 'functions.php';
 include 'dbHandler.php';
-?>
 
-<?php
 // Neuen Befrager speichern
 if (isset($_POST['befragerregistrierung'])) {
 
@@ -28,17 +26,17 @@ if (isset($_POST['befragerregistrierung'])) {
         header("Location: ../Befragerregistrierung.php?error=überprüfepasswörter&befragername=" . $befragername);
         exit();
     } else {
-        // Prüfung doppelter Befragernamen
+        // Template für prepared statement (Prüfung doppelter Befragernamen)
         $sql = "SELECT BName FROM befrager WHERE BName=?";
-        // Initialisieren mit der richtigen Verbindung
+        // prepared statement generieren
         $statement = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        // prepared statement vorbereiten
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
+            // SQL-Error
             header("Location: ../Befragerregistrierung.php?error=sqlerror");
             exit();
         } else {
-            // Benutzereingaben beim Anmeldeversuch
+            // Benutzereingaben Befragername (Verknüpfung Parameter zu Placeholder)
             mysqli_stmt_bind_param($statement, "s", $befragername);
             // Ausführen der Anweisung in der Datenbank
             mysqli_stmt_execute($statement);

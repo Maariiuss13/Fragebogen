@@ -1,47 +1,25 @@
 <!-- Autor: Dajana Thoebes, Lukas Ströbele, Marius Müller -->
 <?php
 
-// Funktion zum Prüfen, ob Befragername bereits in DB vorhanden ist
-function checkBefrager($conn, $sql, $befragername)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Befragerregistrierung.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "s", $befragername);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
-        // Prüft die Anzahl der Ergebnisse der Variable $statement
-        $resultCheck = mysqli_stmt_num_rows($statement);
-    }
-}
-
+// Autor: Lukas Ströbele
 // Funktion die prüft, ob das Passwort übereinstimmt und entsprechend eine Session übergibt
 function anmeldenBefrager($conn, $sql, $BName, $Passwort, $mess1, $mess2, $mess3, $mess4, $mess5)
 {
-    // Initialisieren mit der richtigen Verbindung
+    // prepared statement generieren
     $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
+        // SQL-Fehler
         header($mess1);
         exit();
     } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $BName, $BName);
-        // Ausführen der Anweisung in der Datenbank
+        // Benutzereingaben Befragername (Verknüpfung Parameter zu Placeholder)
+        mysqli_stmt_bind_param($statement, "s", $BName);
+        // Ausführen der Abfrage in der Datenbank
         mysqli_stmt_execute($statement);
-        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
-        // werden in der Variable $result gespeichert
+        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $result
         $result = mysqli_stmt_get_result($statement);
-        // Prüfung, ob $result leer ist oder ein Ergebnis liefert
+        // Prüfung, ob Variable $result leer ist oder ein Ergebnis liefert
         if ($row = mysqli_fetch_assoc($result)) {
             // Prüft, ob das eingegebene Passwort mit dem aus der Datenbank übereinstimmt
             $passwortCheck = password_verify($Passwort, $row['Passwort']);
@@ -55,6 +33,7 @@ function anmeldenBefrager($conn, $sql, $BName, $Passwort, $mess1, $mess2, $mess3
                 $_SESSION['session_bname'] = $row['BName'];
                 header($mess3);
                 exit();
+                // Falls $passwortCheck keine boolsche Variable ist, Fehlermeldung
             } else {
                 header($mess4);
                 exit();
@@ -384,125 +363,98 @@ function insertFrage($conn, $sql, $aktS, $titelFb, $frage, $sqlerror)
     mysqli_stmt_close($stmt);
 }
 
+// Autor: Lukas Ströbele
 // Funktion zum Einfügen von Kursen in die Datenbank
 function insertKurs($conn, $sql, $Kuerzel, $Kurs, $sqlerror, $mess)
 {
-    // Initialisieren mit der richtigen Verbindung
+    // prepared statement generieren
     $statement = mysqli_stmt_init($conn);
-    // Prüfung auf Übereinstimmung
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn nicht, Fehlermeldung
+        // SQL-Error
         header($sqlerror);
         exit();
     } else {
-        // Benutzereingaben beim Anmeldeversuch
+        // Benutzereingaben Kürzel/Kurs (Verknüpfung Parameter zu Placeholder)
         mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
         // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($statement);
         header($mess);
         exit();
     }
-    // Statements schließen
-    mysqli_stmt_close($statement);
 }
 
+// Autor: Lukas Ströbele
 // Funktion zum Einfügen von Befragern in die Datenbank
 function insertBefrager($conn, $sql, $passwort, $befragername)
 {
-    // Initialisieren mit der richtigen Verbindung
+    // prepared statement erstellen
     $statement = mysqli_stmt_init($conn);
-    // Prüfung auf Übereinstimmung
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn nicht, Fehlermeldung
+        // SQL-Error
         header("Location: ../Befragerregistrierung.php?error=sqlerror");
         exit();
     } else {
-        //Hashing-Operation am Passwort
+        // Hashing-Operation am Passwort
         $hashedPasswort = password_hash($passwort, PASSWORD_DEFAULT);
-        // Benutzereingaben beim Anmeldeversuch
+        // Verknüpfung Parameter zu Placeholder (Benutzereingaben bei der Registrierung)
         mysqli_stmt_bind_param($statement, "ss", $befragername, $hashedPasswort);
         // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($statement);
         header("Location: ../Befrageranmeldung.php?anmeldung=erfolgreich");
         exit();
     }
-    // Statements schließen
-    mysqli_stmt_close($statement);
 }
 
+// Autor: Lukas Ströbele
 // Funktion zum Einfügen der Daten in die Datenbank - Zuordnung Fragebogen zu Kurs
 function insertZuordnung($conn, $sql, $Kuerzel, $Titel)
 {
-    // Initialisieren mit der richtigen Verbindung
+    // prepared statement erstellen
     $statement = mysqli_stmt_init($conn);
-    // Prüfung auf Übereinstimmung
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn nicht, Fehlermeldung
+        // SQL-Error
         header("Location: ../KursFragebogenZuordnen.php?error=sqlerror");
         exit();
     } else {
-        // Benutzereingaben beim Anmeldeversuch
+        // Benutzereingaben Küzel/Titel  
         mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Titel);
         // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($statement);
         header("Location: ../KursFragebogenZuordnen.php?fragebogenzuordnen=erfolgreich");
         exit();
     }
-    // Statements schließen
-    mysqli_stmt_close($statement);
 }
 
-
-// Prüfung, ob Student in der Datenbank bereits enthalten ist
-function checkStudent($conn, $sql, $MNR, $Kurskuerzel)
-{
-    // Initialisieren mit der richtigen Verbindung
-    $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
-    if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn ja, dann SQL-Fehler
-        header("Location: ../Kurs.php?error=sqlerror");
-        exit();
-    } else {
-        // Benutzereingaben beim Anmeldeversuch
-        mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
-        // Ausführen der Anweisung in der Datenbank
-        mysqli_stmt_execute($statement);
-        // Nimmt das Ergebnis aus der Datenbank und speichert es in der Variablen $statement
-        mysqli_stmt_store_result($statement);
-    }
-    // Statements schließen
-    mysqli_stmt_close($statement);
-}
-
-
+// Autor: Lukas Ströbele
 // Funktion zum Einfügen von Studenten in die Datenbank
-function insertStudent($conn, $sql, $MNR, $Kurskuerzel)
+function insertStudent($conn, $sql, $MNR, $Kurskuerzel, $sqlerror)
 {
-    // Initialisieren mit der richtigen Verbindung
+    // prepared statement generieren
     $statement = mysqli_stmt_init($conn);
-    // Prüfung auf Übereinstimmung
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Wenn nicht, Fehlermeldung
-        header("Location: ../Kurs.php?error=sqlerror");
+        // SQL-Error
+        header($sqlerror);
         exit();
     } else {
-        // Benutzereingaben beim Anmeldeversuch
+        // Benutzereingaben MNR/Kürzel (Verknüpfung Parameter zu Placeholder)
         mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
         // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($statement);
         header("Location: ../Kurs.php?studentanlegen=erfolgreich");
         exit();
     }
-    // Statements schließen
-    mysqli_stmt_close($statement);
 }
 
+// Autor: Lukas Ströbele
 // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
 function anmeldenStudent($statement)
 {
-    // Benutzereingaben beim Anmeldeversuch
-    mysqli_stmt_bind_param($statement, "ss", $MNR, $MNR);
+    // Verknüpfung Parameter zu Placeholder (Benutzereingaben beim Anmeldeversuch)
+    mysqli_stmt_bind_param($statement, "s", $MNR);
     // Ausführen der Anweisung in der Datenbank
     mysqli_stmt_execute($statement);
     // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
@@ -520,10 +472,9 @@ function anmeldenStudent($statement)
         header("Location: ../Studentenanmeldung.php?error=matrikelnummernichtvergeben");
         exit();
     }
-    // Statements schließen
-    mysqli_stmt_close($statement);
 }
 
+// Autor: Dajena Thoebes, Lukas Ströbele
 // Funktion, die alle offenen Fragebögen für den Student die in der Datenbank gespeichert sind, anzeigt
 function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
 {
@@ -538,9 +489,10 @@ function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
     } else {
         //Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "ss", $mnr, $mnr);
-        //Parameter in DB verwenden
+        // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
         $result = mysqli_stmt_get_result($stmt);
         //Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
@@ -551,10 +503,11 @@ function offeneFragebogen($conn, $sql, $mnr, $sqlerror)
     mysqli_stmt_close($stmt);
 }
 
+// Autor: Lukas Ströbele
 // Funktion, die alle Fragebögen für den Student, welche in Bearbeitung sind, die in der Datenbank gespeichert sind, anzeigt
 function fragebogenInBearbeitung($conn, $sql, $student, $sqlerror)
 {
-    //Template für prepared statement
+    // Template für prepared statement
     $sql = "SELECT titel FROM bearbeitenfb WHERE status = 'B' AND mnr=?";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
@@ -562,13 +515,14 @@ function fragebogenInBearbeitung($conn, $sql, $student, $sqlerror)
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header($sqlerror);
     } else {
-        //Verknüpfung Parameter zu Placeholder
+        // Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $student);
-        //Parameter in DB verwenden
+        // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
         $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
+        // Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<option>" . $row['titel'] . "</option>";
         }
@@ -577,27 +531,28 @@ function fragebogenInBearbeitung($conn, $sql, $student, $sqlerror)
     mysqli_stmt_close($stmt);
 }
 
-
+// Autor: Lukas Ströbele
 // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
 function kurse($conn, $sql)
 {
-    // Echo Erstellte Fragebögen des angemeldeten Befragers
+    // Erstellte Fragebögen des angemeldeten Befragers
     $befrager = $_SESSION['session_bname'];
-    //Template für prepared statement
+    // Template für prepared statement
     $sql = "SELECT Kuerzel FROM kurse";
-    // prepared statement erstellt
+    // prepared statement erstellen
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("Location: ../Studenten.php?error=SQLBefehlFehler");
     } else {
-        //Verknüpfung Parameter zu Placeholder
+        // Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
-        //Parameter in DB verwenden
+        // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
         $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
+        // Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<option>" . $row['Kuerzel'] . "</option>";
         }
@@ -616,27 +571,28 @@ function echokursfreischalten($conn, $sql)
     }
 }
 
-
+// Autor: Lukas Ströbele
 // Funktion, die alle Fragebögen die in der Datenbank gespeichert sind, anzeigt
 function frageboegen($conn, $sql, $befrager)
 {
-    // Echo Erstellte Fragebögen des angemeldeten Befragers
+    // Erstellte Fragebögen des angemeldeten Befragers
     $befrager = $_SESSION['session_bname'];
-    //Template für prepared statement
-    $sql = "SELECT Titel FROM frageboegen WHERE Befrager='$befrager'";
+    // Template für prepared statement
+    $sql = "SELECT Titel FROM frageboegen WHERE Befrager=?";
     // prepared statement erstellt
     $stmt = mysqli_stmt_init($conn);
     // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("Location: ../Studenten.php?error=SQLBefehlFehler");
     } else {
-        //Verknüpfung Parameter zu Placeholder
+        // Verknüpfung Parameter zu Placeholder
         mysqli_stmt_bind_param($stmt, "s", $befrager);
-        //Parameter in DB verwenden
+        // Ausführen der Anweisung in der Datenbank
         mysqli_stmt_execute($stmt);
-        //Daten/Ergebnis aus execute-Fkt in Variable verwenden
+        // Alle Informationen, die durch die SELECT-Anweisung erhalten wurden,
+        // werden in der Variable $result gespeichert
         $result = mysqli_stmt_get_result($stmt);
-        //Ergebnis ausgeben
+        // Ergebnis ausgeben
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<option>" . $row['Titel'] . "</option>";
         }

@@ -18,13 +18,13 @@ if (isset($_POST['studentenanmeldung'])) {
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung doppelter Matrikelnummern
-        $sql = "SELECT MNR FROM studenten WHERE MNR='$MNR'";
-        // Initialisieren mit der richtigen Verbindung
+        // Template für prepared statement (Prüfung doppelter Matrikelnummern)
+        $sql = "SELECT MNR FROM studenten WHERE MNR=$MNR";
+        // prepared statement generieren
         $statement = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        // prepared statement vorbereiten
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Ja - SQL-Fehler
+            // SQL-Error
             header("Location: ../Studentenanmeldung.php?error=sqlerror");
             exit();
         } else {
