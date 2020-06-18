@@ -429,7 +429,7 @@ function insertStudent($conn, $sql, $MNR, $Kurskuerzel, $sqlerror)
 
 // Autor: Lukas Ströbele
 // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
-function anmeldenStudent($statement)
+function anmeldenStudent($statement, $MNR)
 {
     // Verknüpfung Parameter zu Placeholder (Benutzereingaben beim Anmeldeversuch)
     mysqli_stmt_bind_param($statement, "s", $MNR);

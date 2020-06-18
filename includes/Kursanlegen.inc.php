@@ -2,9 +2,7 @@
 <?php
 include 'functions.php';
 include 'dbHandler.php';
-?>
 
-<?php
 // Prüfen, ob der Befrager auf den Button klickt
 if (isset($_POST['kursanlegen'])) {
 

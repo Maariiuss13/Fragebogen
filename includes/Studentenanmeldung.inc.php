@@ -2,9 +2,7 @@
 <?php
 include 'functions.php';
 include 'dbHandler.php';
-?>
 
-<?php
 // Prüfung - Anmeldebutton gedrückt
 if (isset($_POST['studentenanmeldung'])) {
 
@@ -19,7 +17,7 @@ if (isset($_POST['studentenanmeldung'])) {
         exit();
     } else {
         // Template für prepared statement (Prüfung doppelter Matrikelnummern)
-        $sql = "SELECT MNR FROM studenten WHERE MNR=$MNR";
+        $sql = "SELECT MNR FROM studenten WHERE MNR=?";
         // prepared statement generieren
         $statement = mysqli_stmt_init($conn);
         // prepared statement vorbereiten
@@ -29,7 +27,7 @@ if (isset($_POST['studentenanmeldung'])) {
             exit();
         } else {
             // Funktion, die dem Student eine Session übergibt bei erfolgreicher Anmeldung
-            anmeldenStudent($statement);
+            anmeldenStudent($statement, $MNR);
         }
         // Statements schließen
         mysqli_stmt_close($statement);
