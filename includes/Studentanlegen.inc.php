@@ -2,9 +2,7 @@
 <?php
 include 'functions.php';
 include 'dbHandler.php';
-?>
 
-<?php
 // neuen Studenten speichern
 if (isset($_POST['studentanlegen'])) {
 
