@@ -35,8 +35,5 @@ if (isset($_POST["speichernNeueFrage"])) {
     }
 }
 
-
-
-
 //Aktualisieren Seite FragenBearbeiten
 header("Location: ../FragenKopieBearbeiten.php?FrageEinfügen=erfolgreich");

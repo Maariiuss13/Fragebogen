@@ -49,12 +49,11 @@ if (isset($_POST["speichernFragebogenKopie"])) {
         checkTitelDB($conn, $sqlTitel, $titelNeu, $sqlerror, $error);
 
         //Insert SQL-Befehl Fragebogen
-
         $sql = "INSERT INTO frageboegen(titel, beschreibung, befrager) VALUES(?, ?, ?);";
         $beschreibung = $beschrRow['Beschreibung'];
         $sqlerror = "Location: ../FragebogenKopieren.php?error=SQLBefehlFehlerFB";
         insertFragebogen($conn, $sql, $titelNeu, $beschreibung, $befrager, $sqlerror);
-        //TODO
+        
         //Fragen kopieren und neuem FB zuordnen
         $sqlInsFr = "INSERT INTO fragen(FrageNr, Titel, Fragestellung) SELECT FrageNr, '$titelNeu', Fragestellung FROM fragen WHERE Titel= '$titelAlt';";
         $erg = mysqli_query($conn, $sqlInsFr);

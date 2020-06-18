@@ -37,8 +37,4 @@ if (isset($_POST["speichernNeueFrage"])) {
 
 
 //Aktualisieren Seite FragenBearbeiten
-if (!$sql) {
-    echo mysqli_error($sql);
-} else {
-    header("Location: ../FragenBearbeiten.php?FrageEinfügen=erfolgreich");
-}
+header("Location: ../FragenBearbeiten.php?FrageEinfügen=erfolgreich");

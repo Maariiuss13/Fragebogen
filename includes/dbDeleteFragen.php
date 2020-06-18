@@ -13,6 +13,7 @@ $titelFB = $_SESSION["KopieFB"];
 
 if (isset($_POST["löschenFrage"])) {
 
+    //Select Fragennr zu ausgewählter Frage
     $sqlNr= "SELECT * FROM Fragen WHERE Titel = '$titelFB' AND Fragestellung = '$frage'";
     $result = mysqli_query($conn, $sqlNr);
     $row = mysqli_fetch_assoc($result);

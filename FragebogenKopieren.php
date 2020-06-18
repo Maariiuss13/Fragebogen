@@ -36,9 +36,6 @@ include 'includes/header.php';
                     $befrager=$_SESSION['session_bname'];
                     
                     $sql= "SELECT titel FROM frageboegen WHERE Befrager=?;";
-                    //TODO
-                    /*echoFbBefrager($conn, $sql, $befrager, $sqlerror);
-                    $sqlerror ="Location: ../FragebogenKopieren.php?error=SQLBefehlFehler";*/
                     
                     // prepared statement erstellt
                     $stmt= mysqli_stmt_init($conn);
