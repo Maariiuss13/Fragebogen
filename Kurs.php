@@ -64,7 +64,6 @@ if (isset($_GET["error"])) {
         <legend>Student</legend>
         <label for="kurs"><b>Kurs</b></label>
         <select style="padding: 12px 7px" name="kurs" size="0" readonly>
-            <option>-- Kurs des Studenten auswählen --</option>
             <?php
             // Funktion, die alle Kurse die in der Datenbank gespeichert sind, anzeigt
             kurse($conn, $sql);
@@ -73,7 +72,7 @@ if (isset($_GET["error"])) {
         <br><br>
 
         <label for="mnr"><b>Matrikelnummer des Studenten</b></label>
-        <input type="text" placeholder="Geben Sie hier die Matrikelnummer des Studenten ein." name="mnr" minlength="7" maxlength="7">
+        <input type="text" placeholder="Matrikelnummer.." name="mnr" minlength="7" maxlength="7">
         <br><br>
 
         <button type="submit" name="studentanlegen">Student anlegen!</button>

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmeldung - Questionnaire</title>
-    <link href="Startseitedesign.css" rel="stylesheet">
+    <link href="css/Startseitedesign.css" rel="stylesheet">
 </head>
 
 <body bgcolor="e2e2e2">

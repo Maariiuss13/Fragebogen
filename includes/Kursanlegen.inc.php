@@ -19,18 +19,18 @@ if (isset($_POST['kursanlegen'])) {
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung, ob doppelte Kursekürzel
-        $sql = "SELECT * FROM kurse WHERE Kuerzel='$Kuerzel'";
+        // Template für prepared statement (Prüfung, ob doppelte Kursekürzel)
+        $sql = "SELECT * FROM kurse WHERE Kuerzel=?";
         $sqlerror = "Location: ../Kurs.php?error=sqlerror";
-        // Initialisieren mit der richtigen Verbindung
+        // prepared statement generieren
         $statement = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        // prepared statement vorbereiten
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
+            // SQL-Fehler
             header($sqlerror);
             exit();
         } else {
-            // Benutzereingaben beim Anmeldeversuch
+            // Verknüpfung Parameter zu Placeholder (Benutzereingaben Kürzel/Kurs)
             mysqli_stmt_bind_param($statement, "ss", $Kuerzel, $Kurs);
             // Ausführen der Anweisung in der Datenbank
             mysqli_stmt_execute($statement);

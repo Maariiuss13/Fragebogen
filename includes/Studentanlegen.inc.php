@@ -19,17 +19,17 @@ if (isset($_POST['studentanlegen'])) {
         // Stoppt die Ausführung des Skripts
         exit();
     } else {
-        // Prüfung doppelter Studenten
-        $sql = "SELECT * FROM studenten WHERE MNR='$MNR' AND Kurs='$Kurskuerzel'";
-        // Initialisieren mit der richtigen Verbindung
+        // Template für prepared statement (Prüfung doppelter Studenten)
+        $sql = "SELECT * FROM studenten WHERE MNR=? AND Kurs=?";
+        // prepared statement generieren
         $statement = mysqli_stmt_init($conn);
-        // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+        // prepared statement vorbereiten
         if (!mysqli_stmt_prepare($statement, $sql)) {
-            // Wenn ja, dann SQL-Fehler
+            // SQL-Error
             header("Location: ../Kurs.php?error=sqlerror");
             exit();
         } else {
-            // Benutzereingaben beim Anmeldeversuch
+            // Verknüpfung Parameter zu Placeholder (Benutzereingaben MNR/Kürzel)
             mysqli_stmt_bind_param($statement, "ss", $MNR, $Kurskuerzel);
             // Ausführen der Anweisung in der Datenbank
             mysqli_stmt_execute($statement);
@@ -47,7 +47,7 @@ if (isset($_POST['studentanlegen'])) {
             // Insert SQL-Befehl studenten
             $sql = "INSERT INTO studenten (MNR, Kurs) VALUES (?, ?)";
             // Funktion zum Einfügen von Studenten in die Datenbank
-            insertStudent($conn, $sql, $MNR, $Kurskuerzel);
+            insertStudent($conn, $sql, $MNR, $Kurskuerzel, $sqlerror);
         }
     }
     // Statements schließen

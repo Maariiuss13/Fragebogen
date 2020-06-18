@@ -2,9 +2,7 @@
 <?php
 include 'functions.php';
 include 'dbHandler.php';
-?>
 
-<?php
 // Kurs Fragebogen zuordnen
 if (isset($_POST['fragebogenzuordnen'])) {
 
@@ -12,19 +10,19 @@ if (isset($_POST['fragebogenzuordnen'])) {
     $Kuerzel = htmlspecialchars(stripslashes(trim($_POST['kurskuerzel'])));
     $Titel = htmlspecialchars(stripslashes(trim($_POST['fragebogentitel'])));
 
-    // Prüfung doppelter Titel
-    $sql = "SELECT * FROM freischaltenfb WHERE Titel='$Titel'";
-    // Initialisieren mit der richtigen Verbindung
+    // Template für prepared statement (Prüfung doppelter Titel)
+    $sql = "SELECT * FROM freischaltenfb WHERE Titel=?";
+    // prepared statement generieren
     $statement = mysqli_stmt_init($conn);
-    // Verbindung ausführen und überprüfen, ob SQL-Statement einen Fehler hat
+    // prepared statement vorbereiten
     if (!mysqli_stmt_prepare($statement, $sql)) {
-        // Ja - SQL-Fehler
+        // SQL-Error
         header("Location: ../KursFragebogenZuordnen.php?error=sqlerror");
         exit();
     } else {
         // Insert SQL-Befehl freischaltenfb
         $sql = "INSERT INTO freischaltenfb (Titel, Kurs) VALUES ('$Titel', '$Kuerzel')";
-        // Funktion zum Einfügen der Daten in die Datenbank
+        // Funktion zum Einfügen der Daten in die Datenbank - Zuordnung Fragebogen zu Kurs
         insertZuordnung($conn, $sql, $Kuerzel, $Titel);
     }
     // Statements schließen
