@@ -30,7 +30,7 @@ if (isset($_POST["FragebogenAuswerten"])) {
 }
 
 ?>
-<link href="Auswertungsdesign.css" rel="stylesheet">
+<link href="css/Auswertungsdesign.css" rel="stylesheet">
 
 <br />
 

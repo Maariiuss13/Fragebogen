@@ -7,7 +7,7 @@ include 'includes/functions.php';
 echo "<p> Befrager: " . $_SESSION['session_bname'] . "</p><br/>";
 ?>
 
-<link href="Auswertungsdesign.css" rel="stylesheet">
+<link href="css/Auswertungsdesign.css" rel="stylesheet">
 
 <div class="container">
   <h1 align="center"><b>Willkommen auf der Auswertungsseite des Fragebogens!</b></h1>
