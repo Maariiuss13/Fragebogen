@@ -13,7 +13,7 @@ if (!isset($_SESSION["Babschluss"])){
 ?>
 
 
-<link href="Abschlussseitedesign.css" rel="stylesheet">
+<link href="css/Abschlussseitedesign.css" rel="stylesheet">
 
 <section class="abschluss">
     <h1>Vielen Dank für den Abschluss des Fragebogens</h1>

@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registrierung - Befrager</title>
-  <link href="Logindesign.css" rel="stylesheet">
+  <link href="css/Logindesign.css" rel="stylesheet">
 </head>
 
 <body bgcolor="e2e2e2">

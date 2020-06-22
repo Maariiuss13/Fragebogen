@@ -26,7 +26,7 @@ if ($_SESSION["titelFB"] == '') {
 }
 ?>
 
-<link href="Fragenseitendesign.css" rel="stylesheet">
+<link href="css/Fragenseitendesign.css" rel="stylesheet">
 
 <section class="welcome">
   <h1>Willkommen auf der Fragenseite!</h1>
